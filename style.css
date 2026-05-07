@@ -51,8 +51,11 @@ nav a:hover {
 
 .hero {
     height: 100vh;
+    /* --- ӨӨРЧЛӨГДӨХ ХЭСЭГ ЭНД БАЙНА --- */
+    /* Unsplash холбоосыг таны zurag1.png-ээр солилоо */
     background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)),
-    url('https://images.unsplash.com/photo-1517022812141-23620dba5c23?q=80&w=1600&auto=format&fit=crop') center/cover;
+    url('zurag1.png') center/cover;
+    /* ---------------------------------- */
 
     display: flex;
     justify-content: center;
