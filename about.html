@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Бидний тухай — RegaPro</title>
+  <meta name="description" content="RegaPro — геологи уул уурхайн цахим шийдлийг бүтээдэг баг.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23f59e0b'/%3E%3Ctext x='50' y='68' font-family='Arial Black' font-size='52' font-weight='900' text-anchor='middle' fill='%231a1206'%3ER%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container">
+      <nav class="nav">
+        <a href="index.html" class="logo">
+          <span class="logo-mark">R</span>
+          <span class="logo-text">Rega<span>Pro</span></span>
+        </a>
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Нүүр</a></li>
+          <li><a href="services.html" class="nav-link">Үйлчилгээ</a></li>
+          <li><a href="about.html" class="nav-link active">Бидний тухай</a></li>
+          <li><a href="contact.html" class="nav-link">Холбоо барих</a></li>
+          <li><a href="contact.html" class="btn btn-primary">Холбогдох <span class="btn-arrow">→</span></a></li>
+        </ul>
+        <button class="nav-toggle" aria-label="Цэс"><span></span><span></span><span></span></button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- PAGE HEADER -->
+  <section class="page-header">
+    <div class="container">
+      <div class="page-header-content">
+        <div class="breadcrumb">
+          <a href="index.html">Нүүр</a> <span>›</span> <span>Бидний тухай</span>
+        </div>
+        <h1 class="page-title">Бид <span class="accent">RegaPro</span></h1>
+        <p class="page-subtitle">
+          Геологи уул уурхайн салбарын мэргэжилтнүүд, програмистуудаас бүрдсэн баг.
+          Хээрийн ажлыг цахимжуулж, мэдээллийн чанарыг шинэ түвшинд гаргахад ажиллаж байна.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT GRID -->
+  <section class="section">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <h2>Бидний <span class="text-accent">эрхэм зорилго</span></h2>
+          <p>
+            Геологи, уул уурхайн салбарт хээрийн мэдээллийг цаасан дэвтэр болон Excel
+            хүснэгтэд хадгалах эрин дуусгахаар бид анх 2020 онд байгуулагдсан.
+          </p>
+          <p>
+            Бид Survey123, ArcGIS зэрэг дэлхийд хүлээн зөвшөөрөгдсөн платформууд дээр
+            суурилан танай төсөлд тохируулсан, ашиглахад хялбар, найдвартай систем зохион
+            бүтээдэг.
+          </p>
+          <p>
+            Зорилго маань — Монгол улсын геологич, инженер бүрд олон улсын стандартад
+            нийцсэн мэдээллийн шийдлийг хүртээмжтэй болгох.
+          </p>
+
+          <div class="about-pillars">
+            <div class="pillar">
+              <div class="pillar-icon">🎯</div>
+              <div class="pillar-title">Чанар</div>
+              <div class="pillar-desc">Стандартад нийцсэн, шалгалттай мэдээлэл</div>
+            </div>
+            <div class="pillar">
+              <div class="pillar-icon">⚡</div>
+              <div class="pillar-title">Хурд</div>
+              <div class="pillar-desc">Хээрээс тайлан хүртэл богино зам</div>
+            </div>
+            <div class="pillar">
+              <div class="pillar-icon">🔒</div>
+              <div class="pillar-title">Аюулгүй байдал</div>
+              <div class="pillar-desc">Танай мэдээлэл танай хяналтанд</div>
+            </div>
+            <div class="pillar">
+              <div class="pillar-icon">🤝</div>
+              <div class="pillar-title">Дэмжлэг</div>
+              <div class="pillar-desc">Тасралтгүй техник дэмжлэг, сургалт</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-image reveal">
+          <div class="about-image-content">
+            <div style="font-size: 5rem; margin-bottom: 1rem;">⛰️</div>
+            <div style="font-family: var(--font-display); font-size: 1.75rem; font-weight: 800; margin-bottom: 0.5rem;">
+              Хээрээс <span class="text-accent">шийдвэр</span> хүртэл
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.7;">
+              Бид зөвхөн программ зохиогчид биш — хамтрагч геологичид. Танай ажлын
+              онцлог, стандартыг ойлгох нь манай хамгийн том давуу тал.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO SECTION -->
+  <section class="section features">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">Танилцуулга</span>
+        <h2 class="section-title">RegaPro-г <span class="text-accent">2 минутад</span></h2>
+        <p class="section-subtitle">
+          Бид хэн бэ, юу хийдэг вэ — товч танилцуулга.
+        </p>
+      </div>
+
+      <div class="video-wrapper reveal">
+        <div class="video-placeholder">
+          <div class="play-button">▶</div>
+          <div class="video-label">Танилцуулга видео үзэх</div>
+        </div>
+        <iframe
+          class="video-iframe"
+          data-src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+          title="RegaPro танилцуулга"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">Замнал</span>
+        <h2 class="section-title">Бидний <span class="text-accent">түүх</span></h2>
+        <p class="section-subtitle">
+          Хүсэл мөрөөдлөөс эхлээд салбарын тэргүүлэгч хүртэл.
+        </p>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item reveal">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <div class="timeline-year">2020</div>
+            <h3 class="timeline-title">Анхны санаа</h3>
+            <p class="timeline-text">
+              Хээрийн ажил дээр гарсан мэдээллийн алдаа, давхардлаас үүдэн цахим
+              шийдэл бүтээх анхны санаа төрсөн.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <div class="timeline-year">2022</div>
+            <h3 class="timeline-title">Анхны Survey123 загвар</h3>
+            <p class="timeline-text">
+              Геологийн логын анхны цахим загварыг бүтээж, Монголын уул уурхайн
+              жижиг компанид нэвтрүүлсэн.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <div class="timeline-year">2024</div>
+            <h3 class="timeline-title">Геотехникийн модуль</h3>
+            <p class="timeline-text">
+              RQD, SPT, Lugeon зэрэг геотехникийн стандарт тооцоолол бүхий
+              иж бүрэн модулийг гаргасан.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <div class="timeline-year">2026</div>
+            <h3 class="timeline-title">RegaPro платформ</h3>
+            <p class="timeline-text">
+              Олон улсын стандартад нийцсэн, бүрэн хэмжээний цахим геологи геотехникийн
+              лог платформыг олонд хүргэж байна.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUES / WHY US -->
+  <section class="section features">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">Үнэт зүйлс</span>
+        <h2 class="section-title">Бид юунд <span class="text-accent">итгэдэг</span> вэ?</h2>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon">🌐</div>
+          <h3 class="feature-title">Олон улсын стандарт</h3>
+          <p class="feature-description">
+            ISRM, AGS, ASTM зэрэг мэдээллийн стандартыг үндэс болгож, олон улсын
+            хамтын ажиллагаанд бэлэн мэдээлэл гаргадаг.
+          </p>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-icon">🔧</div>
+          <h3 class="feature-title">Захиалгат зохион байгуулалт</h3>
+          <p class="feature-description">
+            Танай төсөл, танай арга зүйд тохируулан системийг өөрчлөх,
+            хувийн талбарууд нэмэх боломжтой.
+          </p>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-icon">🤝</div>
+          <h3 class="feature-title">Урт хугацааны түнш</h3>
+          <p class="feature-description">
+            Зөвхөн систем нийлүүлээд орхидоггүй — танай хамт өсөн хөгжих,
+            шинэ функц нэмэх, хадгалалт сайжруулахад анхаардаг.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section">
+    <div class="container">
+      <div class="cta-banner reveal">
+        <div class="cta-content">
+          <h2 class="cta-title">Уулзах цаг товлоё</h2>
+          <p class="cta-subtitle">
+            Бид танай ажлын онцлогийг сонсож, тохирсон шийдлийг ярилцана.
+            Та зөвхөн нэг цаг гаргахад л хангалттай.
+          </p>
+          <div class="cta-actions">
+            <a href="contact.html" class="btn btn-primary">
+              Уулзалт товлох <span class="btn-arrow">→</span>
+            </a>
+            <a href="services.html" class="btn btn-secondary">Үйлчилгээ үзэх</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a href="index.html" class="logo footer-logo">
+            <span class="logo-mark">R</span>
+            <span class="logo-text">Rega<span>Pro</span></span>
+          </a>
+          <p class="footer-description">
+            Survey123 платформ дээр суурилсан, геологи уул уурхайн салбарт зориулсан
+            цахим хээрийн мэдээллийн шийдэл.
+          </p>
+          <div class="footer-socials">
+            <a href="#" class="footer-social" aria-label="Facebook">f</a>
+            <a href="#" class="footer-social" aria-label="LinkedIn">in</a>
+            <a href="#" class="footer-social" aria-label="YouTube">▶</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Компани</h4>
+          <ul class="footer-links">
+            <li><a href="index.html" class="footer-link">Нүүр</a></li>
+            <li><a href="about.html" class="footer-link">Бидний тухай</a></li>
+            <li><a href="services.html" class="footer-link">Үйлчилгээ</a></li>
+            <li><a href="contact.html" class="footer-link">Холбоо барих</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Шийдлүүд</h4>
+          <ul class="footer-links">
+            <li><a href="services.html" class="footer-link">Геологийн лог</a></li>
+            <li><a href="services.html" class="footer-link">Геотехникийн лог</a></li>
+            <li><a href="services.html" class="footer-link">Хээрийн картчлал</a></li>
+            <li><a href="services.html" class="footer-link">Survey123 интеграц</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Холбоо барих</h4>
+          <ul class="footer-links">
+            <li><a href="mailto:info@regapro.com" class="footer-link">info@regapro.com</a></li>
+            <li><a href="tel:+97670000000" class="footer-link">+976 7000-0000</a></li>
+            <li><span class="footer-link">Улаанбаатар, Монгол улс</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">
+          © <span id="current-year">2026</span> RegaPro. Бүх эрх хуулиар хамгаалагдсан.
+        </div>
+        <div class="footer-bottom-links">
+          <a href="#" class="footer-bottom-link">Нууцлалын бодлого</a>
+          <a href="#" class="footer-bottom-link">Үйлчилгээний нөхцөл</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

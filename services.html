@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Үйлчилгээ — RegaPro</title>
+  <meta name="description" content="Survey123 платформ дээр суурилсан геологи геотехникийн цахим лог үйлчилгээ.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23f59e0b'/%3E%3Ctext x='50' y='68' font-family='Arial Black' font-size='52' font-weight='900' text-anchor='middle' fill='%231a1206'%3ER%3C/text%3E%3C/svg%3E">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container">
+      <nav class="nav">
+        <a href="index.html" class="logo">
+          <span class="logo-mark">R</span>
+          <span class="logo-text">Rega<span>Pro</span></span>
+        </a>
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Нүүр</a></li>
+          <li><a href="services.html" class="nav-link active">Үйлчилгээ</a></li>
+          <li><a href="about.html" class="nav-link">Бидний тухай</a></li>
+          <li><a href="contact.html" class="nav-link">Холбоо барих</a></li>
+          <li><a href="contact.html" class="btn btn-primary">Холбогдох <span class="btn-arrow">→</span></a></li>
+        </ul>
+        <button class="nav-toggle" aria-label="Цэс"><span></span><span></span><span></span></button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- PAGE HEADER -->
+  <section class="page-header">
+    <div class="container">
+      <div class="page-header-content">
+        <div class="breadcrumb">
+          <a href="index.html">Нүүр</a> <span>›</span> <span>Үйлчилгээ</span>
+        </div>
+        <h1 class="page-title">Манай <span class="accent">үйлчилгээ</span></h1>
+        <p class="page-subtitle">
+          Survey123 платформ дээр суурилсан, геологи уул уурхайн салбарт зориулсан
+          цахим хээрийн мэдээллийн иж бүрэн шийдлүүд.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section">
+    <div class="container">
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <div class="service-number">01</div>
+          <h3 class="service-title">Геологийн цахим лог</h3>
+          <p class="service-description">
+            Өрөмдлөгийн цооногийн хурдас, чулуулгийн цогц тэмдэглэгээ, хээрийн ажиглалтыг
+            нэгдсэн стандартаар бүртгэх.
+          </p>
+          <div class="service-features">
+            <div class="service-feature">Хурдас, чулуулгийн нэгдсэн ангилал</div>
+            <div class="service-feature">Дээж, шинж тэмдэг, өнгөний кодчилол</div>
+            <div class="service-feature">Координат, гүн, зураг автомат хадгалалт</div>
+            <div class="service-feature">Lithology, Stratigraphy баганат харагдац</div>
+          </div>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="service-number">02</div>
+          <h3 class="service-title">Геотехникийн цахим лог</h3>
+          <p class="service-description">
+            RQD, TCR, SCR, SPT, чулуулгийн зөв чанарын тэмдэглэгээ — стандартаар, тооцоолол хийсэн.
+          </p>
+          <div class="service-features">
+            <div class="service-feature">RQD, TCR, SCR автомат тооцоолол</div>
+            <div class="service-feature">Чулуулгийн ангилал, Q, GSI үнэлгээ</div>
+            <div class="service-feature">Үе, хагарал, тэг хүрсэн өнцөг</div>
+            <div class="service-feature">Lugeon, packer туршилтын мэдээлэл</div>
+          </div>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="service-number">03</div>
+          <h3 class="service-title">Геологийн картчлал</h3>
+          <p class="service-description">
+            GPS координаттай хээрийн картчлалын ажил, далд илрэл, гадаргын тэмдэглэгээ.
+          </p>
+          <div class="service-features">
+            <div class="service-feature">Оффлайн газрын зурагтай ажиллах</div>
+            <div class="service-feature">Структурын хэмжилт (азимут, өнцөг)</div>
+            <div class="service-feature">Зураг, видео, дуу хавсаргах</div>
+            <div class="service-feature">Шууд GIS системд экспортлох</div>
+          </div>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="service-number">04</div>
+          <h3 class="service-title">Дээжийн менежмент</h3>
+          <p class="service-description">
+            Хээрийн дээжийг бүртгэх, ID үүсгэх, лабораторид шилжүүлэх, үр дүнг буцаан холбох.
+          </p>
+          <div class="service-features">
+            <div class="service-feature">QR/Barcode дээжийн ID</div>
+            <div class="service-feature">Лаб руу шилжүүлэлтийн хяналт</div>
+            <div class="service-feature">Үр дүн автомат буцаан холболт</div>
+            <div class="service-feature">Чанарын хяналт (QA/QC) талбар</div>
+          </div>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="service-number">05</div>
+          <h3 class="service-title">Survey123 интеграц</h3>
+          <p class="service-description">
+            ESRI Survey123, ArcGIS, Power BI, SQL зэрэгтэй хооронд нь холбон ажиллуулах.
+          </p>
+          <div class="service-features">
+            <div class="service-feature">Захиалгат форм зохион бүтээх</div>
+            <div class="service-feature">Сан, серверийн архитектур</div>
+            <div class="service-feature">Хэрэглэгчийн эрхийн зохицуулалт</div>
+            <div class="service-feature">REST API, webhook холболт</div>
+          </div>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="service-number">06</div>
+          <h3 class="service-title">Сургалт, дэмжлэг</h3>
+          <p class="service-description">
+            Геологич, инженер, хээрийн ажилтны мэргэжлийн сургалт, тасралтгүй дэмжлэг.
+          </p>
+          <div class="service-features">
+            <div class="service-feature">Хэрэглээний дадлагажуулах сургалт</div>
+            <div class="service-feature">Заавар, видео материал</div>
+            <div class="service-feature">Цаг алдалгүй техник дэмжлэг</div>
+            <div class="service-feature">Тогтмол шинэчлэлт, шинэ функц</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOWCASE / SCREENSHOTS -->
+  <section class="section showcase">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">Жишээнүүд</span>
+        <h2 class="section-title">Манай систем хэрхэн харагддаг вэ?</h2>
+        <p class="section-subtitle">
+          Survey123 дээр бүтээсэн бэлэн загваруудаас түүвэрлэн харууллаа.
+        </p>
+      </div>
+
+      <div class="showcase-tabs reveal">
+        <button class="showcase-tab active" data-target="panel-form">📝 Лог форм</button>
+        <button class="showcase-tab" data-target="panel-table">📋 Хүснэгт</button>
+        <button class="showcase-tab" data-target="panel-chart">📊 Шинжилгээ</button>
+      </div>
+
+      <div class="showcase-content reveal">
+        <!-- Panel 1: Form -->
+        <div class="showcase-panel active" id="panel-form">
+          <div class="mock-window-bar">
+            <div class="mock-dot"></div>
+            <div class="mock-dot"></div>
+            <div class="mock-dot"></div>
+            <span style="margin-left: 1rem; font-size: 0.85rem; color: var(--text-muted);">survey123.regapro.com</span>
+          </div>
+          <div class="mock-content">
+            <h4 style="margin-bottom: 1.5rem; font-family: var(--font-display); font-size: 1.1rem;">
+              🪨 Геологийн лог · BH-127
+            </h4>
+            <div class="mock-form-grid">
+              <div class="mock-form-field">
+                <span class="mock-label">Цооногийн дугаар</span>
+                <span class="mock-input">BH-127</span>
+              </div>
+              <div class="mock-form-field">
+                <span class="mock-label">Огноо</span>
+                <span class="mock-input">2026-05-07</span>
+              </div>
+              <div class="mock-form-field">
+                <span class="mock-label">Эхлэх гүн (м)</span>
+                <span class="mock-input">28.50</span>
+              </div>
+              <div class="mock-form-field">
+                <span class="mock-label">Дуусах гүн (м)</span>
+                <span class="mock-input">45.00</span>
+              </div>
+              <div class="mock-form-field">
+                <span class="mock-label">Чулуулгийн нэр</span>
+                <span class="mock-input">Гранит</span>
+              </div>
+              <div class="mock-form-field">
+                <span class="mock-label">RQD (%)</span>
+                <span class="mock-input">91</span>
+              </div>
+              <div class="mock-form-field" style="grid-column: 1 / -1;">
+                <span class="mock-label">Тайлбар</span>
+                <span class="mock-input" style="min-height: 60px;">
+                  Дунд ширхэгтэй, цайвар саарал, биотит-кварц-плагиоклаз бүтэцтэй гранит. Хагарал багатай, RQD-ийн утга өндөр.
+                </span>
+              </div>
+            </div>
+            <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+              <span class="btn btn-primary" style="font-size: 0.85rem; padding: 0.7rem 1.25rem;">Хадгалах</span>
+              <span class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.7rem 1.25rem;">Зураг хавсаргах</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 2: Table -->
+        <div class="showcase-panel" id="panel-table">
+          <div class="mock-window-bar">
+            <div class="mock-dot"></div>
+            <div class="mock-dot"></div>
+            <div class="mock-dot"></div>
+            <span style="margin-left: 1rem; font-size: 0.85rem; color: var(--text-muted);">dashboard.regapro.com / logs</span>
+          </div>
+          <div class="mock-content">
+            <h4 style="margin-bottom: 1rem; font-family: var(--font-display); font-size: 1.1rem;">
+              📋 Идэвхтэй цооногууд
+            </h4>
+            <table class="mock-table">
+              <thead>
+                <tr>
+                  <th>Цооног</th>
+                  <th>Гүн (м)</th>
+                  <th>Чулуулаг</th>
+                  <th>RQD</th>
+                  <th>Геологич</th>
+                  <th>Төлөв</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>BH-127</td>
+                  <td>0–95</td>
+                  <td>Гранит / Шавранцар</td>
+                  <td><span class="hero-log-quality quality-good">82</span></td>
+                  <td>Б. Эрдэнэбаяр</td>
+                  <td><span class="hero-card-status">Шууд</span></td>
+                </tr>
+                <tr>
+                  <td>BH-128</td>
+                  <td>0–60</td>
+                  <td>Элсэн чулуу</td>
+                  <td><span class="hero-log-quality quality-fair">58</span></td>
+                  <td>Д. Цэцэгмаа</td>
+                  <td><span class="hero-card-status">Шууд</span></td>
+                </tr>
+                <tr>
+                  <td>BH-129</td>
+                  <td>0–120</td>
+                  <td>Шохойн чулуу</td>
+                  <td><span class="hero-log-quality quality-good">76</span></td>
+                  <td>Г. Баатар</td>
+                  <td><span class="hero-card-status">Шууд</span></td>
+                </tr>
+                <tr>
+                  <td>DDH-204</td>
+                  <td>0–250</td>
+                  <td>Кварцит / Гранит</td>
+                  <td><span class="hero-log-quality quality-good">88</span></td>
+                  <td>М. Алтанзул</td>
+                  <td><span class="hero-card-status">Шууд</span></td>
+                </tr>
+                <tr>
+                  <td>DDH-205</td>
+                  <td>0–180</td>
+                  <td>Шавранцар</td>
+                  <td><span class="hero-log-quality quality-fair">64</span></td>
+                  <td>Х. Болормаа</td>
+                  <td><span class="hero-card-status">Шууд</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Panel 3: Chart -->
+        <div class="showcase-panel" id="panel-chart">
+          <div class="mock-window-bar">
+            <div class="mock-dot"></div>
+            <div class="mock-dot"></div>
+            <div class="mock-dot"></div>
+            <span style="margin-left: 1rem; font-size: 0.85rem; color: var(--text-muted);">analytics.regapro.com / rqd-distribution</span>
+          </div>
+          <div class="mock-content">
+            <h4 style="margin-bottom: 1rem; font-family: var(--font-display); font-size: 1.1rem;">
+              📊 RQD-ийн тархалт (5 цооног)
+            </h4>
+            <div class="mock-bar-chart">
+              <div class="mock-bar" style="height: 65%;"></div>
+              <div class="mock-bar" style="height: 80%;"></div>
+              <div class="mock-bar" style="height: 45%;"></div>
+              <div class="mock-bar" style="height: 90%;"></div>
+              <div class="mock-bar" style="height: 70%;"></div>
+              <div class="mock-bar" style="height: 55%;"></div>
+              <div class="mock-bar" style="height: 85%;"></div>
+              <div class="mock-bar" style="height: 60%;"></div>
+              <div class="mock-bar" style="height: 75%;"></div>
+              <div class="mock-bar" style="height: 95%;"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 0 1rem; margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-muted);">
+              <span>0–10m</span><span>10–20m</span><span>20–30m</span><span>30–40m</span><span>40–50m</span><span>50–60m</span><span>60–70m</span><span>70–80m</span><span>80–90m</span><span>90–100m</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== GALLERY / PHOTOS ========== -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">Хээрийн ажил</span>
+        <h2 class="section-title">Survey123 ашигласан <span class="text-accent">геологи уул уурхай</span></h2>
+        <p class="section-subtitle">
+          Манай баг хээрт ажиллахдаа Survey123-аар бодит мэдээлэл цуглуулсан агшинууд.
+        </p>
+      </div>
+
+      <div class="gallery-grid reveal">
+        <!-- 1. Wide -->
+        <div class="gallery-item wide">
+          <img class="gallery-image"
+               src="images/zurag1.png"
+               alt="Survey123 хээрт"
+               loading="lazy">
+          <div class="gallery-icon">⛏️</div>
+          <div class="gallery-overlay">
+            <span class="gallery-tag">Өрөмдлөг</span>
+            <h3 class="gallery-title">Хайгуулын өрөмдлөгийн талбай</h3>
+            <p class="gallery-desc">DDH цооногоос хээрийн лог Survey123 дээр шууд бичигдэж байна</p>
+          </div>
+        </div>
+
+        <!-- 2. Tall -->
+        <div class="gallery-item tall">
+          <img class="gallery-image"
+               src="images/zurag2.png"
+               alt="Survey123 геологи"
+               loading="lazy">
+          <div class="gallery-icon">📱</div>
+          <div class="gallery-overlay">
+            <span class="gallery-tag">Survey123</span>
+            <h3 class="gallery-title">Цахим лог бичилт</h3>
+            <p class="gallery-desc">Хээрийн нөхцөлд таблетаар бодит цаг хугацаанд лог бичих</p>
+          </div>
+        </div>
+
+        <!-- 3 -->
+        <div class="gallery-item">
+          <img class="gallery-image"
+               src="images/zurag3.png"
+               alt="Survey123 геологи"
+               loading="lazy">
+          <div class="gallery-icon">🪨</div>
+          <div class="gallery-overlay">
+            <span class="gallery-tag">Дээж</span>
+            <h3 class="gallery-title">Кернийн дээж</h3>
+            <p class="gallery-desc">Чулуулгийн ангилал, RQD хээр дээр шууд тооцоолно</p>
+          </div>
+        </div>
+
+        <!-- 4 -->
+        <div class="gallery-item">
+          <img class="gallery-image"
+               src="images/zurag4.png"
+               alt="Survey123 хээрийн картчлал"
+               loading="lazy">
+          <div class="gallery-icon">🗺️</div>
+          <div class="gallery-overlay">
+            <span class="gallery-tag">Картчлал</span>
+            <h3 class="gallery-title">Хээрийн геологийн картчлал</h3>
+            <p class="gallery-desc">GPS координатаар цэгийн ажиглалт, далд илрэл бүртгэх</p>
+          </div>
+        </div>
+
+        <!-- 5 -->
+        <div class="gallery-item">
+          <img class="gallery-image"
+               src="images/zurag5.png"
+               alt="Survey123 уул уурхайн ажил"
+               loading="lazy">
+          <div class="gallery-icon">🏔️</div>
+          <div class="gallery-overlay">
+            <span class="gallery-tag">Уурхай</span>
+            <h3 class="gallery-title">Ил уурхайн ажил</h3>
+            <p class="gallery-desc">Геотехникийн хэмжилт, үе хагарлын тэмдэглэгээ</p>
+          </div>
+        </div>
+
+        <!-- 6. Wide repeat (zurag1) -->
+        <div class="gallery-item wide">
+          <img class="gallery-image"
+               src="images/zurag2.png"
+               alt="Survey123 хээр"
+               loading="lazy">
+          <div class="gallery-icon">📊</div>
+          <div class="gallery-overlay">
+            <span class="gallery-tag">Тайлан</span>
+            <h3 class="gallery-title">Бодит цаг хугацааны мэдээлэл</h3>
+            <p class="gallery-desc">Цуглуулсан өгөгдөл шууд GIS, дашбоардад харагдана</p>
+          </div>
+        </div>
+
+        <!-- 7 -->
+        <div class="gallery-item">
+          <img class="gallery-image"
+               src="images/zurag3.png"
+               alt="Survey123 чанарын хяналт"
+               loading="lazy">
+          <div class="gallery-icon">🔬</div>
+          <div class="gallery-overlay">
+            <span class="gallery-tag">QA/QC</span>
+            <h3 class="gallery-title">Чанарын хяналт</h3>
+            <p class="gallery-desc">Дээж, мэдээлэл стандартаар хянагдана</p>
+          </div>
+        </div>
+
+        <!-- 8 -->
+        <div class="gallery-item">
+          <img class="gallery-image"
+               src="images/zurag5.png"
+               alt="Survey123 геотехник"
+               loading="lazy">
+          <div class="gallery-icon">⚙️</div>
+          <div class="gallery-overlay">
+            <span class="gallery-tag">Геотехник</span>
+            <h3 class="gallery-title">Геотехникийн ажил</h3>
+            <p class="gallery-desc">RQD, SPT, Lugeon стандарт тооцооллууд</p>
+          </div>
+        </div>
+      </div>
+
+      <p style="text-align: center; color: var(--text-muted); margin-top: 2rem; font-size: 0.9rem;">
+        💡 Аль ч зураг дээр дарвал томруулж харах боломжтой
+      </p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section">
+    <div class="container">
+      <div class="cta-banner reveal">
+        <div class="cta-content">
+          <h2 class="cta-title">Танай төсөлд тохирсон шийдэл хүсэж байна уу?</h2>
+          <p class="cta-subtitle">
+            Манай мэргэжилтнүүд танай ажлын онцлогт нийцүүлэн форм, тайлан, систем зохион бүтээж өгнө.
+          </p>
+          <div class="cta-actions">
+            <a href="contact.html" class="btn btn-primary">
+              Үнэгүй зөвлөгөө авах <span class="btn-arrow">→</span>
+            </a>
+            <a href="about.html" class="btn btn-secondary">
+              Бидний тухай
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a href="index.html" class="logo footer-logo">
+            <span class="logo-mark">R</span>
+            <span class="logo-text">Rega<span>Pro</span></span>
+          </a>
+          <p class="footer-description">
+            Survey123 платформ дээр суурилсан, геологи уул уурхайн салбарт зориулсан
+            цахим хээрийн мэдээллийн шийдэл.
+          </p>
+          <div class="footer-socials">
+            <a href="#" class="footer-social" aria-label="Facebook">f</a>
+            <a href="#" class="footer-social" aria-label="LinkedIn">in</a>
+            <a href="#" class="footer-social" aria-label="YouTube">▶</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Компани</h4>
+          <ul class="footer-links">
+            <li><a href="index.html" class="footer-link">Нүүр</a></li>
+            <li><a href="about.html" class="footer-link">Бидний тухай</a></li>
+            <li><a href="services.html" class="footer-link">Үйлчилгээ</a></li>
+            <li><a href="contact.html" class="footer-link">Холбоо барих</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Шийдлүүд</h4>
+          <ul class="footer-links">
+            <li><a href="services.html" class="footer-link">Геологийн лог</a></li>
+            <li><a href="services.html" class="footer-link">Геотехникийн лог</a></li>
+            <li><a href="services.html" class="footer-link">Хээрийн картчлал</a></li>
+            <li><a href="services.html" class="footer-link">Survey123 интеграц</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Холбоо барих</h4>
+          <ul class="footer-links">
+            <li><a href="mailto:info@regapro.com" class="footer-link">info@regapro.com</a></li>
+            <li><a href="tel:+97670000000" class="footer-link">+976 7000-0000</a></li>
+            <li><span class="footer-link">Улаанбаатар, Монгол улс</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">
+          © <span id="current-year">2026</span> RegaPro. Бүх эрх хуулиар хамгаалагдсан.
+        </div>
+        <div class="footer-bottom-links">
+          <a href="#" class="footer-bottom-link">Нууцлалын бодлого</a>
+          <a href="#" class="footer-bottom-link">Үйлчилгээний нөхцөл</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
