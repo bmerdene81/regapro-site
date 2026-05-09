@@ -12,7 +12,6 @@ regapro-site/
 ├── contact.html      # Холбоо барих
 ├── style.css         # Бүх дизайн
 ├── script.js         # Интерактив функцууд
-├── CNAME             # Custom домайн (regapro.com)
 ├── images/           # Зурагнуудын хавтас
 │   ├── zurag1.png    #   Hero slideshow + галерей
 │   ├── zurag2.png    #   Hero slideshow + галерей
