@@ -1,354 +1,352 @@
-/* ============================================
-   REGAPRO - Interactive Scripts
-   ============================================ */
+/* =========================================================
+   RegaPro — script.js
+   1) Хэл солих (MN / EN)
+   2) Header (scroll), гар утасны цэс
+   3) Hero slideshow
+   4) Scroll-оор гарч ирэх анимаци
+   5) Холбоо барих форм (mailto)
+   6) Ажлын туршлага — галерей, lightbox
+   ========================================================= */
+(function () {
+    'use strict';
 
-document.addEventListener('DOMContentLoaded', () => {
-  initHeader();
-  initMobileMenu();
-  initScrollReveal();
-  initShowcaseTabs();
-  initVideoPlayer();
-  initContactForm();
-  initStatCounters();
-  initSmoothScroll();
-  initGallery();
-  initHeroSlideshow();
-});
+    var CONTACT_EMAIL = 'info@regapro.com';   // ← Хүсэлт хүлээн авах и-мэйл
+    var STORAGE_KEY = 'regapro-lang';
+    var root = document.documentElement;
+    var dict = window.REGAPRO_I18N || { en: {}, mn: {} };
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* ---------- HEADER SCROLL EFFECT ---------- */
-function initHeader() {
-  const header = document.querySelector('.header');
-  if (!header) return;
+    /* ---------------------------------------------------------
+       1) ХЭЛ СОЛИХ
+       Монгол текстийг HTML-ээс нь уншиж хадгална, англи текст i18n.js-д.
+    --------------------------------------------------------- */
+    var ATTRS = [
+        { sel: '[data-i18n]',             key: 'i18n',            apply: function (el, v) { el.innerHTML = v; },               read: function (el) { return el.innerHTML; } },
+        { sel: '[data-i18n-placeholder]', key: 'i18nPlaceholder', apply: function (el, v) { el.placeholder = v; },             read: function (el) { return el.placeholder; } },
+        { sel: '[data-i18n-aria]',        key: 'i18nAria',        apply: function (el, v) { el.setAttribute('aria-label', v); }, read: function (el) { return el.getAttribute('aria-label'); } },
+        { sel: '[data-i18n-alt]',         key: 'i18nAlt',         apply: function (el, v) { el.alt = v; },                     read: function (el) { return el.alt; } },
+        { sel: '[data-i18n-content]',     key: 'i18nContent',     apply: function (el, v) { el.setAttribute('content', v); },  read: function (el) { return el.getAttribute('content'); } }
+    ];
 
-  const handleScroll = () => {
-    if (window.scrollY > 30) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
-    }
-  };
-
-  window.addEventListener('scroll', handleScroll, { passive: true });
-  handleScroll();
-}
-
-/* ---------- MOBILE MENU ---------- */
-function initMobileMenu() {
-  const toggle = document.querySelector('.nav-toggle');
-  const menu = document.querySelector('.nav-menu');
-  if (!toggle || !menu) return;
-
-  toggle.addEventListener('click', () => {
-    toggle.classList.toggle('active');
-    menu.classList.toggle('active');
-  });
-
-  // close menu when link clicked
-  menu.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', () => {
-      toggle.classList.remove('active');
-      menu.classList.remove('active');
-    });
-  });
-}
-
-/* ---------- SCROLL REVEAL ---------- */
-function initScrollReveal() {
-  const elements = document.querySelectorAll('.reveal');
-  if (!elements.length || !('IntersectionObserver' in window)) {
-    elements.forEach(el => el.classList.add('visible'));
-    return;
-  }
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  });
-
-  elements.forEach(el => observer.observe(el));
-}
-
-/* ---------- SHOWCASE TABS ---------- */
-function initShowcaseTabs() {
-  const tabs = document.querySelectorAll('.showcase-tab');
-  const panels = document.querySelectorAll('.showcase-panel');
-  if (!tabs.length) return;
-
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const target = tab.getAttribute('data-target');
-
-      tabs.forEach(t => t.classList.remove('active'));
-      panels.forEach(p => p.classList.remove('active'));
-
-      tab.classList.add('active');
-      const panel = document.getElementById(target);
-      if (panel) panel.classList.add('active');
-    });
-  });
-}
-
-/* ---------- VIDEO PLAYER ---------- */
-function initVideoPlayer() {
-  const placeholder = document.querySelector('.video-placeholder');
-  const iframe = document.querySelector('.video-iframe');
-  if (!placeholder || !iframe) return;
-
-  placeholder.addEventListener('click', () => {
-    const videoUrl = iframe.getAttribute('data-src');
-    if (videoUrl) {
-      iframe.setAttribute('src', videoUrl);
-    }
-    placeholder.classList.add('hidden');
-    iframe.classList.add('active');
-  });
-}
-
-/* ---------- CONTACT FORM VALIDATION ---------- */
-function initContactForm() {
-  const form = document.querySelector('#contact-form');
-  if (!form) return;
-
-  const successMsg = form.querySelector('.form-success');
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    let isValid = true;
-    const fields = form.querySelectorAll('[data-required]');
-
-    fields.forEach(field => {
-      const errorEl = field.parentElement.querySelector('.form-error');
-      const value = field.value.trim();
-
-      if (!value) {
-        if (errorEl) errorEl.textContent = 'Энэ хэсгийг бөглөнө үү';
-        field.style.borderColor = '#f87171';
-        isValid = false;
-      } else if (field.type === 'email' && !isValidEmail(value)) {
-        if (errorEl) errorEl.textContent = 'Зөв имэйл хаяг оруулна уу';
-        field.style.borderColor = '#f87171';
-        isValid = false;
-      } else {
-        if (errorEl) errorEl.textContent = '';
-        field.style.borderColor = '';
-      }
+    // Анхны (монгол) утгуудыг цуглуулах
+    ATTRS.forEach(function (a) {
+        document.querySelectorAll(a.sel).forEach(function (el) {
+            var k = el.dataset[a.key];
+            if (k && dict.mn[k] === undefined) dict.mn[k] = a.read(el);
+        });
     });
 
-    if (!isValid) return;
+    var currentLang = 'mn';
 
-    // Construct mailto fallback (works without backend)
-    const data = new FormData(form);
-    const name = data.get('name') || '';
-    const email = data.get('email') || '';
-    const phone = data.get('phone') || '';
-    const subject = data.get('subject') || 'Сайтаас ирсэн хүсэлт';
-    const message = data.get('message') || '';
-
-    const body = `Нэр: ${name}%0D%0A` +
-                 `Имэйл: ${email}%0D%0A` +
-                 `Утас: ${phone}%0D%0A%0D%0A` +
-                 `Зурвас:%0D%0A${message}`;
-
-    // Show success first
-    if (successMsg) {
-      successMsg.classList.add('visible');
-      setTimeout(() => successMsg.classList.remove('visible'), 6000);
+    function t(key) {
+        var d = dict[currentLang] || {};
+        return d[key] !== undefined ? d[key] : (dict.mn[key] !== undefined ? dict.mn[key] : key);
     }
 
-    // Open user's mail client with prefilled message
-    const mailto = `mailto:info@regapro.com?subject=${encodeURIComponent(subject)}&body=${body}`;
-    window.location.href = mailto;
+    function setLang(lang, save) {
+        if (lang !== 'mn' && lang !== 'en') lang = 'mn';
+        currentLang = lang;
 
-    form.reset();
-  });
+        ATTRS.forEach(function (a) {
+            document.querySelectorAll(a.sel).forEach(function (el) {
+                var v = t(el.dataset[a.key]);
+                if (v !== undefined) a.apply(el, v);
+            });
+        });
 
-  // clear error on input
-  form.querySelectorAll('input, textarea, select').forEach(field => {
-    field.addEventListener('input', () => {
-      const errorEl = field.parentElement.querySelector('.form-error');
-      if (errorEl) errorEl.textContent = '';
-      field.style.borderColor = '';
-    });
-  });
-}
+        root.lang = lang;
+        root.classList.remove('lang-pending');
 
-function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
+        document.querySelectorAll('.lang-btn').forEach(function (b) {
+            var on = b.dataset.lang === lang;
+            b.classList.toggle('is-active', on);
+            b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
 
-/* ---------- STAT COUNTERS ---------- */
-function initStatCounters() {
-  const stats = document.querySelectorAll('[data-counter]');
-  if (!stats.length) return;
+        updateMenuLabel();
+        if (typeof updateMoreLabel === 'function') updateMoreLabel();
 
-  const animate = (el) => {
-    const target = parseFloat(el.getAttribute('data-counter'));
-    const suffix = el.getAttribute('data-suffix') || '';
-    const duration = 1800;
-    const startTime = performance.now();
-
-    const tick = (now) => {
-      const progress = Math.min((now - startTime) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      const value = target * eased;
-
-      if (target % 1 === 0) {
-        el.textContent = Math.round(value).toLocaleString() + suffix;
-      } else {
-        el.textContent = value.toFixed(1) + suffix;
-      }
-
-      if (progress < 1) requestAnimationFrame(tick);
-    };
-
-    requestAnimationFrame(tick);
-  };
-
-  if (!('IntersectionObserver' in window)) {
-    stats.forEach(animate);
-    return;
-  }
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        animate(entry.target);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.5 });
-
-  stats.forEach(s => observer.observe(s));
-}
-
-/* ---------- SMOOTH SCROLL FOR ANCHOR LINKS ---------- */
-function initSmoothScroll() {
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
-    link.addEventListener('click', (e) => {
-      const href = link.getAttribute('href');
-      if (href === '#' || href.length < 2) return;
-
-      const target = document.querySelector(href);
-      if (target) {
-        e.preventDefault();
-        const offset = 80;
-        const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
-        window.scrollTo({ top, behavior: 'smooth' });
-      }
-    });
-  });
-}
-
-/* ---------- GALLERY LIGHTBOX ---------- */
-function initGallery() {
-  const items = document.querySelectorAll('.gallery-item');
-  if (!items.length) return;
-
-  // Create lightbox once
-  let lightbox = document.querySelector('.lightbox');
-  if (!lightbox) {
-    lightbox = document.createElement('div');
-    lightbox.className = 'lightbox';
-    lightbox.innerHTML = `
-      <div class="lightbox-content">
-        <button class="lightbox-close" aria-label="Хаах">×</button>
-        <img class="lightbox-image" src="" alt="">
-        <div class="lightbox-caption"></div>
-      </div>
-    `;
-    document.body.appendChild(lightbox);
-  }
-
-  const lightboxImg = lightbox.querySelector('.lightbox-image');
-  const lightboxCaption = lightbox.querySelector('.lightbox-caption');
-  const closeBtn = lightbox.querySelector('.lightbox-close');
-
-  items.forEach(item => {
-    item.addEventListener('click', () => {
-      const img = item.querySelector('.gallery-image');
-      const title = item.querySelector('.gallery-title');
-      if (!img) return;
-
-      lightboxImg.src = img.src;
-      lightboxImg.alt = img.alt;
-      lightboxCaption.textContent = title ? title.textContent : '';
-      lightbox.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    });
-  });
-
-  const closeLightbox = () => {
-    lightbox.classList.remove('active');
-    document.body.style.overflow = '';
-  };
-
-  closeBtn.addEventListener('click', closeLightbox);
-  lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) closeLightbox();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-      closeLightbox();
+        if (save) {
+            try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
+            try {
+                var url = new URL(location.href);
+                if (url.searchParams.has('lang')) {
+                    url.searchParams.set('lang', lang);
+                    history.replaceState(null, '', url);
+                }
+            } catch (e) {}
+        }
     }
-  });
-}
 
-/* ---------- HERO SLIDESHOW ---------- */
-function initHeroSlideshow() {
-  const slideshow = document.getElementById('hero-slideshow');
-  if (!slideshow) return;
-
-  const slides = slideshow.querySelectorAll('.hero-photo');
-  const dots = slideshow.querySelectorAll('.hero-dot');
-  if (slides.length <= 1) return;
-
-  let currentIndex = 0;
-  const intervalMs = 3000;
-  let timer = null;
-
-  const goToSlide = (index) => {
-    slides[currentIndex].classList.remove('active');
-    dots[currentIndex]?.classList.remove('active');
-
-    currentIndex = (index + slides.length) % slides.length;
-
-    slides[currentIndex].classList.add('active');
-    dots[currentIndex]?.classList.add('active');
-  };
-
-  const nextSlide = () => goToSlide(currentIndex + 1);
-
-  const startTimer = () => {
-    stopTimer();
-    timer = setInterval(nextSlide, intervalMs);
-  };
-
-  const stopTimer = () => {
-    if (timer) {
-      clearInterval(timer);
-      timer = null;
+    function initialLang() {
+        try {
+            var q = new URLSearchParams(location.search).get('lang');
+            if (q === 'en' || q === 'mn') return q;
+            var saved = localStorage.getItem(STORAGE_KEY);
+            if (saved === 'en' || saved === 'mn') return saved;
+        } catch (e) {}
+        return 'mn';
     }
-  };
 
-  // Dot click to jump to slide
-  dots.forEach((dot, index) => {
-    dot.addEventListener('click', () => {
-      goToSlide(index);
-      startTimer(); // restart timer after manual click
+    document.querySelectorAll('.lang-btn').forEach(function (b) {
+        b.addEventListener('click', function () { setLang(b.dataset.lang, true); });
     });
-  });
 
-  startTimer();
-}
+    /* ---------------------------------------------------------
+       2) HEADER + ГАР УТАСНЫ ЦЭС
+    --------------------------------------------------------- */
+    var header = document.querySelector('.site-header');
+    var toggle = document.querySelector('.nav-toggle');
+    var nav = document.getElementById('main-nav');
 
-/* ---------- AUTO YEAR IN FOOTER ---------- */
-const yearEl = document.getElementById('current-year');
-if (yearEl) yearEl.textContent = new Date().getFullYear();
+    function onScroll() {
+        header.classList.toggle('is-scrolled', window.scrollY > 40);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    function menuOpen() { return header.classList.contains('menu-open'); }
+
+    function updateMenuLabel() {
+        if (!toggle) return;
+        toggle.setAttribute('aria-label', t(menuOpen() ? 'a11y.menuClose' : 'a11y.menu'));
+    }
+
+    function setMenu(open) {
+        header.classList.toggle('menu-open', open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        document.body.classList.toggle('no-scroll', open);
+        updateMenuLabel();
+    }
+
+    if (toggle) {
+        toggle.addEventListener('click', function () { setMenu(!menuOpen()); });
+        nav.querySelectorAll('a').forEach(function (a) {
+            a.addEventListener('click', function () { setMenu(false); });
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && menuOpen()) { setMenu(false); toggle.focus(); }
+        });
+        window.addEventListener('resize', function () {
+            if (window.innerWidth > 980 && menuOpen()) setMenu(false);
+        });
+    }
+
+    // Идэвхтэй хэсгийг цэсэнд тодруулах
+    var links = Array.prototype.slice.call(document.querySelectorAll('.main-nav .nav-link'));
+    var sections = links.map(function (l) { return document.querySelector(l.getAttribute('href')); }).filter(Boolean);
+    if ('IntersectionObserver' in window && sections.length) {
+        var spy = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) {
+                if (!en.isIntersecting) return;
+                links.forEach(function (l) {
+                    l.classList.toggle('is-current', l.getAttribute('href') === '#' + en.target.id);
+                });
+            });
+        }, { rootMargin: '-45% 0px -50% 0px' });
+        sections.forEach(function (s) { spy.observe(s); });
+    }
+
+    /* ---------------------------------------------------------
+       3) HERO SLIDESHOW
+    --------------------------------------------------------- */
+    var slides = document.querySelectorAll('.hero-slide');
+    var dots = document.querySelectorAll('.hero-dot');
+    var current = 0, timer = null, DELAY = 6000;
+
+    function loadSlide(i) {
+        var s = slides[i];
+        if (s && s.dataset.bg) {
+            s.style.backgroundImage = "url('" + s.dataset.bg + "')";
+            s.removeAttribute('data-bg');
+        }
+    }
+
+    function show(i) {
+        if (!slides.length) return;
+        i = (i + slides.length) % slides.length;
+        loadSlide(i);
+        loadSlide((i + 1) % slides.length);
+        slides[current].classList.remove('is-active');
+        dots[current] && dots[current].classList.remove('is-active');
+        current = i;
+        slides[current].classList.add('is-active');
+        dots[current] && dots[current].classList.add('is-active');
+    }
+
+    function start() {
+        if (reduceMotion || slides.length < 2) return;
+        stop();
+        timer = setInterval(function () { show(current + 1); }, DELAY);
+    }
+    function stop() { if (timer) clearInterval(timer); timer = null; }
+
+    dots.forEach(function (d, i) {
+        d.addEventListener('click', function () { show(i); start(); });
+    });
+    document.addEventListener('visibilitychange', function () {
+        if (document.hidden) stop(); else start();
+    });
+    window.addEventListener('load', function () { loadSlide(1); });
+    start();
+
+    /* ---------------------------------------------------------
+       4) SCROLL REVEAL
+    --------------------------------------------------------- */
+    var reveals = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window && !reduceMotion) {
+        root.classList.add('js-reveal');
+        var ro = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) {
+                if (en.isIntersecting) { en.target.classList.add('is-visible'); ro.unobserve(en.target); }
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+        reveals.forEach(function (el) { ro.observe(el); });
+    }
+
+    /* ---------------------------------------------------------
+       5) ХОЛБОО БАРИХ ФОРМ → mailto
+    --------------------------------------------------------- */
+    var form = document.getElementById('contact-form');
+    if (form) {
+        var status = form.querySelector('.form-status');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var f = form.elements;
+            var name = f.name.value.trim(), email = f.email.value.trim();
+            var company = f.company.value.trim(), msg = f.message.value.trim();
+
+            status.className = 'form-status';
+            if (!name || !email || !msg) { status.textContent = t('form.errRequired'); status.classList.add('is-error'); return; }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { status.textContent = t('form.errEmail'); status.classList.add('is-error'); return; }
+
+            var subject = 'RegaPro — ' + t('form.subject') + ': ' + name + (company ? ' (' + company + ')' : '');
+            var body = msg + '\n\n—\n' + name + (company ? '\n' + company : '') + '\n' + email;
+            window.location.href = 'mailto:' + CONTACT_EMAIL +
+                '?subject=' + encodeURIComponent(subject) +
+                '&body=' + encodeURIComponent(body);
+
+            status.textContent = t('form.ok');
+            status.classList.add('is-ok');
+        });
+    }
+
+    /* ---------------------------------------------------------
+       6) АЖЛЫН ТУРШЛАГА — шүүлтүүр + зураг томруулах (lightbox)
+    --------------------------------------------------------- */
+    var workItems = Array.prototype.slice.call(document.querySelectorAll('.work-item'));
+    var filters = document.querySelectorAll('.work-filter');
+    var moreBtn = document.querySelector('.work-more-btn');
+    var WORK_LIMIT = 9;              // эхэндээ харуулах зургийн тоо
+    var workFilter = 'all', workExpanded = false;
+
+    function applyGallery() {
+        var match = workItems.filter(function (it) { return workFilter === 'all' || it.dataset.group === workFilter; });
+        workItems.forEach(function (it) { it.hidden = true; });
+        match.forEach(function (it, i) { it.hidden = !workExpanded && i >= WORK_LIMIT; });
+        if (moreBtn) {
+            moreBtn.parentElement.hidden = match.length <= WORK_LIMIT;
+            moreBtn.setAttribute('aria-expanded', workExpanded ? 'true' : 'false');
+            moreBtn.dataset.count = match.length;
+            updateMoreLabel();
+        }
+    }
+    function updateMoreLabel() {
+        if (!moreBtn) return;
+        moreBtn.textContent = workExpanded ? t('work.less') : t('work.more') + ' (' + (moreBtn.dataset.count || '') + ')';
+    }
+
+    filters.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            workFilter = btn.dataset.filter;
+            workExpanded = false;
+            filters.forEach(function (b) {
+                var on = b === btn;
+                b.classList.toggle('is-active', on);
+                b.setAttribute('aria-pressed', on ? 'true' : 'false');
+            });
+            applyGallery();
+        });
+    });
+    if (moreBtn) {
+        moreBtn.addEventListener('click', function () {
+            workExpanded = !workExpanded;
+            applyGallery();
+            if (!workExpanded) document.querySelector('.work-filters').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+        });
+    }
+    applyGallery();
+
+    var lb = document.getElementById('lightbox');
+    if (lb && workItems.length) {
+        var lbImg = lb.querySelector('.lb-img');
+        var lbTitle = lb.querySelector('.lb-title');
+        var lbDesc = lb.querySelector('.lb-desc');
+        var lbTag = lb.querySelector('.lb-tag');
+        var lbCount = lb.querySelector('.lb-count');
+        var lbClose = lb.querySelector('.lb-close');
+        var visible = [], idx = 0, lastFocus = null;
+
+        function render() {
+            var it = visible[idx];
+            var img = it.querySelector('img');
+            lbImg.src = img.getAttribute('src');
+            lbImg.alt = img.alt;
+            lbTitle.textContent = it.querySelector('figcaption strong').textContent;
+            lbDesc.textContent = it.querySelector('.work-desc').textContent;
+            lbTag.textContent = it.querySelector('.work-tag').textContent;
+            lbCount.textContent = (idx + 1) + ' / ' + visible.length;
+        }
+        function openLb(item) {
+            visible = workItems.filter(function (i) { return !i.hidden; });
+            idx = Math.max(0, visible.indexOf(item));
+            lastFocus = document.activeElement;
+            render();
+            lb.hidden = false;
+            document.body.classList.add('no-scroll');
+            lbClose.focus();
+        }
+        function closeLb() {
+            lb.hidden = true;
+            document.body.classList.remove('no-scroll');
+            if (lastFocus) lastFocus.focus();
+        }
+        function step(d) { idx = (idx + d + visible.length) % visible.length; render(); }
+
+        workItems.forEach(function (it) {
+            it.querySelector('.work-thumb').addEventListener('click', function () { openLb(it); });
+        });
+        lb.querySelectorAll('[data-lb-close]').forEach(function (el) { el.addEventListener('click', closeLb); });
+        lb.querySelector('.lb-prev').addEventListener('click', function () { step(-1); });
+        lb.querySelector('.lb-next').addEventListener('click', function () { step(1); });
+
+        document.addEventListener('keydown', function (e) {
+            if (lb.hidden) return;
+            if (e.key === 'Escape') closeLb();
+            else if (e.key === 'ArrowLeft') step(-1);
+            else if (e.key === 'ArrowRight') step(1);
+            else if (e.key === 'Tab') {   // фокусыг lightbox дотор барих
+                var f = lb.querySelectorAll('button');
+                var first = f[0], last = f[f.length - 1];
+                if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+                else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+            }
+        });
+
+        // Гар утсан дээр шудрах
+        var x0 = null;
+        lb.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+        lb.addEventListener('touchend', function (e) {
+            if (x0 === null) return;
+            var dx = e.changedTouches[0].clientX - x0;
+            if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
+            x0 = null;
+        });
+    }
+
+    /* Он */
+    document.querySelectorAll('.js-year').forEach(function (el) { el.textContent = new Date().getFullYear(); });
+
+    /* Эхлүүлэх */
+    setLang(initialLang(), false);
+})();

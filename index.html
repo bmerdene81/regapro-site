@@ -1,452 +1,653 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RegaPro — Цахим геологи геотехникийн лог</title>
-  <meta name="description" content="Survey123 платформ дээр суурилсан, геологи уул уурхайн салбарт зориулсан цахим хээрийн мэдээллийн систем. Ашиглахад хялбар, найдвартай, нэг стандарт.">
-  <meta name="keywords" content="Survey123, геологи, геотехник, уул уурхай, цахим лог, хээрийн мэдээлэл, RegaPro">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="meta.title">RegaPro | Цахим геологи, геотехникийн лог</title>
+    <meta name="description" data-i18n-content="meta.desc" content="ArcGIS Survey123 дээр суурилсан геологи, уул уурхайн хээрийн мэдээллийн нэгдсэн платформ. Цахим лог, дээжийн бүртгэл, лабораторийн мэдээлэл, dashboard.">
+    <meta name="theme-color" content="#0C2839">
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="RegaPro — Цахим геологи геотехникийн лог">
-  <meta property="og:description" content="Survey123 дээр суурилсан, ашиглахад хялбар цахим хээрийн мэдээллийн систем.">
-  <meta property="og:type" content="website">
-   <!--<meta property="og:url" content="https://regapro.com"> -->
+    <!-- Open Graph (Facebook, Messenger, LinkedIn) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="RegaPro">
+    <meta property="og:title" content="RegaPro | Цахим геологи, геотехникийн лог">
+    <meta property="og:description" content="ArcGIS Survey123 дээр суурилсан геологи, уул уурхайн хээрийн мэдээллийн нэгдсэн платформ.">
+    <meta property="og:image" content="https://regapro.com/images/og-image.jpg">
+    <meta property="og:url" content="https://regapro.com/">
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" href="images/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="images/favicon-192.png">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23f59e0b'/%3E%3Ctext x='50' y='68' font-family='Arial Black' font-size='52' font-weight='900' text-anchor='middle' fill='%231a1206'%3ER%3C/text%3E%3C/svg%3E">
+    <!-- Fonts: Montserrat + Inter (Монгол кирилл үсэг бүрэн дэмжинэ) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css">
+    <link rel="preload" as="image" href="images/hero-1.jpg">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Хадгалсан хэлийг хуудас зурагдахаас өмнө тохируулна (анивчилт гаргахгүй) -->
+    <script>
+        (function () {
+            var lang = 'mn';
+            try {
+                var q = new URLSearchParams(location.search).get('lang');
+                lang = (q === 'en' || q === 'mn') ? q : (localStorage.getItem('regapro-lang') || 'mn');
+            } catch (e) {}
+            if (lang === 'en') document.documentElement.classList.add('lang-pending');
+        })();
+    </script>
 </head>
 <body>
 
-  <!-- ========== HEADER ========== -->
-  <header class="header">
-    <div class="container">
-      <nav class="nav">
-        <a href="index.html" class="logo">
-          <span class="logo-mark">R</span>
-          <span class="logo-text">Rega<span>Pro</span></span>
+<a class="skip-link" href="#main" data-i18n="a11y.skip">Үндсэн агуулга руу шилжих</a>
+
+<!-- ================= HEADER ================= -->
+<header class="site-header" id="top">
+    <div class="container header-inner">
+        <a href="#home" class="brand" aria-label="RegaPro">
+            <img class="brand-logo brand-logo--light" src="images/logo-horizontal-white.png" alt="RegaPro" width="239" height="48">
+            <img class="brand-logo brand-logo--dark" src="images/logo-horizontal.png" alt="RegaPro" width="239" height="48">
         </a>
 
-        <ul class="nav-menu">
-          <li><a href="index.html" class="nav-link active">Нүүр</a></li>
-          <li><a href="services.html" class="nav-link">Үйлчилгээ</a></li>
-          <li><a href="about.html" class="nav-link">Бидний тухай</a></li>
-          <li><a href="contact.html" class="nav-link">Холбоо барих</a></li>
-          <li><a href="contact.html" class="btn btn-primary">Холбогдох <span class="btn-arrow">→</span></a></li>
-        </ul>
+        <nav class="main-nav" id="main-nav" aria-label="Үндсэн цэс" data-i18n-aria="a11y.nav">
+            <a href="#home" class="nav-link" data-i18n="nav.home">Нүүр</a>
+            <a href="#workflow" class="nav-link" data-i18n="nav.workflow">Ажлын урсгал</a>
+            <a href="#services" class="nav-link" data-i18n="nav.services">Үйлчилгээ</a>
+            <a href="#about" class="nav-link" data-i18n="nav.about">Бидний тухай</a>
+            <a href="#contact" class="nav-link" data-i18n="nav.contact">Холбоо барих</a>
+            <a href="#experience" class="btn btn-primary btn-sm nav-cta" data-i18n="nav.cta">Ажлын туршлага</a>
+        </nav>
 
-        <button class="nav-toggle" aria-label="Цэс">
-          <span></span><span></span><span></span>
-        </button>
-      </nav>
-    </div>
-  </header>
-
-  <!-- ========== HERO ========== -->
-  <section class="hero">
-    <div class="container">
-      <div class="hero-content">
-        <div class="hero-text">
-          <div class="hero-badge">
-            <span class="pulse"></span>
-            Survey123 платформ дээр суурилсан
-          </div>
-
-          <h1 class="hero-title">
-            <span class="accent">Цахим геологи</span><br>
-            геотехникийн лог
-          </h1>
-
-          <p class="hero-subtitle">
-            Геологи, уул уурхайн салбарын мэргэжилтнүүдэд зориулсан, хээрийн бүх төрлийн
-            мэдээллийг нэг стандартаар цахимжуулдаг ашиглахад хялбар, найдвартай систем.
-          </p>
-
-          <div class="hero-actions">
-            <a href="services.html" class="btn btn-primary">
-              Үйлчилгээтэй танилцах <span class="btn-arrow">→</span>
-            </a>
-            <a href="#features" class="btn btn-secondary">
-              Давуу талыг үзэх
-            </a>
-          </div>
-
-          <div class="hero-stats">
-            <div class="hero-stat">
-              <div class="hero-stat-value"><span data-counter="100" data-suffix="+">0</span></div>
-              <div class="hero-stat-label">Хээрийн төсөл</div>
+        <div class="header-actions">
+            <div class="lang-switch" role="group" aria-label="Хэл сонгох" data-i18n-aria="a11y.lang">
+                <button type="button" class="lang-btn is-active" data-lang="mn" aria-pressed="true" title="Монгол">MN</button>
+                <button type="button" class="lang-btn" data-lang="en" aria-pressed="false" title="English">EN</button>
             </div>
-            <div class="hero-stat">
-              <div class="hero-stat-value"><span data-counter="50" data-suffix="K+">0</span></div>
-              <div class="hero-stat-label">Цахим лог</div>
+            <button class="nav-toggle" type="button" aria-controls="main-nav" aria-expanded="false" aria-label="Цэс нээх" data-i18n-aria="a11y.menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<main id="main">
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="home">
+    <div class="hero-slides" aria-hidden="true">
+        <div class="hero-slide is-active" style="background-image:url('images/hero-1.jpg'); --pos-m: 82%"></div>
+        <div class="hero-slide" data-bg="images/hero-2.jpg" style="--pos-m: 80%"></div>
+        <div class="hero-slide" data-bg="images/hero-3.jpg" style="--pos-m: 38%"></div>
+        <div class="hero-slide" data-bg="images/hero-4.jpg" style="--pos-m: 60%"></div>
+        <div class="hero-slide" data-bg="images/hero-5.jpg" style="--pos-m: 45%"></div>
+    </div>
+    <div class="hero-overlay"></div>
+
+    <div class="container hero-inner">
+        <div class="hero-content">
+            <p class="eyebrow eyebrow--light">
+                <span class="eyebrow-dot"></span>
+                <span data-i18n="hero.eyebrow">ArcGIS Survey123 дээр суурилсан</span>
+            </p>
+
+            <h1 class="hero-title" data-i18n="hero.title">Геологи, Уул уурхай<br><span class="accent">Зөвлөх үйлчилгээ</span></h1>
+
+            <p class="hero-lead" data-i18n="hero.lead">Геологи, уул уурхайн хээрийн мэдээллийг нэг стандартаар цуглуулж, шууд нэгдсэн санд хадгалдаг платформ.</p>
+
+            <ul class="hero-checks">
+                <li data-i18n="hero.check1">Ашиглахад хялбар дизайн</li>
+                <li data-i18n="hero.check2">Найдвартай платформ дээр суурилсан</li>
+                <li data-i18n="hero.check3">Мэдээллийн найдвартай байдлыг хангана</li>
+                <li data-i18n="hero.check4">Механик алдааг бууруулж, нэг стандартаар бүрдүүлнэ</li>
+                <li data-i18n="hero.check5">Бүх төрлийн хээрийн мэдээллийг цахимаар</li>
+            </ul>
+
+            <div class="hero-buttons">
+                <a href="#experience" class="btn btn-primary" data-i18n="hero.cta1">Ажлын туршлага</a>
+                <a href="#services" class="btn btn-ghost" data-i18n="hero.cta2">Үйлчилгээ үзэх</a>
             </div>
-            <div class="hero-stat">
-              <div class="hero-stat-value"><span data-counter="99.8" data-suffix="%">0</span></div>
-              <div class="hero-stat-label">Найдвартай байдал</div>
+        </div>
+
+        <div class="hero-dots" role="tablist" aria-label="Зураг" data-i18n-aria="a11y.slides">
+            <button class="hero-dot is-active" type="button" aria-label="1"></button>
+            <button class="hero-dot" type="button" aria-label="2"></button>
+            <button class="hero-dot" type="button" aria-label="3"></button>
+            <button class="hero-dot" type="button" aria-label="4"></button>
+            <button class="hero-dot" type="button" aria-label="5"></button>
+        </div>
+    </div>
+
+    <!-- Давуу талууд (hero-ийн доод зурвас) -->
+    <div class="container">
+        <h2 class="sr-only" data-i18n="features.heading">Яагаад RegaPro гэж?</h2>
+        <div class="feature-strip">
+            <article class="feature">
+                <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V11m0-1.5a1.5 1.5 0 0 1 3 0V11m0-.5a1.5 1.5 0 0 1 3 0v4.5a6 6 0 0 1-6 6h-1.2a6 6 0 0 1-4.6-2.2L4 16.2a1.5 1.5 0 0 1 2.3-1.9L9 17V11"/><path d="M5 5 3.5 3.5M9.5 2V1M14 3.5 15.5 2"/></svg>
+                <h3 data-i18n="features.f1.title">Ашиглахад хялбар</h3>
+                <p data-i18n="features.f1.text">Хээрт хурдан, ойлгомжтой ажиллах интерфейс</p>
+            </article>
+            <article class="feature">
+                <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.9-8.9A6 6 0 0 1 17.7 8 4.5 4.5 0 0 1 17 18"/><rect x="9" y="13" width="6" height="6" rx="1"/><path d="M10.5 13v-1.5a1.5 1.5 0 0 1 3 0V13"/></svg>
+                <h3 data-i18n="features.f2.title">Найдвартай платформ</h3>
+                <p data-i18n="features.f2.text">Esri ArcGIS платформ дээр суурилсан систем</p>
+            </article>
+            <article class="feature">
+                <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 4.5 5.5v6c0 4.6 3.1 8.4 7.5 10 4.4-1.6 7.5-5.4 7.5-10v-6z"/><path d="m8.8 12 2.2 2.2 4.3-4.4"/></svg>
+                <h3 data-i18n="features.f3.title">Мэдээллийн аюулгүй байдал</h3>
+                <p data-i18n="features.f3.text">Төвлөрсөн өгөгдлийн сан, cloud нөөцлөлт</p>
+            </article>
+            <article class="feature">
+                <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/><path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4"/></svg>
+                <h3 data-i18n="features.f4.title">Механик алдааг бууруулна</h3>
+                <p data-i18n="features.f4.text">Шалгалттай талбар, нэг стандарт</p>
+            </article>
+            <article class="feature">
+                <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="7.5" ry="3"/><path d="M4.5 5.5v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-6"/><path d="M4.5 11.5v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-6"/></svg>
+                <h3 data-i18n="features.f5.title">Бүрэн цахим мэдээлэл</h3>
+                <p data-i18n="features.f5.text">Лог, дээжлэлт, QA/QC, зураглал</p>
+            </article>
+            <article class="feature">
+                <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4" width="13" height="10" rx="1.5"/><path d="M6 18h6M9 14v4"/><rect x="16.5" y="8" width="5" height="11" rx="1.2"/><path d="M18.6 16.8h.8"/></svg>
+                <h3 data-i18n="features.f6.title">Бүх төхөөрөмж дээр</h3>
+                <p data-i18n="features.f6.text">Таблет, гар утас, компьютер — оффлайн ч ажиллана</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<!-- ================= WORKFLOW ================= -->
+<section class="section workflow" id="workflow">
+    <div class="container">
+        <header class="section-head reveal">
+            <p class="eyebrow" data-i18n="workflow.kicker">Ажлын урсгал</p>
+            <h2 class="section-title" data-i18n="workflow.title">Хээрээс шийдвэр хүртэл</h2>
+            <p class="section-sub" data-i18n="workflow.sub">Хээрт бүртгэсэн мэдээлэл тэр даруй оффис, лаборатори, удирдлагад хүрнэ.</p>
+        </header>
+
+        <ol class="steps">
+            <li class="step reveal">
+                <div class="step-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4z"/><path d="m14.5 5.5 3 3"/></svg>
+                </div>
+                <span class="step-num">01</span>
+                <h3 data-i18n="workflow.s1.title">Цуглуулах</h3>
+                <p data-i18n="workflow.s1.text">Хээрт таблет, гар утсаар лог, дээж, зураг, GPS байршлыг шууд бүртгэнэ. Сүлжээгүй газар ч ажиллана.</p>
+            </li>
+            <li class="step reveal">
+                <div class="step-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.9-8.9A6 6 0 0 1 17.7 8 4.5 4.5 0 0 1 17 18"/><path d="M12 20v-8M9 14.5l3-3 3 3"/></svg>
+                </div>
+                <span class="step-num">02</span>
+                <h3 data-i18n="workflow.s2.title">Илгээх</h3>
+                <p data-i18n="workflow.s2.text">Холболт гармагц мэдээлэл ArcGIS Online дахь нэгдсэн сан руу автоматаар илгээгдэнэ.</p>
+            </li>
+            <li class="step reveal">
+                <div class="step-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 20.5h17"/><rect x="5" y="13" width="3" height="5"/><rect x="10.5" y="9" width="3" height="9"/><rect x="16" y="5" width="3" height="13"/></svg>
+                </div>
+                <span class="step-num">03</span>
+                <h3 data-i18n="workflow.s3.title">Шинжлэх</h3>
+                <p data-i18n="workflow.s3.text">Dashboard, газрын зураг, лабораторийн үр дүнгээр мэдээллээ бодит цагт хянаж шинжилнэ.</p>
+            </li>
+            <li class="step reveal">
+                <div class="step-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.5" r="3"/><circle cx="5.5" cy="9" r="2.2"/><circle cx="18.5" cy="9" r="2.2"/><path d="M6.5 19v-1a5.5 5.5 0 0 1 11 0v1"/><path d="M2 18.5v-.5a3.5 3.5 0 0 1 4-3.5M22 18.5v-.5a3.5 3.5 0 0 0-4-3.5"/></svg>
+                </div>
+                <span class="step-num">04</span>
+                <h3 data-i18n="workflow.s4.title">Хуваалцах</h3>
+                <p data-i18n="workflow.s4.text">Excel, PDF тайлан, QR шошго, эрхийн тохиргоотой холбоосоор багтайгаа хуваалцана.</p>
+            </li>
+        </ol>
+
+        <p class="tagline reveal">COLLECT <i></i> CONNECT <i></i> ANALYZE <i></i> DECIDE</p>
+    </div>
+</section>
+
+<!-- ================= SERVICES ================= -->
+<section class="section services" id="services">
+    <div class="container">
+        <header class="section-head reveal">
+            <p class="eyebrow" data-i18n="services.kicker">Үйлчилгээ</p>
+            <h2 class="section-title" data-i18n="services.title">Хээрийн ажлын бүх шатанд</h2>
+            <p class="section-sub" data-i18n="services.sub">Танай төслийн стандартад тааруулж Survey123 форм, өгөгдлийн сан, тайланг бүтээж нэвтрүүлнэ.</p>
+        </header>
+
+        <div class="service-grid">
+            <article class="service reveal">
+                <div class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="2.5" width="8" height="19" rx="1.5"/><path d="M8 7h8M8 11.5h8M8 16h8"/><path d="M4 5v14M20 5v14"/></svg></div>
+                <h3 data-i18n="services.s1.title">Геологийн лог</h3>
+                <p data-i18n="services.s1.text">Литологи, бүтэц, хувирал, эрдэсжилт, зураг бүхий цооногийн цахим лог.</p>
+            </article>
+            <article class="service reveal">
+                <div class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20 9.5 8l4 6 2.5-3.5L21 20z"/><path d="m9.5 8 1.8 5.2M14.5 5.5l2 1.2"/></svg></div>
+                <h3 data-i18n="services.s2.title">Геотехникийн лог</h3>
+                <p data-i18n="services.s2.text">RQD, TCR, хагарлын давтамж, бүтцийн хэмжилт, чулуулгийн бат бэх.</p>
+            </article>
+            <article class="service reveal">
+                <div class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M20 20h-3M14 20v.01M17 17h3"/></svg></div>
+                <h3 data-i18n="services.s3.title">Дээжийн бүртгэл ба QR</h3>
+                <p data-i18n="services.s3.text">Дээжийн бүртгэл, QR шошго, хөргөгч хайрцгийн бүртгэл, тээврийн акт (Chain of Custody).</p>
+            </article>
+            <article class="service reveal">
+                <div class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 2.5h6M10 2.5v6.2L4.6 18.2A2.2 2.2 0 0 0 6.5 21.5h11a2.2 2.2 0 0 0 1.9-3.3L14 8.7V2.5"/><path d="M7 15h10"/></svg></div>
+                <h3 data-i18n="services.s4.title">Лабораторийн туршилт</h3>
+                <p data-i18n="services.s4.text">Нягт, чийг, хувийн жин, UCS, гурван тэнхлэгт шахалт, шууд зүсэлт зэрэг туршилтын маягт.</p>
+            </article>
+            <article class="service reveal">
+                <div class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="3.5" width="19" height="17" rx="2"/><path d="M2.5 8.5h19"/><path d="M6 17l3.5-4 3 2.5 5-5.5"/></svg></div>
+                <h3 data-i18n="services.s5.title">Dashboard ба GIS</h3>
+                <p data-i18n="services.s5.text">ArcGIS Online dashboard, газрын зураг, ажлын явцын бодит цагийн хяналт.</p>
+            </article>
+            <article class="service reveal">
+                <div class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></div>
+                <h3 data-i18n="services.s6.title">Автоматжуулалт</h3>
+                <p data-i18n="services.s6.text">ArcGIS Notebook (Python), Excel, SharePoint холболтоор тайланг автоматаар бэлтгэнэ.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<!-- ================= EXPERIENCE (Ажлын туршлага) ================= -->
+<section class="section experience" id="experience">
+    <div class="container">
+        <header class="section-head reveal">
+            <p class="eyebrow" data-i18n="work.kicker">Ажлын туршлага</p>
+            <h2 class="section-title" data-i18n="work.title">Бодит төсөл дээр хэрэгжүүлсэн шийдэл</h2>
+            <p class="section-sub" data-i18n="work.sub">Далд уурхайн геотехникийн судалгааны төсөлд өрөмдлөг, дээжлэлт, тээвэрлэлт, лабораторийн туршилтын бүх мэдээллийг Survey123-аар цуглуулж, 20 гаруй бодит цагийн хяналтын самбараар удирдаж байна. Доорх зургууд нь тухайн системийн гол хэсгүүд.</p>
+        </header>
+
+        <div class="project-card reveal">
+            <div class="project-head">
+                <p class="project-label" data-i18n="work.projectLabel">Төсөл</p>
+                <h3 data-i18n="work.projectTitle">Далд уурхайн геотехникийн судалгааны дээжлэлт ба лабораторийн туршилт</h3>
+                <ul class="project-tags">
+                    <li data-i18n="work.chip1">Далд уурхай</li>
+                    <li data-i18n="work.chip2">Геотехник</li>
+                    <li>Survey123</li>
+                    <li>ArcGIS Dashboards</li>
+                </ul>
             </div>
-          </div>
+            <dl class="project-stats">
+                <div><dt>20+</dt><dd data-i18n="work.stat1">хяналтын самбар</dd></div>
+                <div><dt>4.6k+</dt><dd data-i18n="work.stat2">авсан дээж</dd></div>
+                <div><dt>10</dt><dd data-i18n="work.stat3">туршилтын төрөл</dd></div>
+                <div><dt>950+</dt><dd data-i18n="work.stat4">UCS туршилт</dd></div>
+            </dl>
+            <p class="project-note" data-i18n="work.note">* 2026 оны 9-р сарын байдлаар</p>
         </div>
 
-        <!-- Hero Visual -->
-        <div class="hero-visual">
-          <div class="hero-photo-frame" id="hero-slideshow">
-            <img class="hero-photo active" src="images/zurag1.png" alt="Геологич Survey123 ашиглан хээрт ажиллаж байна" onerror="this.style.display='none'">
-            <img class="hero-photo" src="images/zurag2.png" alt="Survey123 хээрийн лог бичиж байна" loading="lazy" onerror="this.style.display='none'">
-            <img class="hero-photo" src="images/zurag3.png" alt="Уул уурхайн өрөмдлөгийн талбай" loading="lazy" onerror="this.style.display='none'">
-            <img class="hero-photo" src="images/zurag4.png" alt="Чулуулгийн дээж, кернийн хайрцаг" loading="lazy" onerror="this.style.display='none'">
-            <img class="hero-photo" src="images/zurag5.png" alt="Геологийн картчлал, хээрийн ажил" loading="lazy" onerror="this.style.display='none'">
+        <div class="work-filters" role="group" aria-label="Шүүлтүүр" data-i18n-aria="work.filterLabel">
+            <button type="button" class="work-filter is-active" data-filter="all" aria-pressed="true" data-i18n="work.fAll">Бүгд</button>
+            <button type="button" class="work-filter" data-filter="lab" aria-pressed="false" data-i18n="work.fLab">Лаборатори</button>
+            <button type="button" class="work-filter" data-filter="drill" aria-pressed="false" data-i18n="work.fDrill">Өрөмдлөг ба дээжлэлт</button>
+        </div>
 
-            <div class="hero-photo-badge">
-              <span class="pulse-red"></span>
-              ШУУД ХЭЭР · Survey123
+        <div class="work-grid">
+            <figure class="work-item work-item--feature" data-group="lab">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/lab-dashboard.jpg" alt="Лабораторийн нэгдсэн самбар" data-i18n-alt="work.i.labHub.title" width="1640" height="948" loading="lazy">
+                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
+                    <strong data-i18n="work.i.labHub.title">Лабораторийн нэгдсэн самбар</strong>
+                    <span class="work-desc" data-i18n="work.i.labHub.desc">Дээж бэлтгэлээс эхлээд 10 төрлийн туршилтын өдөр тутмын гүйцэтгэл, нийт биелэлтийг нэг дэлгэцээс хянана. Дээд цэснээс туршилт бүрийн самбар руу шилжинэ.</span>
+                </figcaption>
+            </figure>
+            <figure class="work-item" data-group="lab">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/s-ucs.jpg" alt="Нэг тэнхлэгт шахалт (UCS)" data-i18n-alt="work.i.ucs.title" width="1672" height="808" loading="lazy">
+                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
+                    <strong data-i18n="work.i.ucs.title">Нэг тэнхлэгт шахалт (UCS)</strong>
+                    <span class="work-desc" data-i18n="work.i.ucs.desc">Хамгийн их бат бэх, Пуассоны коэффициент, уян харимхайн модуль, эвдрэлийн хэлбэр, дээжийн зураг.</span>
+                </figcaption>
+            </figure>
+            <figure class="work-item" data-group="lab">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/s-direct-shear.jpg" alt="Шууд зүсэлт" data-i18n-alt="work.i.shear.title" width="1568" height="780" loading="lazy">
+                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
+                    <strong data-i18n="work.i.shear.title">Шууд зүсэлт</strong>
+                    <span class="work-desc" data-i18n="work.i.shear.desc">Оргил ба үлдэгдэл зүсэлтийн хүчдэл, c ба φ параметр, туршилтын тэмдэглэл, зураг.</span>
+                </figcaption>
+            </figure>
+            <figure class="work-item work-item--feature work-item--alt" data-group="drill">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/drill-dashboard.jpg" alt="Өрөмдлөг, дээжлэлтийн нэгдсэн самбар" data-i18n-alt="work.i.drillHub.title" width="1637" height="955" loading="lazy">
+                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.drill">Өрөмдлөг</span>
+                    <strong data-i18n="work.i.drillHub.title">Өрөмдлөг, дээжлэлтийн нэгдсэн самбар</strong>
+                    <span class="work-desc" data-i18n="work.i.drillHub.desc">Цооног бүрийн өдөр тутмын өрөмдлөг, авсан болон лабораторид илгээсэн дээжийг нэгтгэнэ. Дээд цэснээс дээжлэлт, тээвэрлэлт, хяналт, аюулгүй ажиллагааны самбар руу шилжинэ.</span>
+                </figcaption>
+            </figure>
+            <figure class="work-item" data-group="drill">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/s-drilling-map.jpg" alt="Өрөмдлөгийн байршлын зураг (жишээ өгөгдөл)" data-i18n-alt="work.i.map.title" width="1568" height="780" loading="lazy">
+                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.drill">Өрөмдлөг</span>
+                    <strong data-i18n="work.i.map.title">Өрөмдлөгийн байршлын зураг</strong>
+                    <span class="work-desc" data-i18n="work.i.map.desc">Бүх цооногийн байршил, төрөл, төлөвийг нэг зураг дээр харуулна. Нууцлалын улмаас энд байршлыг жишээ өгөгдлөөр орлуулсан болно.</span>
+                </figcaption>
+            </figure>
+            <figure class="work-item" data-group="drill">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/s-sample-coc.jpg" alt="Дээж тээвэрлэлт (Chain of Custody)" data-i18n-alt="work.i.coc.title" width="1568" height="780" loading="lazy">
+                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.drill">Өрөмдлөг</span>
+                    <strong data-i18n="work.i.coc.title">Дээж тээвэрлэлт (Chain of Custody)</strong>
+                    <span class="work-desc" data-i18n="work.i.coc.desc">Хөргөгч бүрийн дээжийн жагсаалт, QR шошго, зураг, хүлээлцсэн огноог бүртгэж, тээвэрлэлтийг хянана.</span>
+                </figcaption>
+            </figure>
+            <figure class="work-item" data-group="lab">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/s-slake.jpg" alt="Усанд задрах тэсвэрлэлт (Slake)" data-i18n-alt="work.i.slake.title" width="1568" height="780" loading="lazy">
+                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
+                    <strong data-i18n="work.i.slake.title">Усанд задрах тэсвэрлэлт (Slake)</strong>
+                    <span class="work-desc" data-i18n="work.i.slake.desc">1, 2-р мөчлөгийн индекс, жингийн алдагдал, туршилтын өмнөх ба дараах зураг.</span>
+                </figcaption>
+            </figure>
+            <figure class="work-item" data-group="drill">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/s-sampling-plan.jpg" alt="Дээжлэлтийн төлөвлөгөө (Strater лог)" data-i18n-alt="work.i.plan.title" width="1568" height="780" loading="lazy">
+                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.drill">Өрөмдлөг</span>
+                    <strong data-i18n="work.i.plan.title">Дээжлэлтийн төлөвлөгөө (Strater лог)</strong>
+                    <span class="work-desc" data-i18n="work.i.plan.desc">Цооногийн литологийн лог дээр туршилтын дээжийн байршлыг төлөвлөж, газрын зурагтай холбон харуулна.</span>
+                </figcaption>
+            </figure>
+            <figure class="work-item" data-group="lab">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/s-moisture-sensitivity.jpg" alt="Чийгт мэдрэг байдал" data-i18n-alt="work.i.mosens.title" width="1568" height="780" loading="lazy">
+                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
+                    <strong data-i18n="work.i.mosens.title">Чийгт мэдрэг байдал</strong>
+                    <span class="work-desc" data-i18n="work.i.mosens.desc">Ус, талус, хагарал, бутралтын оноогоор дээж бүрийг үнэлж, зурагтай нь харуулна.</span>
+                </figcaption>
+            </figure>
+            <figure class="work-item" data-group="lab">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/s-testing-instruction.jpg" alt="Туршилтын захиалгын хуудас" data-i18n-alt="work.i.order.title" width="1568" height="780" loading="lazy">
+                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
+                    <strong data-i18n="work.i.order.title">Туршилтын захиалгын хуудас</strong>
+                    <span class="work-desc" data-i18n="work.i.order.desc">Дээж бүрт хийх туршилтыг захиалж, цооног тус бүрийн нэгтгэлийг автоматаар гаргана.</span>
+                </figcaption>
+            </figure>
+            <figure class="work-item" data-group="lab">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/s-sample-inspection.jpg" alt="Дээж хүлээн авалт, үзлэг" data-i18n-alt="work.i.inspect.title" width="1568" height="780" loading="lazy">
+                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
+                    <strong data-i18n="work.i.inspect.title">Дээж хүлээн авалт, үзлэг</strong>
+                    <span class="work-desc" data-i18n="work.i.inspect.desc">Лабораторид ирсэн дээж бүрийн үзлэгийн огноо, тэмдэглэл, зургийг бүртгэнэ.</span>
+                </figcaption>
+            </figure>
+            <figure class="work-item" data-group="lab">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/s-moisture.jpg" alt="Чийгийн агуулга" data-i18n-alt="work.i.moist.title" width="1568" height="780" loading="lazy">
+                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
+                    <strong data-i18n="work.i.moist.title">Чийгийн агуулга</strong>
+                    <span class="work-desc" data-i18n="work.i.moist.desc">Жингийн хэмжилт, чийгийн хувь, QC шалгалт, литологиор ангилсан статистик.</span>
+                </figcaption>
+            </figure>
+            <figure class="work-item" data-group="lab">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/s-density.jpg" alt="Нягт" data-i18n-alt="work.i.density.title" width="1568" height="780" loading="lazy">
+                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
+                    <strong data-i18n="work.i.density.title">Нягт</strong>
+                    <span class="work-desc" data-i18n="work.i.density.desc">Дээжийн хэмжээ, жин, эзэлхүүн, нойтон ба хуурай нягтыг график, зурагтай нь.</span>
+                </figcaption>
+            </figure>
+            <figure class="work-item" data-group="lab">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/s-specific-gravity.jpg" alt="Хувийн жин ба шингээлт" data-i18n-alt="work.i.sg.title" width="1568" height="780" loading="lazy">
+                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
+                    <strong data-i18n="work.i.sg.title">Хувийн жин ба шингээлт</strong>
+                    <span class="work-desc" data-i18n="work.i.sg.desc">Хувийн жин (SG), усны шингээлт, QC төлөв, литологи тус бүрийн дундаж.</span>
+                </figcaption>
+            </figure>
+            <figure class="work-item" data-group="lab">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/s-tensile.jpg" alt="Суналтын бат бэх" data-i18n-alt="work.i.tensile.title" width="1568" height="780" loading="lazy">
+                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
+                    <strong data-i18n="work.i.tensile.title">Суналтын бат бэх</strong>
+                    <span class="work-desc" data-i18n="work.i.tensile.desc">Хамгийн их бат бэх, оргил ачаалал, эвдрэлийн хэлбэр, туршилтын хугацаа.</span>
+                </figcaption>
+            </figure>
+            <figure class="work-item" data-group="lab">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/s-triaxial.jpg" alt="Гурван тэнхлэгт шахалт" data-i18n-alt="work.i.triaxial.title" width="1568" height="780" loading="lazy">
+                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
+                    <strong data-i18n="work.i.triaxial.title">Гурван тэнхлэгт шахалт</strong>
+                    <span class="work-desc" data-i18n="work.i.triaxial.desc">Хажуугийн даралт бүрээр бат бэх, модуль, эвдрэлийн хэлбэрийг харьцуулна.</span>
+                </figcaption>
+            </figure>
+            <figure class="work-item" data-group="drill">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/s-rock-sampling.jpg" alt="Чулуулгийн дээжлэлт" data-i18n-alt="work.i.rock.title" width="1568" height="780" loading="lazy">
+                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.drill">Өрөмдлөг</span>
+                    <strong data-i18n="work.i.rock.title">Чулуулгийн дээжлэлт</strong>
+                    <span class="work-desc" data-i18n="work.i.rock.desc">Дээж бүрийн интервал, бат бэхийн ангилал, давхаргын нэгж, нөхцөл байдлыг байршил, зурагтай нь бүртгэнэ.</span>
+                </figcaption>
+            </figure>
+            <figure class="work-item" data-group="drill">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/s-sample-list.jpg" alt="Дээжийн жагсаалт" data-i18n-alt="work.i.list.title" width="1568" height="780" loading="lazy">
+                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.drill">Өрөмдлөг</span>
+                    <strong data-i18n="work.i.list.title">Дээжийн жагсаалт</strong>
+                    <span class="work-desc" data-i18n="work.i.list.desc">Цооног бүрээс авсан нүүрс, нүүрсжсэн чулуулаг, чулуулгийн дээжийн тоо, интервал, төлөв.</span>
+                </figcaption>
+            </figure>
+            <figure class="work-item" data-group="drill">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/s-storage-monitoring.jpg" alt="Дээж хадгалалтын хяналт" data-i18n-alt="work.i.storage.title" width="1568" height="780" loading="lazy">
+                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.drill">Өрөмдлөг</span>
+                    <strong data-i18n="work.i.storage.title">Дээж хадгалалтын хяналт</strong>
+                    <span class="work-desc" data-i18n="work.i.storage.desc">Агуулах, контейнер, лабораторийн температурыг зөвшөөрөгдөх хязгаартай нь харьцуулж хянана.</span>
+                </figcaption>
+            </figure>
+            <figure class="work-item" data-group="drill">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/s-safety.jpg" alt="ХАБЭА-н долоо хоногийн тайлан" data-i18n-alt="work.i.safety.title" width="1108" height="432" loading="lazy">
+                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.drill">Өрөмдлөг</span>
+                    <strong data-i18n="work.i.safety.title">ХАБЭА-н долоо хоногийн тайлан</strong>
+                    <span class="work-desc" data-i18n="work.i.safety.desc">Долоо хоног бүрийн аюулгүй ажиллагааны мэдээлэл, осол зөрчлийн бүртгэл.</span>
+                </figcaption>
+            </figure>
+        </div>
+
+        <div class="work-more">
+            <button type="button" class="work-more-btn" aria-expanded="false"></button>
+        </div>
+    </div>
+</section>
+
+<!-- Зураг томруулж харах (lightbox) -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lb-title" hidden>
+    <div class="lb-backdrop" data-lb-close></div>
+    <div class="lb-body">
+        <div class="lb-top">
+            <span class="lb-count" aria-live="polite"></span>
+            <button type="button" class="lb-btn lb-close" data-lb-close aria-label="Хаах" data-i18n-aria="work.close">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+            </button>
+        </div>
+        <div class="lb-stage">
+            <button type="button" class="lb-btn lb-prev" aria-label="Өмнөх" data-i18n-aria="work.prev">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg>
+            </button>
+            <img class="lb-img" alt="">
+            <button type="button" class="lb-btn lb-next" aria-label="Дараах" data-i18n-aria="work.next">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+            </button>
+        </div>
+        <div class="lb-caption">
+            <span class="work-tag lb-tag"></span>
+            <h3 id="lb-title" class="lb-title"></h3>
+            <p class="lb-desc"></p>
+        </div>
+    </div>
+</div>
+
+<!-- ================= ABOUT ================= -->
+<section class="section about" id="about">
+    <div class="container about-grid">
+        <div class="about-text reveal">
+            <p class="eyebrow eyebrow--light" data-i18n="about.kicker">Бидний тухай</p>
+            <h2 class="section-title" data-i18n="about.title">Хээрийн мэдээллийг цааснаас салгана</h2>
+            <p data-i18n="about.p1">RegaPro нь геологи, уул уурхай, геотехникийн хээрийн мэдээллийг бүрэн цахимжуулах шийдлийг хөгжүүлдэг. Хээрийн багийн бодит хэрэгцээнд тулгуурлан ArcGIS Survey123 платформ дээр найдвартай, стандартчилсан, ашиглахад хялбар систем бүтээдэг.</p>
+            <p data-i18n="about.p2">Цаасан лог, дахин шивэх, файл дамжуулах ажлыг халж, хээрт бүртгэсэн мэдээлэл тэр даруй оффис, лаборатори, удирдлагад хүрдэг болгох нь бидний зорилго.</p>
+
+            <p class="tech-label" data-i18n="about.tech">Ашигладаг технологи</p>
+            <ul class="tech-list">
+                <li>ArcGIS Survey123</li>
+                <li>ArcGIS Online</li>
+                <li>ArcGIS Dashboards</li>
+                <li>ArcGIS Notebooks</li>
+                <li>Python</li>
+                <li>Microsoft Excel</li>
+                <li>SharePoint</li>
+            </ul>
+        </div>
+
+        <figure class="about-media reveal">
+            <img src="images/about-field.jpg" alt="Хээрийн ажилд Survey123 ашиглаж буй геологичид" data-i18n-alt="about.imgAlt" loading="lazy" width="1536" height="1024">
+            <figcaption>
+                <img src="images/logo-mark.png" alt="" width="38" height="40">
+                <span>COLLECT • CONNECT • ANALYZE • DECIDE</span>
+            </figcaption>
+        </figure>
+    </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="section contact" id="contact">
+    <div class="container contact-grid">
+        <div class="contact-info reveal">
+            <p class="eyebrow" data-i18n="contact.kicker">Холбоо барих</p>
+            <h2 class="section-title" data-i18n="contact.title">Хээрийн ажлаа цахимжуулахад бэлэн үү?</h2>
+            <p class="section-sub" data-i18n="contact.sub">Танай төслийн талаар бидэнд бичээрэй. Тохирох шийдлийг хамтдаа тодорхойлж, demo үзүүлье.</p>
+
+            <ul class="contact-list">
+                <li>
+                    <span class="contact-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3 6 9 7 9-7"/></svg></span>
+                    <div><small data-i18n="contact.email">И-мэйл</small><a href="mailto:info@regapro.com" class="js-email">info@regapro.com</a></div>
+                </li>
+                <li>
+                    <span class="contact-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c2.6 2.8 3.8 6 3.8 9.5s-1.2 6.7-3.8 9.5c-2.6-2.8-3.8-6-3.8-9.5S9.4 5.3 12 2.5z"/></svg></span>
+                    <div><small data-i18n="contact.web">Вэб</small><a href="https://regapro.com">regapro.com</a></div>
+                </li>
+                <li>
+                    <span class="contact-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.5s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>
+                    <div><small data-i18n="contact.location">Байршил</small><span data-i18n="contact.city">Улаанбаатар, Монгол</span></div>
+                </li>
+            </ul>
+        </div>
+
+        <form class="contact-form reveal" id="contact-form" novalidate>
+            <div class="form-row">
+                <label>
+                    <span data-i18n="form.name">Нэр</span>
+                    <input type="text" name="name" required autocomplete="name" placeholder="Таны нэр" data-i18n-placeholder="form.namePh">
+                </label>
+                <label>
+                    <span data-i18n="form.company">Байгууллага</span>
+                    <input type="text" name="company" autocomplete="organization" placeholder="Компанийн нэр" data-i18n-placeholder="form.companyPh">
+                </label>
             </div>
-
-            <div class="hero-slideshow-dots">
-              <button class="hero-dot active" data-slide="0" aria-label="1-р зураг"></button>
-              <button class="hero-dot" data-slide="1" aria-label="2-р зураг"></button>
-              <button class="hero-dot" data-slide="2" aria-label="3-р зураг"></button>
-              <button class="hero-dot" data-slide="3" aria-label="4-р зураг"></button>
-              <button class="hero-dot" data-slide="4" aria-label="5-р зураг"></button>
-            </div>
-
-            <!-- Floating UI cards over photo -->
-            <div class="hero-card hero-card-top">
-              <div class="hero-card-header">
-                <div class="hero-card-title" style="font-size: 0.85rem;">📍 GPS бичигдэж байна</div>
-              </div>
-              <div style="font-family: 'Courier New', monospace; font-size: 0.75rem; color: var(--text-secondary);">
-                47.9184° N<br>
-                106.9177° E
-              </div>
-            </div>
-
-            <div class="hero-card hero-card-bottom">
-              <div class="hero-card-header">
-                <div class="hero-card-title" style="font-size: 0.85rem;">DDH-204 · 45m</div>
-                <div class="hero-card-status">Идэвхтэй</div>
-              </div>
-              <div class="hero-log-row" style="padding: 0.4rem 0; font-size: 0.78rem;">
-                <span class="hero-log-rock"><span class="rock-swatch swatch-granite"></span>Гранит</span>
-                <span class="hero-log-quality quality-good">RQD 91</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+            <label>
+                <span data-i18n="form.email">И-мэйл</span>
+                <input type="email" name="email" required autocomplete="email" placeholder="name@company.mn">
+            </label>
+            <label>
+                <span data-i18n="form.message">Мессеж</span>
+                <textarea name="message" rows="5" required placeholder="Төслийн тухай товч бичнэ үү" data-i18n-placeholder="form.messagePh"></textarea>
+            </label>
+            <button type="submit" class="btn btn-primary btn-block" data-i18n="form.submit">Илгээх</button>
+            <p class="form-note" data-i18n="form.note">«Илгээх» дарахад таны и-мэйл програм бэлэн захидалтай нээгдэнэ.</p>
+            <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
     </div>
-  </section>
+</section>
 
-  <!-- ========== KEY FEATURES (Marketing points) ========== -->
-  <section class="section features" id="features">
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer">
+    <div class="container footer-grid">
+        <div class="footer-brand">
+            <img src="images/logo-horizontal-white.png" alt="RegaPro" width="199" height="40" loading="lazy">
+            <p data-i18n="footer.desc">ArcGIS Survey123 дээр суурилсан геологи, уул уурхайн хээрийн мэдээллийн цахим шийдэл.</p>
+        </div>
+        <nav class="footer-nav" aria-label="Footer">
+            <a href="#workflow" data-i18n="nav.workflow">Ажлын урсгал</a>
+            <a href="#services" data-i18n="nav.services">Үйлчилгээ</a>
+            <a href="#about" data-i18n="nav.about">Бидний тухай</a>
+            <a href="#contact" data-i18n="nav.contact">Холбоо барих</a>
+        </nav>
+    </div>
     <div class="container">
-      <div class="section-header reveal">
-        <span class="section-eyebrow">Бидний давуу тал</span>
-        <h2 class="section-title">Яагаад <span class="text-accent">RegaPro</span>-г сонгох вэ?</h2>
-        <p class="section-subtitle">
-          Геологи уул уурхайн салбарт хэрэгтэй бүх зүйлийг нэг газар, нэг стандарт дор.
-        </p>
-      </div>
-
-      <div class="features-grid">
-        <div class="feature-card reveal">
-          <div class="feature-icon">🎯</div>
-          <h3 class="feature-title">Ашиглахад хялбар дизайн</h3>
-          <p class="feature-description">
-            Хээрийн нөхцөлд ч, оффисд ч хүн бүр нэг үзэхэд ойлгох, цаг хэмнэх энгийн интерфэйс.
-          </p>
+        <div class="footer-bottom">
+            <p>© <span class="js-year">2026</span> RegaPro. <span data-i18n="footer.rights">Бүх эрх хуулиар хамгаалагдсан.</span></p>
+            <p class="footer-tagline">COLLECT • CONNECT • ANALYZE • DECIDE</p>
         </div>
-
-        <div class="feature-card reveal">
-          <div class="feature-icon">🛡️</div>
-          <h3 class="feature-title">Найдвартай платформ дээр суурилсан</h3>
-          <p class="feature-description">
-            Дэлхийн жишигт хүрсэн ESRI Survey123 дэвсгэр, баталгаажсан архитектур.
-          </p>
-        </div>
-
-        <div class="feature-card reveal">
-          <div class="feature-icon">🔒</div>
-          <h3 class="feature-title">Мэдээллийн найдвартай байдлыг хангах</h3>
-          <p class="feature-description">
-            Аюулгүй хадгалалт, нөөцлөлт, эрхээр зохицуулсан хандалтаар мэдээллээ хамгаална.
-          </p>
-        </div>
-
-        <div class="feature-card reveal">
-          <div class="feature-icon">⚙️</div>
-          <h3 class="feature-title">Механик алдааг бууруулна</h3>
-          <p class="feature-description">
-            Шалгалттай талбар, нэгдсэн стандарт — гар бичмэл, хуулбар, орчуулгын алдааг арилгана.
-          </p>
-        </div>
-
-        <div class="feature-card reveal">
-          <div class="feature-icon">📊</div>
-          <h3 class="feature-title">Нэг стандартаар бүрдүүлэх</h3>
-          <p class="feature-description">
-            Бүх багийн мэдээлэл нэгдсэн загвар, нэрлэлт, нэгжтэй — тайлан гаргахад бэлэн.
-          </p>
-        </div>
-
-        <div class="feature-card reveal">
-          <div class="feature-icon">📱</div>
-          <h3 class="feature-title">Бүх төрлийн хээрийн мэдээллийг цахимаар</h3>
-          <p class="feature-description">
-            Геологи, геотехник, дээж, өрөмдлөг, картчлал — бүгд гар утас, таблет дээр шууд.
-          </p>
-        </div>
-      </div>
     </div>
-  </section>
+</footer>
 
-  <!-- ========== SERVICES PREVIEW ========== -->
-  <section class="section">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="section-eyebrow">Үйлчилгээ</span>
-        <h2 class="section-title">Хээрийн ажлын <span class="text-accent">бүх шатанд</span></h2>
-        <p class="section-subtitle">
-          Survey123 платформ дээр суурилсан мэргэжлийн шийдлүүд.
-        </p>
-      </div>
-
-      <div class="services-grid">
-        <div class="service-card reveal">
-          <div class="service-number">01</div>
-          <h3 class="service-title">Геологийн лог</h3>
-          <p class="service-description">
-            Өрөмдлөгийн цооногийн өнгөн ба гүний хурдас, чулуулагт зориулсан цахим лог.
-          </p>
-          <div class="service-features">
-            <div class="service-feature">Хурдас, чулуулгийн нэгдсэн ангилал</div>
-            <div class="service-feature">Дээж, шинж тэмдэг тэмдэглэгээ</div>
-            <div class="service-feature">Зураг, координат автомат хадгалалт</div>
-          </div>
-          <a href="services.html" class="btn btn-ghost">Дэлгэрэнгүй <span class="btn-arrow">→</span></a>
-        </div>
-
-        <div class="service-card reveal">
-          <div class="service-number">02</div>
-          <h3 class="service-title">Геотехникийн лог</h3>
-          <p class="service-description">
-            RQD, SPT, Lugeon, чулуулгийн бүтэц, зөв чанарт зориулсан стандарт лог.
-          </p>
-          <div class="service-features">
-            <div class="service-feature">RQD, TCR, SCR автомат тооцоолол</div>
-            <div class="service-feature">Үе, хагарлын тэмдэглэгээ</div>
-            <div class="service-feature">Хээрийн туршилтын мэдээлэл</div>
-          </div>
-          <a href="services.html" class="btn btn-ghost">Дэлгэрэнгүй <span class="btn-arrow">→</span></a>
-        </div>
-
-        <div class="service-card reveal">
-          <div class="service-number">03</div>
-          <h3 class="service-title">Хээрийн картчлал</h3>
-          <p class="service-description">
-            GPS координаттай геологийн картчлал, цэгийн ажиглалт, далд илрэл.
-          </p>
-          <div class="service-features">
-            <div class="service-feature">Оффлайн ажиллах боломж</div>
-            <div class="service-feature">Шууд GIS-тэй холбоо</div>
-            <div class="service-feature">Зураг, видео хавсаргах</div>
-          </div>
-          <a href="services.html" class="btn btn-ghost">Дэлгэрэнгүй <span class="btn-arrow">→</span></a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== HOW IT WORKS ========== -->
-  <section class="section features">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="section-eyebrow">Ажиллах зарчим</span>
-        <h2 class="section-title">3 алхамд эхэл</h2>
-        <p class="section-subtitle">
-          Хээрээс оффис хүртэл хагас цаг ч гэсэн алдалгүйгээр.
-        </p>
-      </div>
-
-      <div class="services-grid">
-        <div class="service-card reveal">
-          <div class="service-number">①</div>
-          <h3 class="service-title">Загвар тохируулах</h3>
-          <p class="service-description">
-            Танай төслийн стандартад нийцсэн форм, талбар, нэгжийг тохируулна.
-          </p>
-        </div>
-
-        <div class="service-card reveal">
-          <div class="service-number">②</div>
-          <h3 class="service-title">Хээрт цуглуулах</h3>
-          <p class="service-description">
-            Гар утас, таблетаар оффлайн ч, онлайн ч мэдээлэл цуглуулж синхрончилно.
-          </p>
-        </div>
-
-        <div class="service-card reveal">
-          <div class="service-number">③</div>
-          <h3 class="service-title">Тайлан, шинжилгээ</h3>
-          <p class="service-description">
-            Цуглуулсан мэдээллээ цэгцтэй, нэг стандартаар экспортлон тайлагнана.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== GALLERY PREVIEW ========== -->
-  <section class="section">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="section-eyebrow">Бодит хээрийн ажил</span>
-        <h2 class="section-title">Survey123 ашигласан <span class="text-accent">хээрийн төслүүд</span></h2>
-        <p class="section-subtitle">
-          Манай систем хээрийн нөхцөлд хэрхэн ажилладаг бодит зурагнууд.
-        </p>
-      </div>
-
-      <div class="gallery-grid reveal">
-        <div class="gallery-item wide">
-          <img class="gallery-image" src="images/zurag1.png" alt="Survey123 өрөмдлөг" loading="lazy">
-          <div class="gallery-icon">⛏️</div>
-          <div class="gallery-overlay">
-            <span class="gallery-tag">Өрөмдлөг</span>
-            <h3 class="gallery-title">Хайгуулын өрөмдлөг</h3>
-            <p class="gallery-desc">DDH цооногийн лог цахим хэлбэрээр</p>
-          </div>
-        </div>
-
-        <div class="gallery-item">
-          <img class="gallery-image" src="images/zurag2.png" alt="Survey123 хээр" loading="lazy">
-          <div class="gallery-icon">📱</div>
-          <div class="gallery-overlay">
-            <span class="gallery-tag">Survey123</span>
-            <h3 class="gallery-title">Таблетаар бичгэх</h3>
-            <p class="gallery-desc">Оффлайн → Cloud синхрон</p>
-          </div>
-        </div>
-
-        <div class="gallery-item">
-          <img class="gallery-image" src="images/zurag3.png" alt="Survey123 дээж" loading="lazy">
-          <div class="gallery-icon">🪨</div>
-          <div class="gallery-overlay">
-            <span class="gallery-tag">Дээж</span>
-            <h3 class="gallery-title">Кернийн дээж</h3>
-            <p class="gallery-desc">RQD, чулуулгийн ангилал</p>
-          </div>
-        </div>
-
-        <div class="gallery-item">
-          <img class="gallery-image" src="images/zurag4.png" alt="Survey123 картчлал" loading="lazy">
-          <div class="gallery-icon">🗺️</div>
-          <div class="gallery-overlay">
-            <span class="gallery-tag">Картчлал</span>
-            <h3 class="gallery-title">Хээрийн картчлал</h3>
-            <p class="gallery-desc">GPS координаттай тэмдэглэгээ</p>
-          </div>
-        </div>
-      </div>
-
-      <div style="text-align: center; margin-top: 2.5rem;">
-        <a href="services.html" class="btn btn-secondary">
-          Бүх зураг үзэх <span class="btn-arrow">→</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== CTA ========== -->
-  <section class="section">
-    <div class="container">
-      <div class="cta-banner reveal">
-        <div class="cta-content">
-          <h2 class="cta-title">Хээрийн ажлаа цахимжуулахад бэлэн үү?</h2>
-          <p class="cta-subtitle">
-            Мэргэжилтэн манай багтай уулзаж, танай төсөлд тохирсон шийдлийг үнэ төлбөргүй санал болгоё.
-          </p>
-          <div class="cta-actions">
-            <a href="contact.html" class="btn btn-primary">
-              Үнэгүй танилцуулга авах <span class="btn-arrow">→</span>
-            </a>
-            <a href="services.html" class="btn btn-secondary">
-              Үйлчилгээ үзэх
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== FOOTER ========== -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-about">
-          <a href="index.html" class="logo footer-logo">
-            <span class="logo-mark">R</span>
-            <span class="logo-text">Rega<span>Pro</span></span>
-          </a>
-          <p class="footer-description">
-            Survey123 платформ дээр суурилсан, геологи уул уурхайн салбарт зориулсан
-            цахим хээрийн мэдээллийн шийдэл.
-          </p>
-          <div class="footer-socials">
-            <a href="#" class="footer-social" aria-label="Facebook">f</a>
-            <a href="#" class="footer-social" aria-label="LinkedIn">in</a>
-            <a href="#" class="footer-social" aria-label="YouTube">▶</a>
-          </div>
-        </div>
-
-        <div>
-          <h4 class="footer-heading">Компани</h4>
-          <ul class="footer-links">
-            <li><a href="index.html" class="footer-link">Нүүр</a></li>
-            <li><a href="about.html" class="footer-link">Бидний тухай</a></li>
-            <li><a href="services.html" class="footer-link">Үйлчилгээ</a></li>
-            <li><a href="contact.html" class="footer-link">Холбоо барих</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="footer-heading">Шийдлүүд</h4>
-          <ul class="footer-links">
-            <li><a href="services.html" class="footer-link">Геологийн лог</a></li>
-            <li><a href="services.html" class="footer-link">Геотехникийн лог</a></li>
-            <li><a href="services.html" class="footer-link">Хээрийн картчлал</a></li>
-            <li><a href="services.html" class="footer-link">Survey123 интеграц</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="footer-heading">Холбоо барих</h4>
-          <ul class="footer-links">
-            <li><a href="mailto:info@regapro.com" class="footer-link">info@regapro.com</a></li>
-            <li><a href="tel:+97670000000" class="footer-link">+976 7000-0000</a></li>
-            <li><span class="footer-link">Улаанбаатар, Монгол улс</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <div class="footer-copy">
-          © <span id="current-year">2026</span> RegaPro. Бүх эрх хуулиар хамгаалагдсан.
-        </div>
-        <div class="footer-bottom-links">
-          <a href="#" class="footer-bottom-link">Нууцлалын бодлого</a>
-          <a href="#" class="footer-bottom-link">Үйлчилгээний нөхцөл</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <script src="script.js"></script>
+<script src="i18n.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
