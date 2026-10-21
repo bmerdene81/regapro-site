@@ -57,6 +57,7 @@
             <a href="#home" class="nav-link" data-i18n="nav.home">Нүүр</a>
             <a href="#workflow" class="nav-link" data-i18n="nav.workflow">Ажлын урсгал</a>
             <a href="#services" class="nav-link" data-i18n="nav.services">Үйлчилгээ</a>
+            <a href="#advantages" class="nav-link" data-i18n="nav.advantages">Давуу талууд</a>
             <a href="#about" class="nav-link" data-i18n="nav.about">Бидний тухай</a>
             <a href="#contact" class="nav-link" data-i18n="nav.contact">Холбоо барих</a>
             <a href="#experience" class="btn btn-primary btn-sm nav-cta" data-i18n="nav.cta">Ажлын туршлага</a>
@@ -284,6 +285,7 @@
             <button type="button" class="work-filter is-active" data-filter="all" aria-pressed="true" data-i18n="work.fAll">Бүгд</button>
             <button type="button" class="work-filter" data-filter="lab" aria-pressed="false" data-i18n="work.fLab">Лаборатори</button>
             <button type="button" class="work-filter" data-filter="drill" aria-pressed="false" data-i18n="work.fDrill">Өрөмдлөг ба дээжлэлт</button>
+            <button type="button" class="work-filter" data-filter="viz3d" aria-pressed="false" data-i18n="work.fViz3d">3D дүрслэл</button>
         </div>
 
         <div class="work-grid">
@@ -507,6 +509,36 @@
                     <span class="work-desc" data-i18n="work.i.safety.desc">Долоо хоног бүрийн аюулгүй ажиллагааны мэдээлэл, осол зөрчлийн бүртгэл.</span>
                 </figcaption>
             </figure>
+            <figure class="work-item" data-group="viz3d">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/3d-drillholes.jpg" alt="Өрөмдлөгийн цооногуудын 3D дүрслэл" data-i18n-alt="work.i.3dScene.title" width="1600" height="1000" loading="lazy">Талбайн цооногуудын 3D дүрслэл<span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.viz3d">3D дүрслэл</span>
+                    <strong data-i18n="work.i.3dScene.title">Талбайн цооногуудын 3D дүрслэл</strong>
+                    <span class="work-desc" data-i18n="work.i.3dScene.desc">Талбайн олон цооногийг литологийн өнгөөр ялгаж, гадаргын дээр 3D хэлбэрээр харуулна. 59 цооног, 5,126 интервал, нийт 7,518.9 м.</span>
+                </figcaption>
+            </figure>
+            <figure class="work-item" data-group="viz3d">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/3d-striplog.jpg" alt="3D дүрслэл ба литологийн багана" data-i18n-alt="work.i.3dLog.title" width="1600" height="1000" loading="lazy">Уулын гадарга дээрх цооног ба литологийн багана<span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.viz3d">3D дүрслэл</span>
+                    <strong data-i18n="work.i.3dLog.title">Уулын гадарга дээрх цооног ба литологийн багана</strong>
+                    <span class="work-desc" data-i18n="work.i.3dLog.desc">Уулын гадаргын ойрын 3D дүрслэлд цооногууд, литологийн дэлгэрэнгүй мэдээлэлийг харах боломжтой. 8 цооног, 39 интервал, 1,310 м.</span>
+                </figcaption>
+            </figure>
+            <figure class="work-item" data-group="viz3d">
+                <button type="button" class="work-thumb" aria-haspopup="dialog">
+                    <img src="images/work/3d-hole-detail.jpg" alt="Цооногийн дэлгэрэнгүй мэдээлэл" data-i18n-alt="work.i.3dHole.title" width="1600" height="1000" loading="lazy">Гадаргын доорх налуу цооногуудын 3D харагдац<span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
+                </button>
+                <figcaption>
+                    <span class="work-tag" data-i18n="work.tag.viz3d">3D дүрслэл</span>
+                    <strong data-i18n="work.i.3dHole.title">Гадаргын доорх налуу цооногуудын 3D харагдац</strong>
+                    <span class="work-desc" data-i18n="work.i.3dHole.desc">Гадаргыг нэвт харуулсан 3D дүрслэлд налуу цооногуудыг, жагсаалт болон сонгосон цооногийн мэдээллийг харна. 135 цооног, нийт 30,330.21 м.</span>
+                </figcaption>
+            </figure>
         </div>
 
         <div class="work-more">
@@ -543,6 +575,44 @@
 </div>
 
 <!-- ================= ABOUT ================= -->
+<section class="section advantages" id="advantages">
+    <div class="container">
+        <header class="section-head reveal">
+            <span class="adv-pill" data-i18n="adv.kicker">ХАРЬЦУУЛАЛТ</span>
+            <h2 class="section-title" data-i18n="adv.title">Давуу талууд</h2>
+            <p class="section-sub" data-i18n="adv.sub">RegaPro ба бусад хээрийн мэдээлэл цуглуулах шийдлүүдийн харьцуулалт</p>
+        </header>
+        <div class="adv-grid">
+            <article class="adv-card adv-card--main reveal">
+                <span class="adv-badge" data-i18n="adv.badge">САНАЛ БОЛГОХ</span>
+                <h3 class="adv-name"><span class="adv-rega">Rega</span><span class="adv-pro">Pro</span></h3>
+                <p class="adv-desc" data-i18n="adv.mainSub">Хээрийн мэдээллийг бүрэн цахимжуулсан шийдэл</p>
+                <ul class="adv-list">
+                    <li class="adv-row"><span class="adv-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span><span class="adv-text" data-i18n="adv.r1">Хээрийн мэдээллийг цахим хэлбэрээр бүрдүүлэх</span><span class="adv-status is-yes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li>
+                    <li class="adv-row"><span class="adv-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 9v11"/></svg></span><span class="adv-text" data-i18n="adv.r2">Лог хийх загварыг үйлчлүүлэгчийн загвараар гаргах</span><span class="adv-status is-yes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li>
+                    <li class="adv-row"><span class="adv-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 8.5a15 15 0 0 1 20 0M5.5 12a10 10 0 0 1 13 0M9 15.5a5 5 0 0 1 6 0"/><path d="M3 3l18 18"/></svg></span><span class="adv-text" data-i18n="adv.r3">Сүлжээгүй үед оффлайн хэлбэрээр ажиллах</span><span class="adv-status is-yes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li>
+                    <li class="adv-row"><span class="adv-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><span class="adv-text" data-i18n="adv.r4">Мэдээллийн үр дүнг дашбоард хэлбэрээр харах, хянах</span><span class="adv-status is-yes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li>
+                    <li class="adv-row"><span class="adv-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4-8 4-8-4z"/><path d="M4 12l8 4 8-4M4 17l8 4 8-4"/></svg></span><span class="adv-text" data-i18n="adv.r5">Мэдээллийн стандартчилал</span><span class="adv-status is-yes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li>
+                    <li class="adv-row"><span class="adv-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 12l9-5M12 12v10M12 12L3 7"/></svg></span><span class="adv-text" data-i18n="adv.r6">Өрөмдлөгийн мэдээллийг шууд 3D хэлбэрээр харах</span><span class="adv-status is-yes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li>
+                </ul>
+            </article>
+            <article class="adv-card adv-card--other reveal">
+                <h3 class="adv-name" data-i18n="adv.other">Бусад</h3>
+                <p class="adv-desc" data-i18n="adv.otherSub">Ерөнхий мэдээлэл цуглуулах аппууд</p>
+                <ul class="adv-list">
+                    <li class="adv-row"><span class="adv-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span><span class="adv-text" data-i18n="adv.r1">Хээрийн мэдээллийг цахим хэлбэрээр бүрдүүлэх</span><span class="adv-status is-muted"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li>
+                    <li class="adv-row"><span class="adv-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 9v11"/></svg></span><span class="adv-text" data-i18n="adv.r2">Лог хийх загварыг үйлчлүүлэгчийн загвараар гаргах</span><span class="adv-status is-no"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg></span></li>
+                    <li class="adv-row"><span class="adv-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 8.5a15 15 0 0 1 20 0M5.5 12a10 10 0 0 1 13 0M9 15.5a5 5 0 0 1 6 0"/><path d="M3 3l18 18"/></svg></span><span class="adv-text" data-i18n="adv.r3">Сүлжээгүй үед оффлайн хэлбэрээр ажиллах</span><span class="adv-status is-muted"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li>
+                    <li class="adv-row"><span class="adv-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><span class="adv-text" data-i18n="adv.r4">Мэдээллийн үр дүнг дашбоард хэлбэрээр харах, хянах</span><span class="adv-status is-no"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg></span></li>
+                    <li class="adv-row"><span class="adv-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4-8 4-8-4z"/><path d="M4 12l8 4 8-4M4 17l8 4 8-4"/></svg></span><span class="adv-text" data-i18n="adv.r5">Мэдээллийн стандартчилал</span><span class="adv-status is-no"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg></span></li>
+                    <li class="adv-row"><span class="adv-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 12l9-5M12 12v10M12 12L3 7"/></svg></span><span class="adv-text" data-i18n="adv.r6">Өрөмдлөгийн мэдээллийг шууд 3D хэлбэрээр харах</span><span class="adv-status is-no"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg></span></li>
+                </ul>
+            </article>
+        </div>
+        <div class="adv-cta reveal"><a href="#contact" class="btn btn-primary" data-i18n="adv.cta">Холбоо барих</a></div>
+    </div>
+</section>
+
 <section class="section about" id="about">
     <div class="container about-grid">
         <div class="about-text reveal">
