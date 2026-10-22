@@ -185,7 +185,7 @@ window.REGAPRO_I18N = {
         /* Contact */
         "contact.kicker": "Contact",
         "contact.title": "Ready to take your field work digital?",
-        "contact.sub": "Tell us about your project. We will work out the right setup together and show you a demo.",
+        "contact.sub": "Get in touch with us. We will provide expert advice and present a solution tailored to your operations.",
         "contact.email": "Email",
         "contact.web": "Web",
         "contact.location": "Location",

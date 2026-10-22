@@ -760,3 +760,5 @@ h3 { font-size: 1.125rem; font-weight: 700; }
 .contact-form button[disabled] { opacity: .7; cursor: wait; }
 .form-status.is-ok { color: var(--green-700); }
 .form-status.is-error { color: #B42318; }
+
+.contact-grid{grid-template-columns:1fr !important;}
