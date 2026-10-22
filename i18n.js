@@ -200,11 +200,13 @@ window.REGAPRO_I18N = {
         "form.message": "Message",
         "form.messagePh": "Tell us briefly about your project",
         "form.submit": "Send message",
-        "form.note": "Clicking “Send message” opens your email app with the message ready to go.",
+        "form.note": "We reply to every message within one business day.",
         "form.errRequired": "Please fill in your name, email and message.",
         "form.errEmail": "Please enter a valid email address.",
-        "form.ok": "Your email app should open now. If it doesn’t, write to us at info@regapro.com.",
+        "form.ok": "Thank you! Your message has been sent successfully.",
         "form.subject": "Website enquiry",
+        "form.err": "Something went wrong. Please try again or write to us directly at info@regapro.com.",
+        "form.sending": "Sending...",
 
         /* Footer */
         "footer.desc": "Digital field data solutions for geology and mining, built on ArcGIS Survey123.",
@@ -221,7 +223,9 @@ window.REGAPRO_I18N = {
         "work.less": "Хураах",
         "form.errRequired": "Нэр, и-мэйл, мессежээ бөглөнө үү.",
         "form.errEmail": "И-мэйл хаягаа зөв оруулна уу.",
-        "form.ok": "Таны и-мэйл програм нээгдэнэ. Нээгдэхгүй бол info@regapro.com хаяг руу бичээрэй.",
-        "form.subject": "Вэбсайтаас ирсэн хүсэлт"
+        "form.ok": "Баярлалаа! Таны захидал амжилттай илгээгдлээ.",
+        "form.subject": "Вэбсайтаас ирсэн хүсэлт",
+        "form.err": "Алдаа гарлаа. Дахин оролдох эсвэл info@regapro.com руу шууд бичнэ үү.",
+        "form.sending": "Илгээж байна..."
     }
 };

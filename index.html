@@ -667,7 +667,7 @@
             </ul>
         </div>
 
-        <form class="contact-form reveal" id="contact-form" novalidate>
+        <form class="contact-form reveal" id="contact-form" action="https://formspree.io/f/mgaogdoq" method="POST" novalidate>
             <div class="form-row">
                 <label>
                     <span data-i18n="form.name">Нэр</span>
@@ -686,8 +686,10 @@
                 <span data-i18n="form.message">Мессеж</span>
                 <textarea name="message" rows="5" required placeholder="Төслийн тухай товч бичнэ үү" data-i18n-placeholder="form.messagePh"></textarea>
             </label>
+            <input type="hidden" name="_subject" value="RegaPro сайтаас шинэ захидал">
+            <input type="text" name="_gotcha" class="form-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
             <button type="submit" class="btn btn-primary btn-block" data-i18n="form.submit">Илгээх</button>
-            <p class="form-note" data-i18n="form.note">«Илгээх» дарахад таны и-мэйл програм бэлэн захидалтай нээгдэнэ.</p>
+            <p class="form-note" data-i18n="form.note">Бид таны захидалд 1 ажлын өдөрт хариулна.</p>
             <p class="form-status" role="status" aria-live="polite"></p>
         </form>
     </div>

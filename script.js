@@ -4,7 +4,7 @@
    2) Header (scroll), гар утасны цэс
    3) Hero slideshow
    4) Scroll-оор гарч ирэх анимаци
-   5) Холбоо барих форм (mailto)
+   5) Холбоо барих форм (Formspree)
    6) Ажлын туршлага — галерей, lightbox
    ========================================================= */
 (function () {
@@ -205,29 +205,47 @@
     }
 
     /* ---------------------------------------------------------
-       5) ХОЛБОО БАРИХ ФОРМ → mailto
+       5) ХОЛБОО БАРИХ ФОРМ → Formspree (fetch)
     --------------------------------------------------------- */
+    var FORM_ENDPOINT = 'https://formspree.io/f/mgaogdoq';
     var form = document.getElementById('contact-form');
     if (form) {
         var status = form.querySelector('.form-status');
+        var submitBtn = form.querySelector('button[type="submit"]');
+        var sending = false;
         form.addEventListener('submit', function (e) {
             e.preventDefault();
+            if (sending) return;
             var f = form.elements;
             var name = f.name.value.trim(), email = f.email.value.trim();
-            var company = f.company.value.trim(), msg = f.message.value.trim();
+            var msg = f.message.value.trim();
 
             status.className = 'form-status';
+            status.textContent = '';
             if (!name || !email || !msg) { status.textContent = t('form.errRequired'); status.classList.add('is-error'); return; }
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { status.textContent = t('form.errEmail'); status.classList.add('is-error'); return; }
 
-            var subject = 'RegaPro — ' + t('form.subject') + ': ' + name + (company ? ' (' + company + ')' : '');
-            var body = msg + '\n\n—\n' + name + (company ? '\n' + company : '') + '\n' + email;
-            window.location.href = 'mailto:' + CONTACT_EMAIL +
-                '?subject=' + encodeURIComponent(subject) +
-                '&body=' + encodeURIComponent(body);
+            sending = true;
+            submitBtn.disabled = true;
+            submitBtn.textContent = t('form.sending');
 
-            status.textContent = t('form.ok');
-            status.classList.add('is-ok');
+            fetch(FORM_ENDPOINT, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            }).then(function (res) {
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                status.textContent = t('form.ok');
+                status.classList.add('is-ok');
+                form.reset();
+            }).catch(function () {
+                status.textContent = t('form.err');
+                status.classList.add('is-error');
+            }).then(function () {
+                sending = false;
+                submitBtn.disabled = false;
+                submitBtn.textContent = t('form.submit');
+            });
         });
     }
 

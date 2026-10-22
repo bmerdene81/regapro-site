@@ -753,3 +753,10 @@ h3 { font-size: 1.125rem; font-weight: 700; }
     .adv-grid { grid-template-columns: 1fr; gap: 32px; }
     .adv-card { padding: 28px 20px 14px; }
 }
+
+/* Contact form: honeypot + sending state */
+.form-hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; opacity: 0; }
+.contact-form { position: relative; }
+.contact-form button[disabled] { opacity: .7; cursor: wait; }
+.form-status.is-ok { color: var(--green-700); }
+.form-status.is-error { color: #B42318; }
