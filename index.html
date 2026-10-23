@@ -58,7 +58,7 @@
             <a href="#workflow" class="nav-link" data-i18n="nav.workflow">Ажлын урсгал</a>
             <a href="#services" class="nav-link" data-i18n="nav.services">Үйлчилгээ</a>
             <a href="#advantages" class="nav-link" data-i18n="nav.advantages">Давуу талууд</a>
-            <a href="#about" class="nav-link" data-i18n="nav.about">Бидний тухай</a>
+            <a href="#about" class="nav-link" data-i18n="nav.about">Бидний зорилго</a>
             <a href="#contact" class="nav-link" data-i18n="nav.contact">Холбоо барих</a>
             <a href="#experience" class="btn btn-primary btn-sm nav-cta" data-i18n="nav.cta">Ажлын туршлага</a>
         </nav>
@@ -229,16 +229,6 @@
                 <p data-i18n="services.s2.text">RQD, хагарлын давтамж, тодорхойлолт, хэмжилт, чулуулгийн бат бэх.</p>
             </article>
             <article class="service reveal">
-                <div class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M20 20h-3M14 20v.01M17 17h3"/></svg></div>
-                <h3 data-i18n="services.s3.title">Дээжийн бүртгэл ба QR</h3>
-                <p data-i18n="services.s3.text">Дээжийн бүртгэл, QR шошго, тээврийн акт (Chain of Custody).</p>
-            </article>
-            <article class="service reveal">
-                <div class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 2.5h6M10 2.5v6.2L4.6 18.2A2.2 2.2 0 0 0 6.5 21.5h11a2.2 2.2 0 0 0 1.9-3.3L14 8.7V2.5"/><path d="M7 15h10"/></svg></div>
-                <h3 data-i18n="services.s4.title">Лабораторийн туршилт</h3>
-                <p data-i18n="services.s4.text">Нягт, чийг, хувийн жин, UCS, гурван тэнхлэгт шахалт зэрэг туршилтын маягт.</p>
-            </article>
-            <article class="service reveal">
                 <div class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="3.5" width="19" height="17" rx="2"/><path d="M2.5 8.5h19"/><path d="M6 17l3.5-4 3 2.5 5-5.5"/></svg></div>
                 <h3 data-i18n="services.s5.title">Dashboard ба GIS</h3>
                 <p data-i18n="services.s5.text">ArcGIS Online dashboard, газрын зураг, ажлын явцын бодит цагийн хяналт.</p>
@@ -248,6 +238,10 @@
                 <h3 data-i18n="services.s6.title">Автоматжуулалт</h3>
                 <p data-i18n="services.s6.text">ArcGIS Notebook (Python), Excel, SharePoint холболтоор тайланг автоматаар бэлтгэнэ.</p>
             </article>
+            <article class="service reveal"><div class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></div><h3 data-i18n="services.s7.title">Field Maps апп</h3><p data-i18n="services.s7.text">ArcGIS Field Maps-аар газар дээр цэг, шугам, талбай бүртгэж, офлайн ажиллаад синк хийнэ.</p></article>
+            <article class="service reveal"><div class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.5h6V4"/><path d="M8.5 11l2 2 4-4"/><path d="M8.5 17h7"/></svg></div><h3 data-i18n="services.s8.title">Хээрийн мэдээллийн стандартчилал</h3><p data-i18n="services.s8.text">Нэгдсэн маягт, кодын жагсаалт, ОУ стандартын кодоор өгөгдлийн чанар, нийцлийг хангана.</p></article>
+            <article class="service reveal"><div class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10v-6z"/><path d="M8.5 12l2.5 2.5 4.5-4.5"/></svg></div><h3 data-i18n="services.s9.title">Найдвартай хадгалалт</h3><p data-i18n="services.s9.text">Бүх өгөгдөл нөөцлөгдөж, эрхийн тохиргоотой, хаанаас ч хандана.</p></article>
+
         </div>
     </div>
 </section>
@@ -283,45 +277,11 @@
 
         <div class="work-filters" role="group" aria-label="Шүүлтүүр" data-i18n-aria="work.filterLabel">
             <button type="button" class="work-filter is-active" data-filter="all" aria-pressed="true" data-i18n="work.fAll">Бүгд</button>
-            <button type="button" class="work-filter" data-filter="lab" aria-pressed="false" data-i18n="work.fLab">Лаборатори</button>
             <button type="button" class="work-filter" data-filter="drill" aria-pressed="false" data-i18n="work.fDrill">Өрөмдлөг ба дээжлэлт</button>
             <button type="button" class="work-filter" data-filter="viz3d" aria-pressed="false" data-i18n="work.fViz3d">3D дүрслэл</button>
         </div>
 
         <div class="work-grid">
-            <figure class="work-item work-item--feature" data-group="lab">
-                <button type="button" class="work-thumb" aria-haspopup="dialog">
-                    <img src="images/work/lab-dashboard.jpg" alt="Лабораторийн нэгдсэн самбар" data-i18n-alt="work.i.labHub.title" width="1640" height="948" loading="lazy">
-                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
-                </button>
-                <figcaption>
-                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
-                    <strong data-i18n="work.i.labHub.title">Лабораторийн нэгдсэн самбар</strong>
-                    <span class="work-desc" data-i18n="work.i.labHub.desc">Дээж бэлтгэлээс эхлээд 10 төрлийн туршилтын өдөр тутмын гүйцэтгэл, нийт биелэлтийг нэг дэлгэцээс хянана. Дээд цэснээс туршилт бүрийн самбар руу шилжинэ.</span>
-                </figcaption>
-            </figure>
-            <figure class="work-item" data-group="lab">
-                <button type="button" class="work-thumb" aria-haspopup="dialog">
-                    <img src="images/work/s-ucs.jpg" alt="Нэг тэнхлэгт шахалт (UCS)" data-i18n-alt="work.i.ucs.title" width="1672" height="808" loading="lazy">
-                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
-                </button>
-                <figcaption>
-                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
-                    <strong data-i18n="work.i.ucs.title">Нэг тэнхлэгт шахалт (UCS)</strong>
-                    <span class="work-desc" data-i18n="work.i.ucs.desc">Хамгийн их бат бэх, Пуассоны коэффициент, уян харимхайн модуль, эвдрэлийн хэлбэр, дээжийн зураг.</span>
-                </figcaption>
-            </figure>
-            <figure class="work-item" data-group="lab">
-                <button type="button" class="work-thumb" aria-haspopup="dialog">
-                    <img src="images/work/s-direct-shear.jpg" alt="Шууд зүсэлт" data-i18n-alt="work.i.shear.title" width="1568" height="780" loading="lazy">
-                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
-                </button>
-                <figcaption>
-                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
-                    <strong data-i18n="work.i.shear.title">Шууд зүсэлт</strong>
-                    <span class="work-desc" data-i18n="work.i.shear.desc">Оргил ба үлдэгдэл зүсэлтийн хүчдэл, c ба φ параметр, туршилтын тэмдэглэл, зураг.</span>
-                </figcaption>
-            </figure>
             <figure class="work-item work-item--feature work-item--alt" data-group="drill">
                 <button type="button" class="work-thumb" aria-haspopup="dialog">
                     <img src="images/work/drill-dashboard.jpg" alt="Өрөмдлөг, дээжлэлтийн нэгдсэн самбар" data-i18n-alt="work.i.drillHub.title" width="1637" height="955" loading="lazy">
@@ -346,28 +306,6 @@
             </figure>
             <figure class="work-item" data-group="drill">
                 <button type="button" class="work-thumb" aria-haspopup="dialog">
-                    <img src="images/work/s-sample-coc.jpg" alt="Дээж тээвэрлэлт (Chain of Custody)" data-i18n-alt="work.i.coc.title" width="1568" height="780" loading="lazy">
-                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
-                </button>
-                <figcaption>
-                    <span class="work-tag" data-i18n="work.tag.drill">Өрөмдлөг</span>
-                    <strong data-i18n="work.i.coc.title">Дээж тээвэрлэлт (Chain of Custody)</strong>
-                    <span class="work-desc" data-i18n="work.i.coc.desc">Хөргөгч бүрийн дээжийн жагсаалт, QR шошго, зураг, хүлээлцсэн огноог бүртгэж, тээвэрлэлтийг хянана.</span>
-                </figcaption>
-            </figure>
-            <figure class="work-item" data-group="lab">
-                <button type="button" class="work-thumb" aria-haspopup="dialog">
-                    <img src="images/work/s-slake.jpg" alt="Усанд задрах тэсвэрлэлт (Slake)" data-i18n-alt="work.i.slake.title" width="1568" height="780" loading="lazy">
-                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
-                </button>
-                <figcaption>
-                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
-                    <strong data-i18n="work.i.slake.title">Усанд задрах тэсвэрлэлт (Slake)</strong>
-                    <span class="work-desc" data-i18n="work.i.slake.desc">1, 2-р мөчлөгийн индекс, жингийн алдагдал, туршилтын өмнөх ба дараах зураг.</span>
-                </figcaption>
-            </figure>
-            <figure class="work-item" data-group="drill">
-                <button type="button" class="work-thumb" aria-haspopup="dialog">
                     <img src="images/work/s-sampling-plan.jpg" alt="Дээжлэлтийн төлөвлөгөө (Strater лог)" data-i18n-alt="work.i.plan.title" width="1568" height="780" loading="lazy">
                     <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
                 </button>
@@ -375,94 +313,6 @@
                     <span class="work-tag" data-i18n="work.tag.drill">Өрөмдлөг</span>
                     <strong data-i18n="work.i.plan.title">Дээжлэлтийн төлөвлөгөө (Strater лог)</strong>
                     <span class="work-desc" data-i18n="work.i.plan.desc">Цооногийн литологийн лог дээр туршилтын дээжийн байршлыг төлөвлөж, газрын зурагтай холбон харуулна.</span>
-                </figcaption>
-            </figure>
-            <figure class="work-item" data-group="lab">
-                <button type="button" class="work-thumb" aria-haspopup="dialog">
-                    <img src="images/work/s-moisture-sensitivity.jpg" alt="Чийгт мэдрэг байдал" data-i18n-alt="work.i.mosens.title" width="1568" height="780" loading="lazy">
-                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
-                </button>
-                <figcaption>
-                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
-                    <strong data-i18n="work.i.mosens.title">Чийгт мэдрэг байдал</strong>
-                    <span class="work-desc" data-i18n="work.i.mosens.desc">Ус, талус, хагарал, бутралтын оноогоор дээж бүрийг үнэлж, зурагтай нь харуулна.</span>
-                </figcaption>
-            </figure>
-            <figure class="work-item" data-group="lab">
-                <button type="button" class="work-thumb" aria-haspopup="dialog">
-                    <img src="images/work/s-testing-instruction.jpg" alt="Туршилтын захиалгын хуудас" data-i18n-alt="work.i.order.title" width="1568" height="780" loading="lazy">
-                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
-                </button>
-                <figcaption>
-                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
-                    <strong data-i18n="work.i.order.title">Туршилтын захиалгын хуудас</strong>
-                    <span class="work-desc" data-i18n="work.i.order.desc">Дээж бүрт хийх туршилтыг захиалж, цооног тус бүрийн нэгтгэлийг автоматаар гаргана.</span>
-                </figcaption>
-            </figure>
-            <figure class="work-item" data-group="lab">
-                <button type="button" class="work-thumb" aria-haspopup="dialog">
-                    <img src="images/work/s-sample-inspection.jpg" alt="Дээж хүлээн авалт, үзлэг" data-i18n-alt="work.i.inspect.title" width="1568" height="780" loading="lazy">
-                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
-                </button>
-                <figcaption>
-                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
-                    <strong data-i18n="work.i.inspect.title">Дээж хүлээн авалт, үзлэг</strong>
-                    <span class="work-desc" data-i18n="work.i.inspect.desc">Лабораторид ирсэн дээж бүрийн үзлэгийн огноо, тэмдэглэл, зургийг бүртгэнэ.</span>
-                </figcaption>
-            </figure>
-            <figure class="work-item" data-group="lab">
-                <button type="button" class="work-thumb" aria-haspopup="dialog">
-                    <img src="images/work/s-moisture.jpg" alt="Чийгийн агуулга" data-i18n-alt="work.i.moist.title" width="1568" height="780" loading="lazy">
-                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
-                </button>
-                <figcaption>
-                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
-                    <strong data-i18n="work.i.moist.title">Чийгийн агуулга</strong>
-                    <span class="work-desc" data-i18n="work.i.moist.desc">Жингийн хэмжилт, чийгийн хувь, QC шалгалт, литологиор ангилсан статистик.</span>
-                </figcaption>
-            </figure>
-            <figure class="work-item" data-group="lab">
-                <button type="button" class="work-thumb" aria-haspopup="dialog">
-                    <img src="images/work/s-density.jpg" alt="Нягт" data-i18n-alt="work.i.density.title" width="1568" height="780" loading="lazy">
-                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
-                </button>
-                <figcaption>
-                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
-                    <strong data-i18n="work.i.density.title">Нягт</strong>
-                    <span class="work-desc" data-i18n="work.i.density.desc">Дээжийн хэмжээ, жин, эзэлхүүн, нойтон ба хуурай нягтыг график, зурагтай нь.</span>
-                </figcaption>
-            </figure>
-            <figure class="work-item" data-group="lab">
-                <button type="button" class="work-thumb" aria-haspopup="dialog">
-                    <img src="images/work/s-specific-gravity.jpg" alt="Хувийн жин ба шингээлт" data-i18n-alt="work.i.sg.title" width="1568" height="780" loading="lazy">
-                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
-                </button>
-                <figcaption>
-                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
-                    <strong data-i18n="work.i.sg.title">Хувийн жин ба шингээлт</strong>
-                    <span class="work-desc" data-i18n="work.i.sg.desc">Хувийн жин (SG), усны шингээлт, QC төлөв, литологи тус бүрийн дундаж.</span>
-                </figcaption>
-            </figure>
-            <figure class="work-item" data-group="lab">
-                <button type="button" class="work-thumb" aria-haspopup="dialog">
-                    <img src="images/work/s-tensile.jpg" alt="Суналтын бат бэх" data-i18n-alt="work.i.tensile.title" width="1568" height="780" loading="lazy">
-                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
-                </button>
-                <figcaption>
-                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
-                    <strong data-i18n="work.i.tensile.title">Суналтын бат бэх</strong>
-                    <span class="work-desc" data-i18n="work.i.tensile.desc">Хамгийн их бат бэх, оргил ачаалал, эвдрэлийн хэлбэр, туршилтын хугацаа.</span>
-                </figcaption>
-            </figure>
-            <figure class="work-item" data-group="lab">
-                <button type="button" class="work-thumb" aria-haspopup="dialog">
-                    <img src="images/work/s-triaxial.jpg" alt="Гурван тэнхлэгт шахалт" data-i18n-alt="work.i.triaxial.title" width="1568" height="780" loading="lazy">
-                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
-                </button>
-                <figcaption>
-                    <span class="work-tag" data-i18n="work.tag.lab">Лаборатори</span>
-                    <strong data-i18n="work.i.triaxial.title">Гурван тэнхлэгт шахалт</strong>
-                    <span class="work-desc" data-i18n="work.i.triaxial.desc">Хажуугийн даралт бүрээр бат бэх, модуль, эвдрэлийн хэлбэрийг харьцуулна.</span>
                 </figcaption>
             </figure>
             <figure class="work-item" data-group="drill">
@@ -474,28 +324,6 @@
                     <span class="work-tag" data-i18n="work.tag.drill">Өрөмдлөг</span>
                     <strong data-i18n="work.i.rock.title">Чулуулгийн дээжлэлт</strong>
                     <span class="work-desc" data-i18n="work.i.rock.desc">Дээж бүрийн интервал, бат бэхийн ангилал, давхаргын нэгж, нөхцөл байдлыг байршил, зурагтай нь бүртгэнэ.</span>
-                </figcaption>
-            </figure>
-            <figure class="work-item" data-group="drill">
-                <button type="button" class="work-thumb" aria-haspopup="dialog">
-                    <img src="images/work/s-sample-list.jpg" alt="Дээжийн жагсаалт" data-i18n-alt="work.i.list.title" width="1568" height="780" loading="lazy">
-                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
-                </button>
-                <figcaption>
-                    <span class="work-tag" data-i18n="work.tag.drill">Өрөмдлөг</span>
-                    <strong data-i18n="work.i.list.title">Дээжийн жагсаалт</strong>
-                    <span class="work-desc" data-i18n="work.i.list.desc">Цооног бүрээс авсан нүүрс, нүүрсжсэн чулуулаг, чулуулгийн дээжийн тоо, интервал, төлөв.</span>
-                </figcaption>
-            </figure>
-            <figure class="work-item" data-group="drill">
-                <button type="button" class="work-thumb" aria-haspopup="dialog">
-                    <img src="images/work/s-storage-monitoring.jpg" alt="Дээж хадгалалтын хяналт" data-i18n-alt="work.i.storage.title" width="1568" height="780" loading="lazy">
-                    <span class="work-zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M10.5 7.5v6M7.5 10.5h6"/></svg></span>
-                </button>
-                <figcaption>
-                    <span class="work-tag" data-i18n="work.tag.drill">Өрөмдлөг</span>
-                    <strong data-i18n="work.i.storage.title">Дээж хадгалалтын хяналт</strong>
-                    <span class="work-desc" data-i18n="work.i.storage.desc">Агуулах, контейнер, лабораторийн температурыг зөвшөөрөгдөх хязгаартай нь харьцуулж хянана.</span>
                 </figcaption>
             </figure>
             <figure class="work-item" data-group="drill">
@@ -616,30 +444,26 @@
 <section class="section about" id="about">
     <div class="container about-grid">
         <div class="about-text reveal">
-            <p class="eyebrow eyebrow--light" data-i18n="about.kicker">Бидний тухай</p>
+            <p class="eyebrow eyebrow--light" data-i18n="about.kicker">Бидний зорилго</p>
             <h2 class="section-title" data-i18n="about.title">Хээрийн мэдээллийг цааснаас салгана</h2>
+            <ul class="about-gains">
+                <li><span class="gain-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9.5 2.5h5"/></svg></span><span data-i18n="about.gain1">Цаг хэмнэж, бүтээмжийг нэмэгдүүлнэ</span></li>
+                <li><span class="gain-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10v-6z"/><path d="M8.5 12l2.5 2.5 4.5-4.5"/></svg></span><span data-i18n="about.gain2">Мэдээллийн хяналтыг тогтооно</span></li>
+                <li><span class="gain-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.5h6V4"/><path d="M8.5 11l2 2 4-4"/><path d="M8.5 17h7"/></svg></span><span data-i18n="about.gain3">Нэгдсэн, стандартчилсан өгөгдөл</span></li>
+            </ul>
             <p data-i18n="about.p1">RegaPro нь геологи, уул уурхай, геотехникийн хээрийн мэдээллийг бүрэн цахимжуулах шийдлийг хөгжүүлдэг. Хээрийн багийн бодит хэрэгцээнд тулгуурлан ArcGIS Survey123 платформ дээр найдвартай, стандартчилсан, ашиглахад хялбар систем бүтээдэг.</p>
             <p data-i18n="about.p2">Цаасан лог, дахин шивэх, файл дамжуулах ажлыг халж, хээрт бүртгэсэн мэдээлэл тэр даруй оффис, лаборатори, удирдлагад хүрдэг болгох нь бидний зорилго.</p>
-
-            <p class="tech-label" data-i18n="about.tech">Ашигладаг технологи</p>
-            <ul class="tech-list">
-                <li>ArcGIS Survey123</li>
-                <li>ArcGIS Online</li>
-                <li>ArcGIS Dashboards</li>
-                <li>ArcGIS Notebooks</li>
-                <li>Python</li>
-                <li>Microsoft Excel</li>
-                <li>SharePoint</li>
-            </ul>
+            <div class="about-tagline"><img src="images/logo-mark.png" alt="" width="38" height="40"><span>COLLECT • CONNECT • ANALYZE • DECIDE</span></div>
         </div>
-
-        <figure class="about-media reveal">
-            <img src="images/about-field.jpg" alt="Хээрийн ажилд Survey123 ашиглаж буй геологичид" data-i18n-alt="about.imgAlt" loading="lazy" width="1536" height="1024">
-            <figcaption>
-                <img src="images/logo-mark.png" alt="" width="38" height="40">
-                <span>COLLECT • CONNECT • ANALYZE • DECIDE</span>
-            </figcaption>
-        </figure>
+        <div class="about-side">
+            <figure class="about-media reveal"><img src="images/about-field.jpg" alt="Хээрийн ажилд Survey123 ашиглаж буй геологичид" data-i18n-alt="about.imgAlt" loading="lazy" width="1536" height="1024"></figure>
+            <div class="about-tech reveal"><p class="tech-label" data-i18n="about.tech">Ашигладаг технологи</p><div class="tech-stack">
+<div class="tech-group tech-group--arcgis tech-group--wide"><p class="tech-group-title"><span class="tech-ico tech-mono tech-mono--sm" style="--c:#2C7AC3" aria-hidden="true">AG</span><span data-i18n="about.techG1">ArcGIS платформ</span></p><ul class="tech-grid"><li class="tech-item"><span class="tech-ico tech-mono tech-mono--sm" style="--c:#35A853">S123</span>Survey123</li><li class="tech-item"><span class="tech-ico tech-mono" style="--c:#2B8C46">SC</span>Survey123 Connect</li><li class="tech-item"><span class="tech-ico tech-mono" style="--c:#2C7AC3">FM</span>Field Maps</li><li class="tech-item"><span class="tech-ico tech-mono" style="--c:#E07A1F">QC</span>QuickCapture</li><li class="tech-item"><span class="tech-ico tech-mono tech-mono--sm" style="--c:#1F6FB5">AGO</span>ArcGIS Online</li><li class="tech-item"><span class="tech-ico tech-mono tech-mono--sm" style="--c:#0E4F8C">Pro</span>ArcGIS Pro</li><li class="tech-item"><span class="tech-ico tech-mono" style="--c:#3A8FD6">DB</span>Dashboards</li><li class="tech-item"><span class="tech-ico tech-mono" style="--c:#6E5BD0">EB</span>Experience Builder</li><li class="tech-item"><span class="tech-ico tech-mono" style="--c:#1A9C9C">NB</span>Notebooks</li></ul></div>
+<div class="tech-group tech-group--wide"><p class="tech-group-title"><span data-i18n="about.techG2">Өгөгдөл ба анализ</span></p><ul class="tech-grid"><li class="tech-item"><span class="tech-ico tech-mono" style="--c:#3776AB">Py</span>Python</li><li class="tech-item"><span class="tech-ico tech-mono tech-mono--dark" style="--c:#F2C811">BI</span>Power BI</li><li class="tech-item"><span class="tech-ico tech-mono" style="--c:#C9932B">St</span>Strater</li></ul></div>
+<div class="tech-group"><p class="tech-group-title"><span data-i18n="about.techG3">Зураг төсөл / CAD</span></p><ul class="tech-grid"><li class="tech-item"><span class="tech-ico tech-mono" style="--c:#B5462E">CS</span>Carlson SurvCADD</li><li class="tech-item"><span class="tech-ico tech-mono" style="--c:#E51050">AC</span>AutoCAD</li></ul></div>
+<div class="tech-group"><p class="tech-group-title"><span data-i18n="about.techG4">Хамтын ажиллагаа</span></p><ul class="tech-grid"><li class="tech-item"><span class="tech-ico tech-mono" style="--c:#038387">SP</span>SharePoint</li><li class="tech-item"><span class="tech-ico tech-mono" style="--c:#5059C9">T</span>Microsoft Teams</li></ul></div>
+            </div></div>
+        </div>
     </div>
 </section>
 
@@ -682,7 +506,7 @@
         <nav class="footer-nav" aria-label="Footer">
             <a href="#workflow" data-i18n="nav.workflow">Ажлын урсгал</a>
             <a href="#services" data-i18n="nav.services">Үйлчилгээ</a>
-            <a href="#about" data-i18n="nav.about">Бидний тухай</a>
+            <a href="#about" data-i18n="nav.about">Бидний зорилго</a>
             <a href="#contact" data-i18n="nav.contact">Холбоо барих</a>
         </nav>
     </div>
