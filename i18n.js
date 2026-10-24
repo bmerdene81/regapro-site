@@ -100,6 +100,10 @@ window.REGAPRO_I18N = {
         "services.s7.text": "Capture points, lines and polygons on site with ArcGIS Field Maps, work offline and sync when you are back online.",
         "services.s8.title": "Field data standardization",
         "services.s8.text": "Unified forms, code lists and international standard codes ensure data quality and consistency.",
+        "services.s10.title": "3D visualization of field drillholes",
+        "services.s10.text": "Display drillhole locations, lithology and sample intervals in 3D for spatial analysis.",
+        "services.s11.title": "Sample registration & QR",
+        "services.s11.text": "Register every sample by scanning its QR code with the camera and link it to intervals and lab results.",
         "services.s9.title": "Secure data storage",
         "services.s9.text": "All data is backed up, protected by role-based permissions and accessible from anywhere.",
 
