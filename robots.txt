@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://regapro.com/sitemap.xml
