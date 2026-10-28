@@ -46,13 +46,15 @@ window.REGAPRO_I18N = {
 
         /* Hero */
         "hero.eyebrow": "Built on ArcGIS Survey123",
-        "hero.title": "Geology & Mining<br><span class=\"accent\">Consulting Services</span>",
-        "hero.lead": "One platform to capture geology and mining field data to a single standard — straight into a central database.",
+        "hero.title": "Geology & mining data <span class=\"accent\">digitalization, automation</span>",
+        "hero.lead": "A geoplatform that collects data to a single standard, checks it automatically and stores it reliably in one central database.",
         "hero.check1": "Easy-to-use design",
         "hero.check2": "Built on a proven platform",
         "hero.check3": "Keeps your data safe and reliable",
-        "hero.check4": "Fewer manual errors, one data standard",
+        "hero.check4": "Automatic checks: detects errors and duplicates",
         "hero.check5": "Every type of field data, fully digital",
+        "hero.check6": "3D visualization of drillhole data",
+        "hero.check7": "Project monitoring dashboard",
         "hero.cta1": "Our work",
         "hero.cta2": "Our services",
 
