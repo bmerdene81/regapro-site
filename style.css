@@ -833,3 +833,37 @@ h3 { font-size: 1.125rem; font-weight: 700; }
 .proj-tags li { font-size: .72rem; font-weight: 600; padding: 5px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,.28); background: rgba(255,255,255,.06); }
 @media (max-width: 1024px) { .projects-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .proj-card h3 { min-height: 0; } }
 @media (max-width: 640px) { .projects-grid { grid-template-columns: 1fr; } }
+
+/* ===== Site updates 2026-10-28: About section + tech icons ===== */
+/* (.tech-grid is already 3 columns / 2 on phones further up in this file) */
+.tech-img{flex:none;width:30px;height:30px;margin:0 0 0 -3px;object-fit:contain}
+#about [data-i18n="about.p1"]{font-size:20px;line-height:1.95}
+#about .tech-label{font-size:18px;font-weight:800;color:#fff;letter-spacing:.14em}
+@media (max-width:900px){#about [data-i18n="about.p1"]{font-size:17px;line-height:1.7}}
+
+/* About layout — matches the approved mockup (wider right column, full-width gain cards, tagline level with last tech row) */
+#about .about-grid{grid-template-columns:1fr 1.08fr;gap:56px;align-items:start}
+#about .about-text{align-self:stretch;display:flex;flex-direction:column}
+#about .about-text > p:last-of-type{margin-bottom:30px}
+#about .about-gains{display:grid;gap:10px;margin:4px 0 22px}
+#about .about-gains li{min-height:56px;padding:10px 14px;gap:12px;border-radius:10px;background:rgba(108,192,74,.10);font-size:1rem;line-height:1.35}
+#about .gain-icon{flex:0 0 34px;width:34px;height:34px;border-radius:8px}
+#about .gain-icon svg{width:20px;height:20px}
+#about .about-side{display:grid;gap:26px;align-content:start}
+#about .about-tech .tech-stack{gap:16px 14px}
+#about .tech-item{min-height:42px;padding:7px 10px 7px 7px;font-size:.84rem}
+#about .tech-group-title .tech-ico{flex-basis:26px;width:26px;height:26px;border-radius:7px;font-size:.52rem}
+#about .about-tagline{margin-top:auto;padding:16px 22px;gap:16px;border-left-width:4px;background:rgba(255,255,255,.96);box-shadow:0 18px 40px -22px rgba(0,0,0,.7);font-size:.78rem;letter-spacing:.2em}
+#about .about-tagline img{width:36px}
+@media (max-width:1024px){
+  #about .about-grid{grid-template-columns:1fr;gap:36px}
+  #about .about-text > p:last-of-type{margin-bottom:16px}
+  #about .about-tagline{margin-top:8px}
+}
+@media (max-width:640px){
+  #about .about-grid{gap:28px}
+  #about .about-gains li{min-height:48px;font-size:.88rem}
+  #about .tech-item{font-size:.8rem;gap:8px;padding:7px 8px 7px 7px}
+  #about .about-tagline{padding:12px 14px;gap:10px;font-size:.6rem;letter-spacing:.08em}
+  #about .about-tagline img{width:24px}
+}

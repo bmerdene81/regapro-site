@@ -46,15 +46,15 @@ window.REGAPRO_I18N = {
 
         /* Hero */
         "hero.eyebrow": "Built on ArcGIS Survey123",
-        "hero.title": "Geology & mining data <span class=\"accent\">digitalization, automation</span>",
-        "hero.lead": "A geoplatform that collects data to a single standard, checks it automatically and stores it reliably in one central database.",
+        "hero.title": "Digitalization and automation of <span class=\"accent\">geology and mining data</span>",
+        "hero.lead": "A geo-platform that collects data to one standard, verifies it with automated checks, and stores it reliably in a unified database.",
         "hero.check1": "Easy-to-use design",
         "hero.check2": "Built on a proven platform",
         "hero.check3": "Keeps your data safe and reliable",
-        "hero.check4": "Automatic checks: detects errors and duplicates",
+        "hero.check4": "Automated checks catch errors and duplicates",
         "hero.check5": "Every type of field data, fully digital",
         "hero.check6": "3D visualization of drillhole data",
-        "hero.check7": "Project monitoring dashboard",
+        "hero.check7": "Project dashboards",
         "hero.cta1": "Our work",
         "hero.cta2": "Our services",
 
@@ -147,10 +147,9 @@ window.REGAPRO_I18N = {
         "work.less": "Show less",
 
         /* About */
-        "about.kicker": "Our mission",
-        "about.title": "Taking field data off paper",
-        "about.p1": "RegaPro builds solutions that fully digitize geological, mining and geotechnical field data. Guided by the real needs of field teams, we build reliable, standardized and easy-to-use systems on the ArcGIS Survey123 platform.",
-        "about.p2": "Our goal: no more paper logs, re-typing or passing files around — data recorded in the field reaches the office, the lab and management right away.",
+        "about.kicker": "About us",
+        "about.title": "A new digital era for field data",
+        "about.p1": "RegaPro develops solutions that fully digitize geology and mining field data. Built around the real needs of field teams, our reliable, standardized and easy-to-use systems on the ArcGIS platform replace paper logs, re-typing and file transfers. Data recorded in the field is verified by automated checks and reaches the office and management right away, so decisions and oversight are better supported. Our goal is to bring the digital data systems now evolving worldwide to the geology and mining sector.",
         "about.tech": "Technology we use",
         
         "about.gain1": "Saves time and boosts productivity",
