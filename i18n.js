@@ -40,7 +40,7 @@ window.REGAPRO_I18N = {
         "adv.r5": "Data standardization",
         "adv.r6": "View drilling data directly in 3D",
         "adv.cta": "Contact us",
-        "nav.about": "Our mission",
+        "nav.about": "About us",
         "nav.contact": "Contact",
         "nav.cta": "Our work",
 
