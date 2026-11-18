@@ -76,6 +76,33 @@
                 }
             } catch (e) {}
         }
+
+        /* Canonical and social URL follow the crawlable language URL.
+           ?lang=en is the English page; every other URL stays the Mongolian canonical. */
+        var explicitLang = '';
+        try { explicitLang = new URLSearchParams(location.search).get('lang') || ''; } catch (e) {}
+        var pageUrl = explicitLang === 'en' ? 'https://regapro.com/?lang=en' : 'https://regapro.com/';
+        var canonical = document.querySelector('link[rel="canonical"]');
+        if (canonical) canonical.setAttribute('href', pageUrl);
+        var ogUrl = document.querySelector('meta[property="og:url"]');
+        if (ogUrl) ogUrl.setAttribute('content', pageUrl);
+        var ogLocale = document.querySelector('meta[property="og:locale"]');
+        if (ogLocale) ogLocale.setAttribute('content', lang === 'en' ? 'en_US' : 'mn_MN');
+        var ld = document.getElementById('regapro-ld');
+        if (ld) {
+            try {
+                var data = JSON.parse(ld.textContent);
+                (data['@graph'] || []).forEach(function (node) {
+                    if (node['@type'] !== 'WebPage') return;
+                    node.inLanguage = lang;
+                    node.name = t('meta.title');
+                    node.description = t('meta.desc');
+                    node.url = pageUrl;
+                    node['@id'] = pageUrl + '#webpage';
+                });
+                ld.textContent = JSON.stringify(data);
+            } catch (e) {}
+        }
     }
 
     function initialLang() {

@@ -10,8 +10,9 @@
 window.REGAPRO_I18N = {
     en: {
         /* Meta */
-        "meta.title": "RegaPro | Digital Geological & Geotechnical Logging",
-        "meta.desc": "A field data platform for geology and mining, built on ArcGIS Survey123. Digital logging, sample tracking, lab test data and dashboards.",
+        "meta.title": "RegaPro | Geology, Geotechnical & Mining Consulting in Mongolia",
+        "meta.desc": "RegaPro (Rega Pro) provides geology, geotechnical and mining consulting in Bayangol, Ulaanbaatar, Mongolia. Digital field logging for mining projects.",
+        "meta.imageAlt": "RegaPro — geology, geotechnical and mining consulting in Ulaanbaatar, Mongolia",
 
         /* Accessibility */
         "a11y.skip": "Skip to main content",
