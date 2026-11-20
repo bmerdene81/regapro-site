@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="d3.meta.title">Цооногуудын 3D дүрслэл | RegaPro</title>
+    <meta name="description" data-i18n-content="d3.meta.desc" content="Survey123-аар бүртгэсэн литологи, дээжийн интервалыг ArcGIS Scene Viewer-т автоматаар дамжуулж, цооногуудыг 3D орчинд харуулна.">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#0C2839">
+    <link rel="canonical" href="https://regapro.com/3d-durslel.html">
+    <link rel="alternate" hreflang="mn" href="https://regapro.com/3d-durslel.html">
+    <link rel="alternate" hreflang="en" href="https://regapro.com/3d-durslel.html?lang=en">
+    <link rel="alternate" hreflang="x-default" href="https://regapro.com/3d-durslel.html">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="RegaPro">
+    <meta property="og:locale" content="mn_MN">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:title" data-i18n-content="d3.meta.title" content="Цооногуудын 3D дүрслэл | RegaPro">
+    <meta property="og:description" data-i18n-content="d3.meta.desc" content="Survey123-аар бүртгэсэн литологи, дээжийн интервалыг ArcGIS Scene Viewer-т автоматаар дамжуулж, цооногуудыг 3D орчинд харуулна.">
+    <meta property="og:url" content="https://regapro.com/3d-durslel.html">
+    <meta property="og:image" content="https://regapro.com/images/work/3d-drillholes.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" data-i18n-content="d3.meta.title" content="Цооногуудын 3D дүрслэл | RegaPro">
+    <meta name="twitter:description" data-i18n-content="d3.meta.desc" content="Survey123-аар бүртгэсэн литологи, дээжийн интервалыг ArcGIS Scene Viewer-т автоматаар дамжуулж, цооногуудыг 3D орчинд харуулна.">
+
+    <link rel="icon" href="images/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="images/favicon-192.png">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <script>
+        (function () {
+            var lang = 'mn';
+            try {
+                var q = new URLSearchParams(location.search).get('lang');
+                lang = (q === 'en' || q === 'mn') ? q : (localStorage.getItem('regapro-lang') || 'mn');
+            } catch (e) {}
+            if (lang === 'en') document.documentElement.classList.add('lang-pending');
+        })();
+    </script>
+<script type="text/javascript">(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "z3935l0bdy");</script>
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "3D drillhole visualization",
+    "url": "https://regapro.com/3d-durslel.html",
+    "description": "Lithology and sample intervals logged in Survey123 flow into ArcGIS Scene Viewer to show drillholes in 3D.",
+    "provider": { "@id": "https://regapro.com/#organization", "@type": "ProfessionalService", "name": "RegaPro", "url": "https://regapro.com/" },
+    "areaServed": { "@type": "Country", "name": "Mongolia" }
+}
+</script>
+</head>
+<body class="page-service">
+
+<a class="skip-link" href="#main" data-i18n="a11y.skip">Үндсэн агуулга руу шилжих</a>
+
+<!-- ================= HEADER ================= -->
+<header class="site-header" id="top">
+    <div class="container header-inner">
+        <a href="index.html" class="brand" aria-label="RegaPro">
+            <img class="brand-logo brand-logo--light" src="images/logo-horizontal-white.png" alt="RegaPro" width="239" height="48">
+            <img class="brand-logo brand-logo--dark" src="images/logo-horizontal.png" alt="RegaPro" width="239" height="48">
+        </a>
+
+        <nav class="main-nav" id="main-nav" aria-label="Үндсэн цэс" data-i18n-aria="a11y.nav">
+            <a href="index.html#home" class="nav-link" data-i18n="nav.home">Нүүр</a>
+            <a href="index.html#workflow" class="nav-link" data-i18n="nav.workflow">Ажлын урсгал</a>
+            <a href="index.html#services" class="nav-link is-current" aria-current="page" data-i18n="nav.services">Үйлчилгээ</a>
+            <a href="index.html#advantages" class="nav-link" data-i18n="nav.advantages">Давуу талууд</a>
+            <a href="index.html#about" class="nav-link" data-i18n="nav.about">Бидний тухай</a>
+            <a href="index.html#contact" class="nav-link" data-i18n="nav.contact">Холбоо барих</a>
+            <a href="index.html#experience" class="btn btn-primary btn-sm nav-cta" data-i18n="nav.cta">Ажлын туршлага</a>
+        </nav>
+
+        <div class="header-actions">
+            <div class="lang-switch" role="group" aria-label="Хэл сонгох" data-i18n-aria="a11y.lang">
+                <button type="button" class="lang-btn is-active" data-lang="mn" aria-pressed="true" title="Монгол">MN</button>
+                <button type="button" class="lang-btn" data-lang="en" aria-pressed="false" title="English">EN</button>
+            </div>
+            <button class="nav-toggle" type="button" aria-controls="main-nav" aria-expanded="false" aria-label="Цэс нээх" data-i18n-aria="a11y.menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<main id="main">
+
+<!-- ================= HERO ================= -->
+<section class="svc-hero">
+    <div class="container svc-hero-grid">
+        <div class="svc-hero-text">
+            <nav class="kar-crumbs" aria-label="Breadcrumb">
+                <a href="index.html" data-i18n="nav.home">Нүүр</a><span aria-hidden="true">›</span>
+                <a href="index.html#services" data-i18n="nav.services">Үйлчилгээ</a><span aria-hidden="true">›</span>
+                <span data-i18n="services.s10.title">Талбайн цооногуудын 3D дүрслэл</span>
+            </nav>
+            <p class="eyebrow eyebrow--light" data-i18n="d3.hero.eyebrow">3D дүрслэл</p>
+            <h1 class="kar-hero-title" data-i18n="d3.hero.title">Цооногуудаа <span class="accent">3D орчинд</span> хар</h1>
+            <p class="kar-hero-lead" data-i18n="d3.hero.lead">Survey123-аар бүртгэсэн литологи, дээжийн интервалыг ArcGIS Scene Viewer-т дамжуулж, цооногуудыг газрын гадаргатай нь 3D орчинд харуулна. Цооног хоорондын харьцуулалт, орон зайн шинжилгээг вэб хөтөч дээрээс хийнэ.</p>
+            <div class="kar-hero-actions">
+                <a href="#example" class="btn btn-primary" data-i18n="kar.hero.cta1">Жишээ үзэх</a>
+                <a href="index.html#contact" class="btn btn-ghost" data-i18n="nav.contact">Холбоо барих</a>
+            </div>
+        </div>
+        <figure class="svc-hero-img">
+            <img src="images/work/3d-drillholes.jpg" alt="Цооногуудын литологийг 3D орчинд харуулсан дэлгэц" data-i18n-alt="d3.hero.alt" width="1200" height="675" fetchpriority="high">
+        </figure>
+    </div>
+</section>
+
+<!-- ================= FEATURES ================= -->
+<section class="section svc-feat-sec">
+    <div class="container">
+        <header class="section-head reveal">
+            <p class="eyebrow" data-i18n="svc.feat.kicker">Боломжууд</p>
+            <h2 class="section-title" data-i18n="svc.feat.title">Юу багтдаг вэ?</h2>
+        </header>
+        <div class="svc-feats"><article class="svc-feat reveal"><div class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 8 12 13l9.5-5z"/><path d="m2.5 12.5 9.5 5 9.5-5"/><path d="m2.5 17 9.5 5 9.5-5"/></svg></div><h3 data-i18n="d3.f1.t">Литологийн багана</h3><p data-i18n="d3.f1.d">Интервал бүр өнгө, кодоороо 3D цооног дээр харагдана.</p></article><article class="svc-feat reveal"><div class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 19.5 9 9l4 6 3-4 5.5 8.5z"/><circle cx="17" cy="5.5" r="2"/></svg></div><h3 data-i18n="d3.f2.t">Газрын гадарга</h3><p data-i18n="d3.f2.d">Өндрийн загвар, хиймэл дагуулын зурагтай нийлүүлнэ.</p></article><article class="svc-feat reveal"><div class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18"/><path d="M7 4l5 16M14 4l3 12"/></svg></div><h3 data-i18n="d3.f3.t">Налуу цооног</h3><p data-i18n="d3.f3.d">Азимут, налуугаар цооногийн траекторийг зөв байрлуулна.</p></article><article class="svc-feat reveal"><div class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="3.5" width="19" height="17" rx="2"/><path d="M2.5 8.5h19"/><path d="M6 17l3.5-4 3 2.5 5-5.5"/></svg></div><h3 data-i18n="d3.f4.t">Стрип лог ба график</h3><p data-i18n="d3.f4.d">Цооног сонгоход литологийн багана, чулуулгийн зузааны график гарна.</p></article><article class="svc-feat reveal"><div class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.3-4.6L4 8"/><path d="M4 3.5V8h4.5"/><path d="M4 13a8 8 0 0 0 14.3 4.6L20 16"/><path d="M20 20.5V16h-4.5"/></svg></div><h3 data-i18n="d3.f5.t">Шинэчлэл</h3><p data-i18n="d3.f5.d">Шинэ интервал бүртгэгдэхэд 3D давхарга шинэчлэгдэнэ.</p></article><article class="svc-feat reveal"><div class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c2.6 2.8 3.8 6 3.8 9.5s-1.2 6.7-3.8 9.5c-2.6-2.8-3.8-6-3.8-9.5S9.4 5.3 12 2.5z"/></svg></div><h3 data-i18n="d3.f6.t">Вэбээр хуваалцах</h3><p data-i18n="d3.f6.d">Программ суулгалгүйгээр хөтөч дээр нээж, багтайгаа хуваалцана.</p></article></div>
+    </div>
+</section>
+
+<!-- ================= STEPS ================= -->
+<section class="section svc-steps-sec">
+    <div class="container">
+        <header class="section-head reveal">
+            <p class="eyebrow" data-i18n="nav.workflow">Ажлын урсгал</p>
+            <h2 class="section-title" data-i18n="svc.steps.title">Хэрхэн ажилладаг вэ?</h2>
+        </header>
+        <ol class="svc-steps svc-steps--4"><li class="svc-step reveal"><span class="svc-step-n">01</span><h3 data-i18n="d3.st1.t">Өгөгдөл нэгтгэх</h3><p data-i18n="d3.st1.d">Цооногийн ам, хазайлт, интервалын өгөгдлийг нэгтгэнэ.</p></li><li class="svc-step reveal"><span class="svc-step-n">02</span><h3 data-i18n="d3.st2.t">3D давхарга үүсгэх</h3><p data-i18n="d3.st2.d">Интервал бүрийг 3D цилиндр болгон хөрвүүлнэ.</p></li><li class="svc-step reveal"><span class="svc-step-n">03</span><h3 data-i18n="d3.st3.t">Вэб апп</h3><p data-i18n="d3.st3.d">Scene Viewer, Experience Builder-т шүүлтүүр, график нэмнэ.</p></li><li class="svc-step reveal"><span class="svc-step-n">04</span><h3 data-i18n="d3.st4.t">Шинэчилж байх</h3><p data-i18n="d3.st4.d">Шинэ мэдээлэл орох бүрт давхаргыг шинэчилнэ.</p></li></ol>
+    </div>
+</section>
+
+<!-- ================= EXAMPLE ================= -->
+<section class="section svc-example-sec" id="example">
+    <div class="container">
+        <header class="section-head reveal">
+            <p class="eyebrow" data-i18n="svc.demo.kicker">Жишээ</p>
+            <h2 class="section-title" data-i18n="d3.ex.title">Бодит төсөл дээрх 3D дүрслэл</h2>
+        </header>
+        
+        <div class="svc-gallery-wrap"><p class="svc-note" data-i18n="svc.gallery.note">Нууц мэдээллийг бүдгэрүүлсэн. Зураг дээр дарж томруулна.</p><div class="svc-gallery svc-gallery--3"><figure class="svc-shot reveal"><a href="images/work/3d-drillholes.jpg" target="_blank" rel="noopener"><img src="images/work/3d-drillholes.jpg" alt="Цооногуудын литологи — цооног, интервалын тоо, нийт метр" data-i18n-alt="d3.g1" loading="lazy" width="1600" height="837"></a><figcaption data-i18n="d3.g1">Цооногуудын литологи — цооног, интервалын тоо, нийт метр</figcaption></figure><figure class="svc-shot reveal"><a href="images/work/3d-hole-detail.jpg" target="_blank" rel="noopener"><img src="images/work/3d-hole-detail.jpg" alt="Газрын гадаргын доорх налуу цооногууд" data-i18n-alt="d3.g2" loading="lazy" width="1600" height="836"></a><figcaption data-i18n="d3.g2">Газрын гадаргын доорх налуу цооногууд</figcaption></figure><figure class="svc-shot reveal"><a href="images/work/3d-striplog.jpg" target="_blank" rel="noopener"><img src="images/work/3d-striplog.jpg" alt="Литологийн багана ба чулуулгийн зузааны график" data-i18n-alt="d3.g3" loading="lazy" width="1600" height="846"></a><figcaption data-i18n="d3.g3">Литологийн багана ба чулуулгийн зузааны график</figcaption></figure></div></div>
+    </div>
+</section>
+
+<!-- ================= TECH + RELATED + CTA ================= -->
+<section class="section svc-more-sec">
+    <div class="container">
+        <div class="svc-tech reveal">
+            <h2 data-i18n="about.tech">Ашигладаг технологи</h2>
+            <ul class="svc-tech-list"><li class="tech-item"><img class="tech-img" src="images/tech/scene-viewer.png" width="30" height="30" alt="" loading="lazy">Scene Viewer</li><li class="tech-item"><img class="tech-img" src="images/tech/experience-builder.png" width="30" height="30" alt="" loading="lazy">Experience Builder</li><li class="tech-item"><span class="tech-ico tech-mono tech-mono--sm" style="--c:#0E4F8C">Pro</span>ArcGIS Pro</li><li class="tech-item"><img class="tech-img" src="images/tech/survey123.png" width="30" height="30" alt="" loading="lazy">Survey123</li><li class="tech-item"><span class="tech-ico tech-mono" style="--c:#1A9C9C">NB</span>Notebooks</li></ul>
+        </div>
+        <div class="svc-related">
+            <h2 data-i18n="svc.related.title">Холбоотой үйлчилгээ</h2>
+            <div class="svc-rel-grid"><a class="svc-rel reveal" href="geologiin-log.html"><span class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="2.5" width="8" height="19" rx="1.5"/><path d="M8 7h8M8 11.5h8M8 16h8"/><path d="M4 5v14M20 5v14"/></svg></span><span class="svc-rel-body"><strong data-i18n="services.s1.title">Геологийн лог</strong><span data-i18n="services.s1.text">Литологи, бүтэц, хувирал, эрдэсжилт, зураг бүхий цооногийн цахим лог.</span></span><span class="svc-rel-more" data-i18n="services.more">Дэлгэрэнгүй</span></a><a class="svc-rel reveal" href="field-maps.html"><span class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><span class="svc-rel-body"><strong data-i18n="services.s7.title">Field Maps апп</strong><span data-i18n="services.s7.text">ArcGIS Field Maps-аар газар дээр цэг, шугам, талбай бүртгэж, офлайн ажиллаад синк хийнэ.</span></span><span class="svc-rel-more" data-i18n="services.more">Дэлгэрэнгүй</span></a><a class="svc-rel reveal" href="karotazh.html"><span class="service-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3v18M9 3c2 3-2 5 0 8s-2 5 0 10M15 3c-1 4 3 5 1 9s2 6 0 9M20 3v18"/></svg></span><span class="svc-rel-body"><strong data-i18n="services.s12.title">Каротажийн өгөгдөл боловсруулалт</strong><span data-i18n="services.s12.text">Цооногийн геофизикийн LAS файлыг автоматаар уншиж, стандартчилан, чанарын хяналт хийж, нүүрсний давхаргыг ялган мэдээллийн санд оруулна.</span></span><span class="svc-rel-more" data-i18n="services.more">Дэлгэрэнгүй</span></a></div>
+        </div>
+        <div class="kar-cta reveal">
+            <div>
+                <h2 data-i18n="svc.cta.title">Танай төсөлд тохирсон шийдэл хэрэгтэй юу?</h2>
+                <p data-i18n="svc.cta.text">Бидэнтэй холбогдоорой. Танай ажлын урсгалыг судалж, тохирох шийдлийг санал болгоно.</p>
+            </div>
+            <a class="btn btn-primary" href="index.html#contact" data-i18n="nav.contact">Холбоо барих</a>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer">
+    <div class="container footer-grid">
+        <div class="footer-brand">
+            <img src="images/logo-horizontal-white.png" alt="RegaPro" width="199" height="40" loading="lazy">
+            <p data-i18n="footer.desc">ArcGIS Survey123 дээр суурилсан геологи, уул уурхайн хээрийн мэдээллийн цахим шийдэл.</p>
+        </div>
+        <nav class="footer-nav" aria-label="Footer">
+            <a href="index.html#workflow" data-i18n="nav.workflow">Ажлын урсгал</a>
+            <a href="index.html#services" data-i18n="nav.services">Үйлчилгээ</a>
+            <a href="karotazh.html" data-i18n="nav.karotazh">Каротаж</a>
+            <a href="index.html#about" data-i18n="nav.about">Бидний тухай</a>
+            <a href="index.html#contact" data-i18n="nav.contact">Холбоо барих</a>
+        </nav>
+    </div>
+    <div class="container">
+        <div class="footer-bottom">
+            <p>© <span class="js-year">2026</span> RegaPro. <span data-i18n="footer.rights">Бүх эрх хуулиар хамгаалагдсан.</span></p>
+            <p class="footer-tagline">COLLECT • CONNECT • ANALYZE • DECIDE</p>
+        </div>
+    </div>
+</footer>
+
+<script src="i18n.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
