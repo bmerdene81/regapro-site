@@ -14,6 +14,9 @@
     var STORAGE_KEY = 'regapro-lang';
     var root = document.documentElement;
     var dict = window.REGAPRO_I18N || { en: {}, mn: {} };
+    /* Хуудас бүрийн canonical хаяг (HTML-д бичсэнээр), жнь https://regapro.com/karotazh.html */
+    var canonicalEl = document.querySelector('link[rel="canonical"]');
+    var PAGE_URL = (canonicalEl && canonicalEl.getAttribute('href') || 'https://regapro.com/').split('?')[0];
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     /* ---------------------------------------------------------
@@ -81,7 +84,7 @@
            ?lang=en is the English page; every other URL stays the Mongolian canonical. */
         var explicitLang = '';
         try { explicitLang = new URLSearchParams(location.search).get('lang') || ''; } catch (e) {}
-        var pageUrl = explicitLang === 'en' ? 'https://regapro.com/?lang=en' : 'https://regapro.com/';
+        var pageUrl = explicitLang === 'en' ? PAGE_URL + '?lang=en' : PAGE_URL;
         var canonical = document.querySelector('link[rel="canonical"]');
         if (canonical) canonical.setAttribute('href', pageUrl);
         var ogUrl = document.querySelector('meta[property="og:url"]');
@@ -160,7 +163,8 @@
     }
 
     // Идэвхтэй хэсгийг цэсэнд тодруулах
-    var links = Array.prototype.slice.call(document.querySelectorAll('.main-nav .nav-link'));
+    var links = Array.prototype.slice.call(document.querySelectorAll('.main-nav .nav-link'))
+        .filter(function (l) { return (l.getAttribute('href') || '').charAt(0) === '#'; });   // зөвхөн энэ хуудасны #хэсэг
     var sections = links.map(function (l) { return document.querySelector(l.getAttribute('href')); }).filter(Boolean);
     if ('IntersectionObserver' in window && sections.length) {
         var spy = new IntersectionObserver(function (entries) {
