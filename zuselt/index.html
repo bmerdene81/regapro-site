@@ -471,7 +471,9 @@ window.require([
         const br = view.toScreen({ type: "point", x: target.xmax, y: target.ymin, spatialReference: WM });
         const x0 = Math.max(0, Math.round(tl.x)), y0 = Math.max(0, Math.round(tl.y));
         const area = { x: x0, y: y0, width: Math.round(Math.min(view.width, br.x) - x0), height: Math.round(Math.min(view.height, br.y) - y0) };
-        const shot = await view.takeScreenshot({ area, width: outW, format: "png" });
+        // width-г ганцаараа өгвөл квадрат болж тайрагддаг тул өндрийг харьцаагаар нь заавал өгнө
+        const sc = Math.min(2, outW / area.width);
+        const shot = await view.takeScreenshot({ area, width: Math.round(area.width * sc), height: Math.round(area.height * sc), format: "png" });
         const metersPerPx = ((area.width * view.resolution) / shot.data.width) * k;
         return { dataUrl: shot.dataUrl, wPx: shot.data.width, hPx: shot.data.height, metersPerPx };
       } finally {
