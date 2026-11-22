@@ -175,6 +175,7 @@
             <select id="eqNv"></select></label>
         </div>
         <span class="hint">"Автомат" нь хуудсанд багтах хамгийн том масштабыг сонгоно. Сонгосон масштаб багтахгүй бол автоматаар тааруулна.</span>
+        <label class="fld" style="flex-direction:row;align-items:center;gap:8px;font-size:14px"><input type="checkbox" id="eqIv" checked style="width:18px;height:18px;min-height:0;accent-color:var(--green)"> PDF-д интервал бүрийн дэлгэрэнгүй хүснэгтийг оруулах (олон хуудас болно)</label>
       </fieldset>
       <fieldset>
         <legend>Штампын мэдээлэл</legend>
@@ -525,6 +526,7 @@ window.require([
     $("eqChecked").value = saved.checkedBy || "";
     $("eqNote").value = "";
     $("eqPaper").value = saved.paper || "A3";
+    $("eqIv").checked = saved.withIv !== false;
     const f = saved.fmt || "pdf";
     const r = dlg.querySelector(`input[name=fmt][value="${f}"]`); if (r) r.checked = true;
     setExp("");
@@ -541,7 +543,8 @@ window.require([
     const saved = store.get("stamp", {});
     saved.projects = saved.projects || {};
     saved.projects[currentSection.projectId] = meta.project;
-    Object.assign(saved, { org: meta.org, drawnBy: meta.drawnBy, checkedBy: meta.checkedBy, paper, fmt: fmtSel });
+    const withIv = $("eqIv").checked;
+    Object.assign(saved, { org: meta.org, drawnBy: meta.drawnBy, checkedBy: meta.checkedBy, paper, fmt: fmtSel, withIv });
     store.set("stamp", saved);
 
     const sec = currentSection;
@@ -571,7 +574,7 @@ window.require([
         } else if (fmtSel === "pdf") {
           step("PDF сан ачаалж байна…");
           const { jsPDF } = await loadLib("jspdf");
-          const pages = Z.buildReportPages(sec, meta, mapShot, logo, paper, true);
+          const pages = Z.buildReportPages(sec, meta, mapShot, logo, paper, true, withIv);
           const P = Z.PAPERS[paper], fmtKey = paper.toLowerCase();
           const pdf = new jsPDF({ orientation: "landscape", unit: "mm", format: fmtKey, compress: true });
           for (let i = 0; i < pages.length; i++) {

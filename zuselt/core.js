@@ -466,10 +466,10 @@
   }
 
   /** Хүснэгтэн хуудсууд: ерөнхий мэдээлэл, цооног, литологи, интервал */
-  function tablePages(sec, meta, paperKey, firstPage) {
+  function tablePages(sec, meta, paperKey, firstPage, withIntervals = true) {
     const P = PAPERS[paperKey], W = P.w * MM, H = P.h * MM, A3 = paperKey === "A3";
     const t = reportTables(sec, meta);
-    const fs = A3 ? 11 : 9.6, rowH = (A3 ? 6.2 : 5.1) * MM, headH = rowH * 1.15;
+    const fs = A3 ? 10.4 : 9.2, rowH = (A3 ? 5.2 : 4.7) * MM, headH = rowH * 1.2;
     const F0 = frame(W, H);
     const cx = F0.fx + 5 * MM, cw = F0.fw - 10 * MM, cTop = F0.fy + 7 * MM, stampH = 15 * MM, cBottom = F0.fy + F0.fh - stampH - 5 * MM;
 
@@ -489,23 +489,26 @@
         cols: [{ t: "Код", w: 0.1 }, { t: "Литологи", w: 0.4 }, { t: "Цооног", w: 0.1, a: "end" }, { t: "Интервал", w: 0.12, a: "end" }, { t: "Нийт зузаан, м", w: 0.15, a: "end" }, { t: "Хувь, %", w: 0.13, a: "end" }],
         rows: t.lith.map((l) => [{ v: l.code, fill: lithInfo(l.code)[0], b: true }, lithInfo(l.code)[1], { v: l.holes, a: "end" }, { v: l.n, a: "end" }, N(l.m, 1), N(l.pct, 1)])
       },
-      { h: "4. ИНТЕРВАЛЫН ДЭЛГЭРЭНГҮЙ" },
-      {
-        cols: [{ t: "Цооног", w: 0.12 }, { t: "Эхлэл, м", w: 0.08, a: "end" }, { t: "Төгсгөл, м", w: 0.08, a: "end" }, { t: "Зузаан, м", w: 0.08, a: "end" },
-          { t: "Дээд өндөр, м", w: 0.1, a: "end" }, { t: "Доод өндөр, м", w: 0.1, a: "end" }, { t: "Код", w: 0.07 }, { t: "Литологи", w: 0.2 }, { t: "Тайлбар", w: 0.17 }],
+      ...(withIntervals ? [{ h: "4. ИНТЕРВАЛЫН ДЭЛГЭРЭНГҮЙ" }, {
+        split: true,
+        cols: A3
+          ? [{ t: "Цооног", w: 0.15 }, { t: "Эхлэл", w: 0.08, a: "end" }, { t: "Төгсгөл", w: 0.09, a: "end" }, { t: "Зузаан", w: 0.09, a: "end" },
+            { t: "Дээд өнд.", w: 0.1, a: "end" }, { t: "Доод өнд.", w: 0.1, a: "end" }, { t: "Код", w: 0.08 }, { t: "Литологи", w: 0.19 }, { t: "Тайлбар", w: 0.12 }]
+          : [{ t: "Цооног", w: 0.12 }, { t: "Эхлэл, м", w: 0.08, a: "end" }, { t: "Төгсгөл, м", w: 0.08, a: "end" }, { t: "Зузаан, м", w: 0.08, a: "end" },
+            { t: "Дээд өндөр, м", w: 0.1, a: "end" }, { t: "Доод өндөр, м", w: 0.1, a: "end" }, { t: "Код", w: 0.07 }, { t: "Литологи", w: 0.2 }, { t: "Тайлбар", w: 0.17 }],
         rows: t.ivRows.map((r) => [{ v: r[0], b: true }, N(r[1], 2), N(r[2], 2), N(r[3], 2), N(r[4], 2), N(r[5], 2), { v: r[6], fill: lithInfo(r[6])[0], b: true }, r[7], r[8]])
-      }
+      }] : [])
     ];
 
     // Хуудаслалт
     const pages = [];
     let cur = [], y = cTop;
     const newPage = () => { pages.push(cur); cur = []; y = cTop; };
-    const drawHeader = (cols) => {
-      let x = cx;
-      cur.push(`<rect x="${cx.toFixed(1)}" y="${y.toFixed(1)}" width="${cw.toFixed(1)}" height="${headH.toFixed(1)}" fill="#0f2236"/>`);
+    const drawHeader = (cols, x0, tw) => {
+      let x = x0;
+      cur.push(`<rect x="${x0.toFixed(1)}" y="${y.toFixed(1)}" width="${tw.toFixed(1)}" height="${headH.toFixed(1)}" fill="#0f2236"/>`);
       cols.forEach((c) => {
-        const w = c.w * cw;
+        const w = c.w * tw;
         cur.push(T(c.a === "end" ? x + w - 1.5 * MM : x + 1.5 * MM, y + headH * 0.66, c.t, { size: fs * 0.95, weight: 700, fill: "#ffffff", anchor: c.a, maxW: w - 3 * MM }));
         x += w;
       });
@@ -519,21 +522,29 @@
         y += 7.5 * MM;
         return;
       }
-      drawHeader(b.cols);
-      b.rows.forEach((row, ri) => {
-        if (y + rowH > cBottom) { newPage(); drawHeader(b.cols); }
-        if (ri % 2) cur.push(`<rect x="${cx.toFixed(1)}" y="${y.toFixed(1)}" width="${cw.toFixed(1)}" height="${rowH.toFixed(1)}" fill="#f2f5f8"/>`);
-        let x = cx;
+      const nCols = b.split && A3 ? 2 : 1, gap = 6 * MM, tw = (cw - gap * (nCols - 1)) / nCols;
+      let col = 0, colTop = y, ri = 0;
+      const x0 = () => cx + col * (tw + gap);
+      drawHeader(b.cols, x0(), tw);
+      b.rows.forEach((row) => {
+        if (y + rowH > cBottom) {
+          if (col < nCols - 1) { col++; y = colTop; } else { newPage(); col = 0; colTop = y; }
+          drawHeader(b.cols, x0(), tw); ri = 0;
+        }
+        const xs = x0();
+        if (ri % 2) cur.push(`<rect x="${xs.toFixed(1)}" y="${y.toFixed(1)}" width="${tw.toFixed(1)}" height="${rowH.toFixed(1)}" fill="#f2f5f8"/>`);
+        let x = xs;
         b.cols.forEach((c, ci) => {
-          const w = c.w * cw, cell = row[ci], o = cell && typeof cell === "object" ? cell : { v: cell };
+          const w = c.w * tw, cell = row[ci], o = cell && typeof cell === "object" ? cell : { v: cell };
           if (o.fill) cur.push(`<rect x="${(x + 0.6).toFixed(1)}" y="${(y + 0.6).toFixed(1)}" width="${(w - 1.2).toFixed(1)}" height="${(rowH - 1.2).toFixed(1)}" fill="${o.fill}"/>`);
           const a = o.a || c.a;
           cur.push(T(a === "end" ? x + w - 1.5 * MM : x + 1.5 * MM, y + rowH * 0.68, o.v ?? "", { size: fs, weight: o.b ? 700 : null, anchor: a, fill: o.fill ? textOn(o.fill) : "#111", maxW: w - 3 * MM }));
           x += w;
         });
-        cur.push(Ln(cx, y + rowH, cx + cw, y + rowH, 0.4, "#c9d1da"));
-        y += rowH;
+        cur.push(Ln(xs, y + rowH, xs + tw, y + rowH, 0.4, "#c9d1da"));
+        y += rowH; ri++;
       });
+      if (nCols > 1 && col > 0) y = Math.max(y, cBottom);   // хоёр баганатай бол дараагийн блок шинэ хуудаснаас
     });
     if (cur.length) pages.push(cur);
     return {
@@ -562,9 +573,9 @@
   }
 
   /** Бүх хуудас: [зургийн хуудас, ...хүснэгтийн хуудсууд] */
-  function buildReportPages(sec, meta, mapShot, logo, paperKey, withTables = true) {
+  function buildReportPages(sec, meta, mapShot, logo, paperKey, withTables = true, withIntervals = true) {
     sheetPage(sec, meta, mapShot, logo, paperKey, 1, 1);          // масштабыг (meta.scaleText) урьдчилан тооцно
-    const tp = withTables ? tablePages(sec, meta, paperKey, 2) : { count: 0, render: () => [] };
+    const tp = withTables ? tablePages(sec, meta, paperKey, 2, withIntervals) : { count: 0, render: () => [] };
     const total = 1 + tp.count;
     const sheet = sheetPage(sec, meta, mapShot, logo, paperKey, 1, total);
     return [sheet, ...tp.render(total)];
