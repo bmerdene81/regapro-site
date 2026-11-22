@@ -6,8 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Цооногийн зүсэлт · RegaPro</title>
 <link rel="stylesheet" href="https://js.arcgis.com/4.32/esri/themes/light/main.css">
-<!-- jsPDF-ийг ArcGIS-ийн AMD loader-ээс ӨМНӨ ачаална (эс бөгөөс define() зөрчилдөнө) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="core.js"></script>
 <script src="https://js.arcgis.com/4.32/"></script>
 <style>
   :root{--navy:#0f2236;--green:#2e7d32;--teal:#0b8fb0;--teal-d:#08536a;--ink:#1f2d3d;--muted:#556373;--line:#dde3ea;--bg:#f3f5f8}
@@ -20,13 +19,11 @@
   h1{margin:0;font-size:19px;font-weight:600}
   .controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   .controls label{display:flex;align-items:center;gap:6px;font-size:14px;color:#c3cdd8}
-  select{min-height:38px;padding:6px 10px;border:1px solid #3a4d63;border-radius:8px;background:#16304a;color:#fff;font:500 14px inherit}
+  header select{min-height:38px;padding:6px 10px;border:1px solid #3a4d63;border-radius:8px;background:#16304a;color:#fff;font:500 14px inherit}
   button{font:600 14px inherit;cursor:pointer}
   .btn{min-height:40px;padding:8px 14px;border-radius:8px;border:1px solid transparent;display:inline-flex;align-items:center;gap:7px}
   .btn-green{background:var(--green);color:#fff}
   .btn-green:hover{background:#25692a}
-  .btn-ghost{background:transparent;color:#fff;border-color:#3a4d63}
-  .btn-ghost:hover{background:#1a3450}
   .btn-teal{background:#e3f3f8;color:var(--teal-d);border-color:var(--teal)}
   .btn-teal[aria-pressed="true"]{background:var(--teal);color:#fff}
   .btn-plain{background:#fff;color:#3d4b5c;border-color:#cfd6de}
@@ -41,12 +38,11 @@
   #holesCard h2,#secCard h2{margin:0;font-size:16px}
   .muted{color:var(--muted);font-size:13px}
   #holeList{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;overflow:auto;max-height:calc(44vh - 40px)}
-  #holeList li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border:1px solid #e6ebf0;border-radius:10px}
+  #holeList li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border:1px solid #e6ebf0;border-radius:10px;cursor:pointer}
   #holeList b{font-size:15px}
   #holeList .depth{font-weight:600;white-space:nowrap}
   #secCard{padding:14px 18px;display:flex;flex-direction:column;gap:8px}
   .secbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-  .exp{display:flex;gap:8px;flex-wrap:wrap}
   #secWrap{position:relative;width:100%;overflow-x:auto}
   #secWrap svg{display:block;width:100%;height:auto}
   .empty{padding:40px 10px;text-align:center;color:var(--muted);font-size:15px}
@@ -56,8 +52,35 @@
   #signin{position:fixed;inset:0;background:rgba(15,34,54,.78);display:none;align-items:center;justify-content:center;z-index:100}
   #signin .box{background:#fff;border-radius:14px;padding:28px 30px;max-width:420px;text-align:center;display:flex;flex-direction:column;gap:14px}
   #signin h2{margin:0;font-size:20px}
-  .spin{display:inline-block;width:14px;height:14px;border:2px solid #9fb0c2;border-top-color:transparent;border-radius:50%;animation:sp 0.8s linear infinite;vertical-align:-2px}
+  .spin{display:inline-block;width:14px;height:14px;border:2px solid #9fb0c2;border-top-color:transparent;border-radius:50%;animation:sp .8s linear infinite;vertical-align:-2px}
   @keyframes sp{to{transform:rotate(360deg)}}
+
+  /* Export цонх */
+  dialog#expDlg{border:none;border-radius:14px;padding:0;width:min(760px,96vw);max-height:94vh;box-shadow:0 20px 60px rgba(15,34,54,.35);color:var(--ink)}
+  dialog#expDlg::backdrop{background:rgba(15,34,54,.55)}
+  .dlg{display:flex;flex-direction:column;max-height:94vh}
+  .dlg-head{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:var(--navy);color:#fff}
+  .dlg-head h2{margin:0;font-size:18px}
+  .dlg-head button{background:transparent;border:0;color:#fff;font-size:24px;line-height:1;padding:4px 8px;border-radius:6px}
+  .dlg-body{padding:16px 20px;overflow:auto;display:flex;flex-direction:column;gap:16px}
+  .dlg fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+  .dlg legend{font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px}
+  .fmts{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+  .fmt{position:relative;display:flex;flex-direction:column;gap:2px;padding:10px 12px 10px 38px;border:1.5px solid #d5dce4;border-radius:10px;cursor:pointer;min-height:58px}
+  .fmt input{position:absolute;left:12px;top:13px;width:16px;height:16px;accent-color:var(--green)}
+  .fmt b{font-size:15px}
+  .fmt span{font-size:12.5px;color:var(--muted);line-height:1.3}
+  .fmt:has(input:checked){border-color:var(--green);background:#eef7ef}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+  .fld{display:flex;flex-direction:column;gap:4px;font-size:13px;color:#3d4b5c}
+  .fld input,.fld select{min-height:38px;padding:6px 10px;border:1px solid #cfd6de;border-radius:8px;font:15px inherit;color:var(--ink);background:#fff}
+  .fld input:focus,.fld select:focus{outline:2px solid var(--teal);outline-offset:1px}
+  .wide{grid-column:1/-1}
+  .dlg-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 20px;border-top:1px solid #e6ebf0;flex-wrap:wrap}
+  #expStatus{font-size:14px;color:#3d4b5c;min-height:20px;flex:1 1 260px}
+  #expStatus.err{color:#b3261e}
+  .hint{font-size:12.5px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -66,9 +89,7 @@
     <span class="logo">Rega<span>Pro</span></span>
     <span class="sep"></span>
     <h1>Цооногийн зүсэлт</h1>
-    <label class="controls">Төсөл
-      <select id="project"></select>
-    </label>
+    <label class="controls">Төсөл <select id="project"></select></label>
     <label class="controls">Буфер
       <select id="buffer">
         <option value="10">10 м</option>
@@ -79,9 +100,7 @@
       </select>
     </label>
   </div>
-  <div class="controls">
-    <span id="status"></span>
-  </div>
+  <div class="controls"><span id="status" role="status"></span></div>
 </header>
 
 <main>
@@ -94,7 +113,7 @@
             Шугам татах</button>
           <button id="clearBtn" class="btn btn-plain" type="button">Цэвэрлэх</button>
         </div>
-        <span class="muted" id="drawHint">"Шугам татах" дараад газрын зураг дээр дарж цэг тавина. Давхар дарж дуусгана.</span>
+        <span class="muted">"Шугам татах" дараад газрын зураг дээр дарж цэг тавина. Давхар дарж дуусгана.</span>
       </div>
       <div id="viewDiv"></div>
     </section>
@@ -108,11 +127,9 @@
   <section id="secCard" class="card" aria-label="Зүсэлт">
     <div class="secbar">
       <h2 id="secTitle">Зүсэлт</h2>
-      <div class="exp">
-        <button id="pngBtn" class="btn btn-green" type="button" disabled>PNG татах</button>
-        <button id="pdfBtn" class="btn btn-green" type="button" disabled>PDF татах</button>
-        <button id="csvBtn" class="btn btn-plain" type="button" disabled>CSV татах</button>
-      </div>
+      <button id="expBtn" class="btn btn-green" type="button" disabled>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 20h16"/></svg>
+        Тайлан татах</button>
     </div>
     <div id="secWrap"><div class="empty">Газрын зураг дээр шугам татахад зүсэлт энд гарна.</div></div>
   </section>
@@ -128,9 +145,63 @@
   </div>
 </div>
 
+<dialog id="expDlg" aria-labelledby="expTitle">
+  <div class="dlg">
+    <div class="dlg-head">
+      <h2 id="expTitle">Тайлан татах</h2>
+      <button type="button" id="expClose" aria-label="Хаах">×</button>
+    </div>
+    <div class="dlg-body">
+      <fieldset>
+        <legend>Файлын төрөл</legend>
+        <div class="fmts">
+          <label class="fmt"><input type="radio" name="fmt" value="pdf" checked><b>PDF</b><span>Штамптай зураг + бүх хүснэгт, хэвлэхэд</span></label>
+          <label class="fmt"><input type="radio" name="fmt" value="docx"><b>Word</b><span>Засварлах боломжтой тайлан (.docx)</span></label>
+          <label class="fmt"><input type="radio" name="fmt" value="xlsx"><b>Excel</b><span>Бүх өгөгдөл, 6 хүснэгт (.xlsx)</span></label>
+          <label class="fmt"><input type="radio" name="fmt" value="png"><b>PNG</b><span>Штамптай зургийн хуудас</span></label>
+          <label class="fmt"><input type="radio" name="fmt" value="svg"><b>SVG</b><span>Вектор зураг (Illustrator, Inkscape, Corel)</span></label>
+          <label class="fmt"><input type="radio" name="fmt" value="dxf"><b>DXF</b><span>AutoCAD, бодит 1:1 координат</span></label>
+          <label class="fmt"><input type="radio" name="fmt" value="csv"><b>CSV</b><span>Интервалын түүхий өгөгдөл</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Хуудас ба масштаб</legend>
+        <div class="grid3">
+          <label class="fld">Цаасны хэмжээ (хэвтээ)
+            <select id="eqPaper"><option value="A3" selected>A3 (420×297 мм)</option><option value="A4">A4 (297×210 мм)</option></select></label>
+          <label class="fld">Хэвтээ масштаб
+            <select id="eqNh"></select></label>
+          <label class="fld">Босоо масштаб
+            <select id="eqNv"></select></label>
+        </div>
+        <span class="hint">"Автомат" нь хуудсанд багтах хамгийн том масштабыг сонгоно. Сонгосон масштаб багтахгүй бол автоматаар тааруулна.</span>
+      </fieldset>
+      <fieldset>
+        <legend>Штампын мэдээлэл</legend>
+        <div class="grid2">
+          <label class="fld">Байгууллага <input id="eqOrg" autocomplete="organization"></label>
+          <label class="fld">Төсөл <input id="eqProject"></label>
+          <label class="fld">Зургийн нэр <input id="eqTitle"></label>
+          <label class="fld">Зургийн дугаар <input id="eqNo" placeholder="жишээ нь ГЗ-01"></label>
+          <label class="fld">Зурсан <input id="eqDrawn" autocomplete="name"></label>
+          <label class="fld">Хянасан <input id="eqChecked"></label>
+          <label class="fld wide">Тайлбар (заавал биш) <input id="eqNote"></label>
+        </div>
+      </fieldset>
+    </div>
+    <div class="dlg-foot">
+      <span id="expStatus" role="status" aria-live="polite"></span>
+      <div style="display:flex;gap:8px">
+        <button type="button" class="btn btn-plain" id="expCancel">Хаах</button>
+        <button type="button" class="btn btn-green" id="expGo">Татах</button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
 <script>
 /* ============================================================
-   ТОХИРГОО — зөвхөн энэ хэсгийг өөрчилнө
+   ТОХИРГОО
    ============================================================ */
 const CONFIG = {
   portalUrl: "https://indi2435f4406830.maps.arcgis.com",
@@ -139,256 +210,128 @@ const CONFIG = {
   intervalsUrl: "https://services6.arcgis.com/kXYSrbCkSfymtsXt/arcgis/rest/services/Drillhole_Lithology_3D_TEST/FeatureServer/0",
   elevationUrl: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer",
   imageryUrl:   "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
+  logoUrl: "../images/logo-horizontal.png",
   projects: [
     { id: "SH",   label: "SH",        where: "source = 'SH_dh'" },
     { id: "S123", label: "Survey123", where: "source = 'Survey123'" }
   ],
-  profileSamples: 400
+  profileSamples: 400,
+  libs: {
+    jspdf:   { global: "jspdf",   urls: ["lib/jspdf.umd.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"] },
+    docx:    { global: "docx",    urls: ["lib/docx.iife.js", "https://cdn.jsdelivr.net/npm/docx@9.16.0/dist/index.iife.js"] },
+    exceljs: { global: "ExcelJS", urls: ["lib/exceljs.min.js", "https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"] }
+  }
+};
+const Z = window.ZCORE;
+const { esc, fmt } = Z;
+const $ = (id) => document.getElementById(id);
+const setStatus = (html) => { $("status").innerHTML = html || ""; };
+const store = {
+  get(k, d) { try { const v = localStorage.getItem("zuselt_" + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem("zuselt_" + k, JSON.stringify(v)); } catch (e) { /* storage хаалттай */ } }
 };
 
-/* Литологийн өнгө, нэр (3D scene-ийн renderer-тэй ижил) */
-const LITH = {
-  ST:   ["#8c510a", "Хөрс / Soil"],
-  GV:   ["#cd853f", "Хайрга / Gravel"],
-  SS:   ["#f2b705", "Элсэн чулуу / Sandstone"],
-  FSS:  ["#fde780", "Нарийн ширхэгт элсэн чулуу / Fine sandstone"],
-  SILT: ["#a6c478", "Алевролит / Siltstone"],
-  MS:   ["#7886a0", "Аргиллит / Mudstone"],
-  SH:   ["#4d8060", "Занар / Shale"],
-  CO:   ["#141414", "Нүүрс / Coal"],
-  C1:   ["#800026", "Нүүрсний үе C1 / Coal seam C1"],
-  C3:   ["#08306b", "Нүүрсний үе C3 / Coal seam C3"],
-  C6:   ["#54278f", "Нүүрсний үе C6 / Coal seam C6"],
-  CAVE: ["#b2ebf2", "Нуралт / Cave-in"],
-  R:    ["#e64b35", "R (тодорхойгүй)"],
-  CS:   ["#00a087", "CS (тодорхойгүй)"],
-  RK:   ["#f080c8", "RK (тодорхойгүй)"]
-};
-const LITH_DEFAULT = ["#bebebe", "Бусад"];
-const lithInfo = (c) => LITH[c] || LITH_DEFAULT;
+let currentSection = null;
+let lastLine = null;
+let userFullName = "";
 
-/* ============================================================
-   Цэвэр тооцоолол (ArcGIS-ээс хамааралгүй)
-   ============================================================ */
-const R_EARTH = 6378137;
-const wmToLat = (y) => (Math.atan(Math.sinh(y / R_EARTH)) * 180) / Math.PI;
+/* ---------- Төслийн сонголт ---------- */
+(function fillProjects() {
+  const sel = $("project");
+  CONFIG.projects.forEach((p) => { const o = document.createElement("option"); o.value = p.id; o.textContent = p.label; sel.appendChild(o); });
+  let qp = new URLSearchParams(location.search).get("project");
+  try { if (qp) sessionStorage.setItem("zuselt_project", qp); else qp = sessionStorage.getItem("zuselt_project"); } catch (e) {}
+  if (qp && CONFIG.projects.some((p) => p.id === qp)) sel.value = qp;
+  sel.addEventListener("change", () => { try { sessionStorage.setItem("zuselt_project", sel.value); } catch (e) {} });
+})();
+const currentProject = () => CONFIG.projects.find((p) => p.id === $("project").value) || CONFIG.projects[0];
 
-/** Шугамын оройнуудаас хуримтлагдсан урт (WM нэгжээр) */
-function cumLengths(pts) {
-  const c = [0];
-  for (let i = 1; i < pts.length; i++) c.push(c[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
-  return c;
-}
-
-/** Шугамын дагуу N тэнцүү цэг */
-function samplePoints(pts, n) {
-  const c = cumLengths(pts), total = c[c.length - 1], out = [];
-  let seg = 1;
-  for (let k = 0; k < n; k++) {
-    const d = (total * k) / (n - 1);
-    while (seg < pts.length - 1 && c[seg] < d) seg++;
-    const a = pts[seg - 1], b = pts[seg], L = c[seg] - c[seg - 1] || 1, t = Math.min(1, Math.max(0, (d - c[seg - 1]) / L));
-    out.push({ x: a[0] + t * (b[0] - a[0]), y: a[1] + t * (b[1] - a[1]), d });
-  }
-  return out;
-}
-
-/** Цэгийг шугам руу проекцлох: шугамын дагуух зай, шугамаас хол зай (WM нэгж) */
-function projectOnLine(pts, px, py) {
-  const c = cumLengths(pts);
-  let best = { along: 0, off: Infinity };
-  for (let i = 1; i < pts.length; i++) {
-    const ax = pts[i - 1][0], ay = pts[i - 1][1], bx = pts[i][0], by = pts[i][1];
-    const vx = bx - ax, vy = by - ay, L2 = vx * vx + vy * vy || 1;
-    const t = Math.min(1, Math.max(0, ((px - ax) * vx + (py - ay) * vy) / L2));
-    const qx = ax + t * vx, qy = ay + t * vy, off = Math.hypot(px - qx, py - qy);
-    if (off < best.off) best = { along: c[i - 1] + t * Math.sqrt(L2), off };
-  }
-  return best;
-}
-
-/** Тэнхлэгийн "сайхан" алхам */
-function niceStep(range, target) {
-  const raw = range / Math.max(1, target), p = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / p;
-  return (f < 1.5 ? 1 : f < 3 ? 2 : f < 7 ? 5 : 10) * p;
-}
-
-const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
-const fmt = (v, d = 1) => (Math.round(v * Math.pow(10, d)) / Math.pow(10, d)).toLocaleString("en-US", { maximumFractionDigits: d });
-
-/**
- * Зүсэлтийн SVG.
- * sec = { lengthM, ground:[{d,z}], holes:[{id, along, off, collarZ, intervals:[{from,to,lith,comment}] }], title, subtitle }
- */
-function renderSectionSVG(sec, widthPx, plotHpx) {
-  const W = Math.max(720, Math.round(widthPx || 1100));
-  const FONT = '"Segoe UI", Arial, sans-serif';
-  const left = 72, right = 28, plotH = Math.max(260, Math.round(plotHpx || 420));
-  const holes = sec.holes.slice().sort((a, b) => a.along - b.along);
-
-  // Өндрийн муж
-  let zMin = Infinity, zMax = -Infinity;
-  sec.ground.forEach((g) => { if (g.z != null) { zMin = Math.min(zMin, g.z); zMax = Math.max(zMax, g.z); } });
-  holes.forEach((h) => { zMax = Math.max(zMax, h.collarZ); const td = Math.max(0, ...h.intervals.map((i) => i.to)); zMin = Math.min(zMin, h.collarZ - td); });
-  if (!isFinite(zMin)) { zMin = 0; zMax = 100; }
-  const padZ = Math.max(5, (zMax - zMin) * 0.06);
-  zMin -= padZ; zMax += padZ;
-  const yStep = niceStep(zMax - zMin, 7);
-  zMin = Math.floor(zMin / yStep) * yStep; zMax = Math.ceil(zMax / yStep) * yStep;
-
-  const plotW = W - left - right;
-  const xOf = (d) => left + (d / sec.lengthM) * plotW;
-
-  // Шошгоны мөрүүд (давхцахгүйгээр, хамгийн ихдээ 6 мөр)
-  const labelW = (id) => Math.max(56, String(id).length * 7.6 + 18);
-  const MAX_ROWS = 6, rowsRight = [];
-  const labelRow = holes.map((h) => {
-    const x = xOf(h.along), w = labelW(h.id);
-    let r = 0;
-    while (r < MAX_ROWS && rowsRight[r] != null && x - w / 2 < rowsRight[r] + 4) r++;
-    if (r === MAX_ROWS) r = rowsRight.indexOf(Math.min(...rowsRight));
-    rowsRight[r] = x + w / 2;
-    return r;
+/* ---------- Гадны сан ачаалагч (AMD define-ийг түр нууна) ---------- */
+const libCache = {};
+function loadLib(name) {
+  const L = CONFIG.libs[name];
+  if (window[L.global]) return Promise.resolve(window[L.global]);
+  if (libCache[name]) return libCache[name];
+  const tryUrl = (src) => new Promise((res, rej) => {
+    const d = window.define; window.define = undefined;
+    const sc = document.createElement("script"); sc.src = src; sc.async = true;
+    sc.onload = () => { window.define = d; window[L.global] ? res(window[L.global]) : rej(new Error(name)); };
+    sc.onerror = () => { window.define = d; sc.remove(); rej(new Error(name + " ачаалагдсангүй")); };
+    document.head.appendChild(sc);
   });
-  const rowsLast = rowsRight;
-  const nRows = Math.max(1, rowsLast.length);
-  const top = 30 + nRows * 28 + 14;
-  const yOf = (z) => top + ((zMax - z) / (zMax - zMin)) * plotH;
-  const bottom = top + plotH;
+  libCache[name] = L.urls.reduce((p, u) => p.catch(() => tryUrl(u)), Promise.reject(new Error("start")))
+    .catch((e) => { delete libCache[name]; throw e; });
+  return libCache[name];
+}
 
-  // Тайлбарт орох литологи
-  const used = [];
-  holes.forEach((h) => h.intervals.forEach((i) => { if (!used.includes(i.lith)) used.push(i.lith); }));
-  const order = Object.keys(LITH), rank = (c) => (order.indexOf(c) < 0 ? 999 : order.indexOf(c));
-  used.sort((a, b) => rank(a) - rank(b) || String(a).localeCompare(String(b)));
-  const legendLabel = (c) => `${c} — ${lithInfo(c)[1]}`;
-  const legendItemW = Math.max(190, Math.max(0, ...used.map((c) => legendLabel(c).length)) * 6.9 + 36);
-  const legendCols = Math.max(1, Math.floor((W - left - right) / legendItemW));
-  const legendRows = Math.ceil(used.length / legendCols);
-  const legendTop = bottom + 58;
-  const H = legendTop + (used.length ? 24 + legendRows * 24 : 0) + 16;
-
-  const s = [];
-  s.push(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" font-family='${FONT}' role="img" aria-label="${esc(sec.title)}">`);
-  s.push(`<rect x="0" y="0" width="${W}" height="${H}" fill="#ffffff"/>`);
-  s.push(`<text x="${left}" y="22" font-size="16" font-weight="700" fill="#1f2d3d">${esc(sec.title)}</text>`);
-  const ve = (plotH / (zMax - zMin)) / (plotW / sec.lengthM);
-  const veTxt = ve >= 1.05 ? ` · босоо өсгөлт ×${fmt(ve, ve < 10 ? 1 : 0)}` : "";
-  s.push(`<text x="${W - right}" y="22" font-size="12" fill="#556373" text-anchor="end">${esc(sec.subtitle + veTxt)}</text>`);
-
-  // Тор, тэнхлэг
-  for (let z = zMin; z <= zMax + 1e-6; z += yStep) {
-    const y = yOf(z);
-    s.push(`<line x1="${left}" y1="${y}" x2="${W - right}" y2="${y}" stroke="#edf0f3"/>`);
-    s.push(`<text x="${left - 8}" y="${y + 4}" font-size="12" fill="#556373" text-anchor="end">${fmt(z, 0)}</text>`);
-  }
-  const xStep = niceStep(sec.lengthM, 8);
-  for (let d = 0; d <= sec.lengthM + 1e-6; d += xStep) {
-    const x = xOf(d);
-    s.push(`<line x1="${x}" y1="${bottom}" x2="${x}" y2="${bottom + 5}" stroke="#8a96a3"/>`);
-    const lab = sec.lengthM >= 2000 ? fmt(d / 1000, 2) + " км" : fmt(d, 0) + " м";
-    s.push(`<text x="${x}" y="${bottom + 20}" font-size="12" fill="#556373" text-anchor="middle">${lab}</text>`);
-  }
-  s.push(`<text x="18" y="${top + plotH / 2}" font-size="12" fill="#556373" text-anchor="middle" transform="rotate(-90 18 ${top + plotH / 2})">Өндөр, м</text>`);
-  s.push(`<text x="${left + plotW / 2}" y="${bottom + 40}" font-size="12" fill="#556373" text-anchor="middle">Шугамын дагуух зай</text>`);
-
-  // Газрын гадарга
-  const gp = sec.ground.filter((g) => g.z != null).map((g) => `${xOf(g.d).toFixed(1)},${yOf(g.z).toFixed(1)}`);
-  if (gp.length > 1) {
-    s.push(`<polygon points="${gp.join(" ")} ${xOf(sec.lengthM).toFixed(1)},${bottom} ${left},${bottom}" fill="#f4e7dc" fill-opacity="0.85"/>`);
-    s.push(`<polyline points="${gp.join(" ")}" fill="none" stroke="#b54900" stroke-width="2.2"/>`);
-  }
-  s.push(`<line x1="${left}" y1="${top}" x2="${left}" y2="${bottom}" stroke="#8a96a3"/>`);
-  s.push(`<line x1="${left}" y1="${bottom}" x2="${W - right}" y2="${bottom}" stroke="#8a96a3"/>`);
-  s.push(`<text x="${left}" y="${top - 6}" font-size="15" font-weight="700" fill="#08536a" text-anchor="middle">A</text>`);
-  s.push(`<text x="${W - right}" y="${top - 6}" font-size="15" font-weight="700" fill="#08536a" text-anchor="middle">A′</text>`);
-
-  // Цооногууд
-  const colW = Math.max(8, Math.min(18, plotW / Math.max(holes.length, 1) * 0.45));
-  holes.forEach((h, hi) => {
-    const x = xOf(h.along), x0 = x - colW / 2;
-    const ivs = h.intervals.slice().sort((a, b) => a.from - b.from);
-    ivs.forEach((iv) => {
-      const yA = yOf(h.collarZ - iv.from), yB = yOf(h.collarZ - iv.to), [col] = lithInfo(iv.lith);
-      const tip = `${h.id}|${iv.lith}|${lithInfo(iv.lith)[1]}|${fmt(iv.from)}–${fmt(iv.to)} м|${fmt(h.collarZ - iv.from)}–${fmt(h.collarZ - iv.to)} м|${iv.comment || ""}`;
-      s.push(`<rect class="iv" data-tip="${esc(tip)}" x="${x0.toFixed(1)}" y="${yA.toFixed(1)}" width="${colW.toFixed(1)}" height="${Math.max(0.6, yB - yA).toFixed(1)}" fill="${col}"/>`);
-    });
-    const td = Math.max(0, ...ivs.map((i) => i.to));
-    const yTop = yOf(h.collarZ), yBot = yOf(h.collarZ - td);
-    s.push(`<rect x="${x0.toFixed(1)}" y="${yTop.toFixed(1)}" width="${colW.toFixed(1)}" height="${(yBot - yTop).toFixed(1)}" fill="none" stroke="#1f2d3d" stroke-width="0.8" pointer-events="none"/>`);
-    s.push(`<polygon points="${(x - 7).toFixed(1)},${(yTop - 13).toFixed(1)} ${(x + 7).toFixed(1)},${(yTop - 13).toFixed(1)} ${x.toFixed(1)},${(yTop - 1).toFixed(1)}" fill="#111111"/>`);
-    // дугаарын шошго
-    const ly = 30 + labelRow[hi] * 28;
-    s.push(`<line x1="${x.toFixed(1)}" y1="${ly + 22}" x2="${x.toFixed(1)}" y2="${(yTop - 14).toFixed(1)}" stroke="#9aa6b2" stroke-dasharray="2 3"/>`);
-    const lw = labelW(h.id);
-    s.push(`<rect x="${(x - lw / 2).toFixed(1)}" y="${ly}" width="${lw.toFixed(1)}" height="22" rx="11" fill="#0f2236"/>`);
-    s.push(`<text x="${x.toFixed(1)}" y="${ly + 15.5}" font-size="12.5" font-weight="700" fill="#ffffff" text-anchor="middle">${esc(h.id)}</text>`);
-    s.push(`<text x="${x.toFixed(1)}" y="${(yBot + 15).toFixed(1)}" font-size="11.5" fill="#3d4b5c" text-anchor="middle">${fmt(td, 1)} м</text>`);
+/* ---------- Зураг, файл ---------- */
+function rasterize(svgStr, W, H, scale) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(new Blob([svgStr], { type: "image/svg+xml;charset=utf-8" }));
+    const img = new Image();
+    img.onload = () => {
+      const c = document.createElement("canvas");
+      c.width = Math.round(W * scale); c.height = Math.round(H * scale);
+      const ctx = c.getContext("2d"); ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);
+      ctx.drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url); resolve(c);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Зураг үүсгэж чадсангүй")); };
+    img.src = url;
   });
-
-  // Тайлбар
-  if (used.length) {
-    s.push(`<text x="${left}" y="${legendTop}" font-size="12" font-weight="700" fill="#556373" letter-spacing="0.06em">ЛИТОЛОГИ</text>`);
-    const colWpx = (W - left - right) / legendCols;
-    used.forEach((c, i) => {
-      const cx = left + (i % legendCols) * colWpx, cy = legendTop + 14 + Math.floor(i / legendCols) * 24;
-      const [colr] = lithInfo(c);
-      s.push(`<rect x="${cx}" y="${cy}" width="15" height="15" rx="3" fill="${colr}" stroke="#9aa6b2" stroke-width="0.6"/>`);
-      s.push(`<text x="${cx + 22}" y="${cy + 12}" font-size="12.5" fill="#1f2d3d">${esc(legendLabel(c))}</text>`);
-    });
-  }
-  s.push(`</svg>`);
-  return s.join("");
+}
+const canvasBlob = (c, type = "image/png", q) => new Promise((res) => c.toBlob(res, type, q));
+async function canvasImg(c) {
+  const blob = await canvasBlob(c);
+  return { data: new Uint8Array(await blob.arrayBuffer()), dataUrl: c.toDataURL("image/png"), wPx: c.width, hPx: c.height };
+}
+function saveBlob(blob, name) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 60000);
+}
+let logoCache;
+async function loadLogo() {
+  if (logoCache !== undefined) return logoCache;
+  try {
+    const blob = await (await fetch(CONFIG.logoUrl)).blob();
+    const dataUrl = await new Promise((r) => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(blob); });
+    const dims = await new Promise((r, j) => { const im = new Image(); im.onload = () => r({ w: im.naturalWidth, h: im.naturalHeight }); im.onerror = j; im.src = dataUrl; });
+    logoCache = { dataUrl, ...dims };
+  } catch (e) { logoCache = null; }
+  return logoCache;
 }
 
 /* ============================================================
    ArcGIS хэсэг
    ============================================================ */
-const $ = (id) => document.getElementById(id);
-const setStatus = (html) => { $("status").innerHTML = html || ""; };
-
-let currentSection = null;
-let lastLine = null;
-
-function fillProjects() {
-  const sel = $("project");
-  CONFIG.projects.forEach((p) => { const o = document.createElement("option"); o.value = p.id; o.textContent = p.label; sel.appendChild(o); });
-  // ?project=SH|S123 — нэвтрэх үеийн redirect-ийн дараа алдагдахгүйн тулд sessionStorage-д хадгална
-  let qp = new URLSearchParams(location.search).get("project");
-  try {
-    if (qp) sessionStorage.setItem("zuselt_project", qp);
-    else qp = sessionStorage.getItem("zuselt_project");
-  } catch (e) { /* storage хаалттай байж болно */ }
-  if (qp && CONFIG.projects.some((p) => p.id === qp)) sel.value = qp;
-  sel.addEventListener("change", () => { try { sessionStorage.setItem("zuselt_project", sel.value); } catch (e) {} });
-}
-fillProjects();
-const currentProject = () => CONFIG.projects.find((p) => p.id === $("project").value) || CONFIG.projects[0];
-
 window.require([
   "esri/identity/OAuthInfo", "esri/identity/IdentityManager", "esri/Map", "esri/views/MapView", "esri/Basemap",
   "esri/layers/TileLayer", "esri/layers/FeatureLayer", "esri/layers/GraphicsLayer", "esri/layers/ElevationLayer",
-  "esri/widgets/Sketch/SketchViewModel", "esri/Graphic", "esri/geometry/Multipoint", "esri/geometry/geometryEngine"
-], (OAuthInfo, esriId, Map, MapView, Basemap, TileLayer, FeatureLayer, GraphicsLayer, ElevationLayer, SketchViewModel, Graphic, Multipoint, geometryEngine) => {
+  "esri/widgets/Sketch/SketchViewModel", "esri/Graphic", "esri/geometry/Multipoint", "esri/geometry/geometryEngine",
+  "esri/geometry/Extent", "esri/core/reactiveUtils", "esri/portal/Portal"
+], (OAuthInfo, esriId, Map, MapView, Basemap, TileLayer, FeatureLayer, GraphicsLayer, ElevationLayer, SketchViewModel, Graphic, Multipoint, geometryEngine, Extent, reactiveUtils, Portal) => {
 
   const sharing = CONFIG.portalUrl + "/sharing";
-  const info = new OAuthInfo({ appId: CONFIG.appId, portalUrl: CONFIG.portalUrl, popup: false, flowType: "auto",
-    redirectUri: location.origin + location.pathname });
-  esriId.registerOAuthInfos([info]);
+  esriId.registerOAuthInfos([new OAuthInfo({ appId: CONFIG.appId, portalUrl: CONFIG.portalUrl, popup: false, flowType: "auto",
+    redirectUri: location.origin + location.pathname })]);
 
   let started = false;
-  esriId.on("credential-create", () => start());
   esriId.checkSignInStatus(sharing).then(start).catch(() => {
     if (started) return;
     $("signin").style.display = "flex";
     $("signinBtn").onclick = () => esriId.getCredential(sharing).then(start).catch((e) => setStatus("Нэвтэрч чадсангүй: " + esc(e && e.message)));
   });
 
+  let view, drawLayer, captureMap;
+
   function start() {
     if (started) return;
     started = true;
     $("signin").style.display = "none";
     const WM = { wkid: 102100 };
+    new Portal({ url: CONFIG.portalUrl, authMode: "immediate" }).load().then((p) => { userFullName = (p.user && (p.user.fullName || p.user.username)) || ""; }).catch(() => {});
 
     const collars = new FeatureLayer({
       url: CONFIG.collarsUrl, outFields: ["hole_id"], definitionExpression: currentProject().where,
@@ -399,24 +342,19 @@ window.require([
     });
     const intervals = new FeatureLayer({ url: CONFIG.intervalsUrl });
     const elev = new ElevationLayer({ url: CONFIG.elevationUrl });
-    const drawLayer = new GraphicsLayer();
+    drawLayer = new GraphicsLayer();
     const map = new Map({ basemap: new Basemap({ baseLayers: [new TileLayer({ url: CONFIG.imageryUrl })] }), layers: [collars, drawLayer] });
-    const view = new MapView({ container: "viewDiv", map, constraints: { snapToZoom: false } });
+    view = new MapView({ container: "viewDiv", map, constraints: { snapToZoom: false, rotationEnabled: false } });
 
     const zoomToProject = () => collars.queryExtent().then((r) => r.extent && view.goTo(r.extent.expand(1.3))).catch(() => {});
     view.when(zoomToProject);
 
-    const svm = new SketchViewModel({
-      view, layer: drawLayer, updateOnGraphicClick: false,
-      polylineSymbol: { type: "simple-line", color: [11, 143, 176], width: 3 }
-    });
-
+    const svm = new SketchViewModel({ view, layer: drawLayer, updateOnGraphicClick: false, polylineSymbol: { type: "simple-line", color: [11, 143, 176], width: 3 } });
     const drawBtn = $("drawBtn");
     drawBtn.onclick = () => { clearAll(); drawBtn.setAttribute("aria-pressed", "true"); svm.create("polyline", { mode: "click" }); };
     $("clearBtn").onclick = () => { svm.cancel(); clearAll(); };
     $("project").onchange = () => { collars.definitionExpression = currentProject().where; clearAll(); zoomToProject(); };
     $("buffer").onchange = () => { if (lastLine) runProfile(lastLine); };
-
     svm.on("create", (e) => {
       if (e.state === "complete") { drawBtn.setAttribute("aria-pressed", "false"); lastLine = e.graphic.geometry; runProfile(lastLine); }
       if (e.state === "cancel") drawBtn.setAttribute("aria-pressed", "false");
@@ -427,40 +365,40 @@ window.require([
       $("holeList").innerHTML = ""; $("lineInfo").textContent = "Шугам татаагүй байна.";
       $("secTitle").textContent = "Зүсэлт";
       $("secWrap").innerHTML = '<div class="empty">Газрын зураг дээр шугам татахад зүсэлт энд гарна.</div>';
-      ["pngBtn", "pdfBtn", "csvBtn"].forEach((id) => ($(id).disabled = true));
+      $("expBtn").disabled = true;
     }
 
     async function runProfile(line) {
       try {
         setStatus('<span class="spin"></span> Зүсэлт тооцож байна…');
         const pts = line.paths[0].map((p) => [p[0], p[1]]);
-        const latMid = wmToLat((pts[0][1] + pts[pts.length - 1][1]) / 2);
-        const k = Math.cos((latMid * Math.PI) / 180);            // WM нэгж → бодит метр
-        const cum = cumLengths(pts), lengthM = cum[cum.length - 1] * k;
+        const latMid = Z.wmToLat((pts[0][1] + pts[pts.length - 1][1]) / 2);
+        const k = Math.cos((latMid * Math.PI) / 180);                 // WM нэгж → бодит метр
+        const cum = Z.cumLengths(pts), lengthM = cum[cum.length - 1] * k;
         const bufM = Number($("buffer").value);
-
-        // Буфер полигон (WM нэгжээр; бодит метрийг cos(өргөрөг)-өөр засна)
         const bufferPoly = geometryEngine.buffer(line, bufM / k);
+
         drawLayer.removeAll();
-        drawLayer.add(new Graphic({ geometry: bufferPoly, symbol: { type: "simple-fill", color: [25, 167, 201, 0.15], outline: { color: [11, 143, 176, 0.5], width: 1 } } }));
+        drawLayer.add(new Graphic({ geometry: bufferPoly, symbol: { type: "simple-fill", color: [25, 167, 201, 0.15], outline: { color: [11, 143, 176, 0.6], width: 1 } } }));
         drawLayer.add(new Graphic({ geometry: line, symbol: { type: "simple-line", color: [11, 143, 176], width: 3 } }));
         const endLbl = (p, t) => new Graphic({ geometry: { type: "point", x: p[0], y: p[1], spatialReference: WM },
           symbol: { type: "text", text: t, color: [8, 83, 106], haloColor: [255, 255, 255], haloSize: 2, font: { size: 14, weight: "bold" }, yoffset: 8 } });
         drawLayer.addMany([endLbl(pts[0], "A"), endLbl(pts[pts.length - 1], "A′")]);
 
         // 1) Газрын профиль
-        const samples = samplePoints(pts, CONFIG.profileSamples);
-        const mp = new Multipoint({ points: samples.map((s) => [s.x, s.y]), spatialReference: WM });
-        const gRes = await elev.queryElevation(mp, { demResolution: "finest-contiguous" });
-        const ground = gRes.geometry.points.map((p, i) => ({ d: samples[i].d * k, z: p[2] }));
+        const samples = Z.samplePoints(pts, CONFIG.profileSamples);
+        const gRes = await elev.queryElevation(new Multipoint({ points: samples.map((s) => [s.x, s.y]), spatialReference: WM }), { demResolution: "finest-contiguous" });
+        const zone = Z.utmZone(Z.wmToLon((pts[0][0] + pts[pts.length - 1][0]) / 2));
+        const geo = (x, y) => { const lat = Z.wmToLat(y), lon = Z.wmToLon(x), u = Z.toUTM(lat, lon, zone); return { lat, lon, E: u.E, N: u.N }; };
+        const ground = gRes.geometry.points.map((p, i) => { const g = geo(samples[i].x, samples[i].y); return { d: samples[i].d * k, z: p[2], E: g.E, N: g.N }; });
 
-        // 2) Буфер доторх интервалууд (хуудаслаж)
+        // 2) Буфер доторх интервалууд
         const feats = [];
-        for (let start = 0; ; start += 1000) {
+        for (let startAt = 0; ; startAt += 1000) {
           const q = intervals.createQuery();
           q.where = currentProject().where; q.geometry = bufferPoly; q.spatialRelationship = "intersects";
           q.outFields = ["hole_id", "from_depth", "to_depth", "lithology", "comment", "top_elev"]; q.returnGeometry = true;
-          q.outSpatialReference = WM; q.start = start; q.num = 1000; q.orderByFields = ["hole_id", "from_depth"];
+          q.outSpatialReference = WM; q.start = startAt; q.num = 1000; q.orderByFields = ["hole_id", "from_depth"];
           const r = await intervals.queryFeatures(q);
           feats.push(...r.features);
           if (r.features.length < 1000) break;
@@ -475,26 +413,31 @@ window.require([
         });
         const holes = Object.values(byHole);
 
-        // 3) Цооногийн амны өндөр (газрын гадаргаас; олдохгүй бол өгөгдлийн top_elev)
+        // 3) Цооногийн амны өндөр
         if (holes.length) {
-          const hmp = new Multipoint({ points: holes.map((h) => [h.x, h.y]), spatialReference: WM });
-          const hRes = await elev.queryElevation(hmp, { demResolution: "finest-contiguous" });
+          const hRes = await elev.queryElevation(new Multipoint({ points: holes.map((h) => [h.x, h.y]), spatialReference: WM }), { demResolution: "finest-contiguous" });
           hRes.geometry.points.forEach((p, i) => { holes[i].collarZ = Number.isFinite(p[2]) && p[2] !== 0 ? p[2] : (holes[i].zData ?? 0); });
         }
-        holes.forEach((h) => { const pr = projectOnLine(pts, h.x, h.y); h.along = pr.along * k; h.off = pr.off * k; });
+        holes.forEach((h) => { const pr = Z.projectOnLine(pts, h.x, h.y); h.along = pr.along * k; h.off = pr.off * k; Object.assign(h, geo(h.x, h.y)); });
         holes.sort((a, b) => a.along - b.along);
+        holes.forEach((h) => drawLayer.add(new Graphic({ geometry: { type: "point", x: h.x, y: h.y, spatialReference: WM },
+          symbol: { type: "simple-marker", size: 13, color: [0, 0, 0, 0], outline: { color: [230, 75, 53], width: 2.5 } } })));
 
-        const lenTxt = lengthM >= 1000 ? fmt(lengthM / 1000, 2) + " км" : fmt(lengthM, 0) + " м";
+        const lenTxt = Z.distTxt(lengthM);
+        const hemi = latMid >= 0 ? "N" : "S", epsg = (hemi === "N" ? 32600 : 32700) + zone;
         currentSection = {
-          lengthM, ground, holes,
+          lengthM, ground, holes, bufM, k, linePts: pts, extentWM: bufferPoly.extent,
+          azimuth: Z.azimuthDeg(pts[0][0], pts[0][1], pts[pts.length - 1][0], pts[pts.length - 1][1]),
+          A: geo(...pts[0]), B: geo(...pts[pts.length - 1]), vertices: pts.map((p) => geo(p[0], p[1])),
+          crs: `WGS 84 / UTM ${zone}${hemi} (EPSG:${epsg})`, projectId: currentProject().id, projectLabel: currentProject().label,
           title: `Зүсэлт A–A′ · ${currentProject().label}`,
           subtitle: `Урт ${lenTxt} · буфер ${bufM} м · ${holes.length} цооног · ${new Date().toISOString().slice(0, 10)}`
         };
         drawSection();
         listHoles();
-        $("lineInfo").textContent = `A–A′ · урт ${lenTxt} · буфер ${bufM} м · ${holes.length} цооног`;
+        $("lineInfo").textContent = `A–A′ · урт ${lenTxt} · азимут ${fmt(currentSection.azimuth, 0)}° · буфер ${bufM} м · ${holes.length} цооног`;
         $("secTitle").textContent = `Зүсэлт A–A′ · ${lenTxt}`;
-        ["pngBtn", "pdfBtn", "csvBtn"].forEach((id) => ($(id).disabled = false));
+        $("expBtn").disabled = false;
         setStatus(holes.length ? "" : "Буфер дотор цооног олдсонгүй — шугамыг цооногийн ойгуур татах эсвэл буферийг томруулна уу.");
       } catch (err) {
         console.error(err);
@@ -505,24 +448,45 @@ window.require([
     function listHoles() {
       const ul = $("holeList"); ul.innerHTML = "";
       currentSection.holes.forEach((h) => {
-        const td = Math.max(0, ...h.intervals.map((i) => i.to));
         const li = document.createElement("li");
-        li.innerHTML = `<div style="display:flex;flex-direction:column;gap:2px"><b>${esc(h.id)}</b><span class="muted">Зай ${fmt(h.along, 0)} м · шугамаас ${fmt(h.off, 0)} м · ам ${fmt(h.collarZ, 1)} м</span></div><span class="depth">${fmt(td, 1)} м</span>`;
-        li.style.cursor = "pointer";
+        li.innerHTML = `<div style="display:flex;flex-direction:column;gap:2px"><b>${esc(h.id)}</b><span class="muted">Зай ${fmt(h.along, 0)} м · шугамаас ${fmt(h.off, 0)} м · ам ${fmt(h.collarZ, 1)} м</span></div><span class="depth">${fmt(Z.holeDepth(h), 1)} м</span>`;
         li.onclick = () => view.goTo({ target: { type: "point", x: h.x, y: h.y, spatialReference: WM }, zoom: Math.max(view.zoom, 16) });
         ul.appendChild(li);
       });
     }
+
+    /** Байрлалын зураг: зүсэлтийн хүрээгээр screenshot авч, буцааж сэргээнэ */
+    captureMap = async (aspect, outW) => {
+      const e = currentSection.extentWM, k = currentSection.k;
+      const cx = (e.xmin + e.xmax) / 2, cy = (e.ymin + e.ymax) / 2;
+      let w = Math.max((e.xmax - e.xmin) * 1.3, 300 / k), h = Math.max((e.ymax - e.ymin) * 1.3, 300 / k);
+      if (w / h < aspect) w = h * aspect; else h = w / aspect;
+      const target = new Extent({ xmin: cx - w / 2, xmax: cx + w / 2, ymin: cy - h / 2, ymax: cy + h / 2, spatialReference: WM });
+      const prev = view.viewpoint.clone();
+      try {
+        await view.goTo(target, { animate: false });
+        await reactiveUtils.whenOnce(() => !view.updating);
+        await new Promise((r) => setTimeout(r, 350));
+        const tl = view.toScreen({ type: "point", x: target.xmin, y: target.ymax, spatialReference: WM });
+        const br = view.toScreen({ type: "point", x: target.xmax, y: target.ymin, spatialReference: WM });
+        const x0 = Math.max(0, Math.round(tl.x)), y0 = Math.max(0, Math.round(tl.y));
+        const area = { x: x0, y: y0, width: Math.round(Math.min(view.width, br.x) - x0), height: Math.round(Math.min(view.height, br.y) - y0) };
+        const shot = await view.takeScreenshot({ area, width: outW, format: "png" });
+        const metersPerPx = ((area.width * view.resolution) / shot.data.width) * k;
+        return { dataUrl: shot.dataUrl, wPx: shot.data.width, hPx: shot.data.height, metersPerPx };
+      } finally {
+        view.goTo(prev, { animate: false }).catch(() => {});
+      }
+    };
   }
 
   /* ---------- Зүсэлт зурах, tooltip ---------- */
   function drawSection() {
     if (!currentSection) return;
     const wrap = $("secWrap");
-    wrap.innerHTML = renderSectionSVG(currentSection, wrap.clientWidth);
+    wrap.innerHTML = Z.renderSectionSVG(currentSection, wrap.clientWidth);
   }
   window.addEventListener("resize", () => { clearTimeout(window.__rs); window.__rs = setTimeout(drawSection, 200); });
-
   const tip = $("tip");
   $("secWrap").addEventListener("mousemove", (e) => {
     const t = e.target.closest && e.target.closest(".iv");
@@ -531,65 +495,118 @@ window.require([
     const [id, code, name, depth, elevR] = parts, comment = parts.slice(5).join("|");
     tip.innerHTML = `<b>${esc(id)}</b><br>${esc(code)} — ${esc(name)}<br>Гүн: ${esc(depth)}<br>Өндөр: ${esc(elevR)}${comment ? "<br>Тайлбар: " + esc(comment) : ""}`;
     tip.style.display = "block";
-    const x = Math.min(e.clientX + 14, window.innerWidth - tip.offsetWidth - 8), y = Math.min(e.clientY + 14, window.innerHeight - tip.offsetHeight - 8);
-    tip.style.left = x + "px"; tip.style.top = y + "px";
+    tip.style.left = Math.min(e.clientX + 14, window.innerWidth - tip.offsetWidth - 8) + "px";
+    tip.style.top = Math.min(e.clientY + 14, window.innerHeight - tip.offsetHeight - 8) + "px";
   });
   $("secWrap").addEventListener("mouseleave", () => (tip.style.display = "none"));
 
-  /* ---------- Export ---------- */
-  const stamp = () => new Date().toISOString().slice(0, 16).replace(/[-:T]/g, "");
-  // forPage=true: A4 хэвтээ хуудсанд таарах харьцаатай (зүсэлтийн өндрийг сунгана)
-  function svgToCanvas(scale, forPage) {
-    return new Promise((resolve, reject) => {
-      let svgStr = renderSectionSVG(currentSection, 1600);
-      if (forPage) {
-        const W = 1500, first = renderSectionSVG(currentSection, W, 420);
-        const H1 = +first.match(/viewBox="0 0 \d+ (\d+)"/)[1];
-        svgStr = renderSectionSVG(currentSection, W, (W * 190) / 277 - (H1 - 420));
-      }
-      const m = svgStr.match(/viewBox="0 0 (\d+) (\d+)"/), w = +m[1], h = +m[2];
-      const img = new Image();
-      img.onload = () => {
-        const c = document.createElement("canvas"); c.width = w * scale; c.height = h * scale;
-        const ctx = c.getContext("2d"); ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);
-        ctx.drawImage(img, 0, 0, c.width, c.height); resolve(c);
-      };
-      img.onerror = reject;
-      img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgStr);
-    });
-  }
-  const download = (href, name) => { const a = document.createElement("a"); a.href = href; a.download = name; document.body.appendChild(a); a.click(); a.remove(); };
+  /* ============================================================
+     Export цонх
+     ============================================================ */
+  const dlg = $("expDlg");
+  const SCALE_OPTS = [0, 500, 1000, 2000, 2500, 5000, 10000, 25000, 50000, 100000];
+  ["eqNh", "eqNv"].forEach((id) => {
+    const sel = $(id);
+    SCALE_OPTS.forEach((n) => { const o = document.createElement("option"); o.value = n; o.textContent = n ? "1:" + Z.fmtSp(n) : "Автомат"; sel.appendChild(o); });
+  });
+  const F = { org: "eqOrg", project: "eqProject", title: "eqTitle", drawingNo: "eqNo", drawnBy: "eqDrawn", checkedBy: "eqChecked", note: "eqNote" };
 
-  $("pngBtn").onclick = async () => { const c = await svgToCanvas(2); download(c.toDataURL("image/png"), `zuselt_${stamp()}.png`); };
-  // jsPDF head-д ачаалагдаагүй бол (CDN хаалттай г.м.) AMD define-ийг түр нууж дахин ачаална
-  function ensureJsPDF() {
-    if (window.jspdf) return Promise.resolve(window.jspdf);
-    const srcs = ["https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js", "https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"];
-    return srcs.reduce((p, src) => p.catch(() => new Promise((res, rej) => {
-      const d = window.define; window.define = undefined;
-      const sc = document.createElement("script"); sc.src = src;
-      sc.onload = () => { window.define = d; window.jspdf ? res(window.jspdf) : rej(new Error("jsPDF")); };
-      sc.onerror = () => { window.define = d; rej(new Error("jsPDF ачаалагдсангүй")); };
-      document.head.appendChild(sc);
-    })), Promise.reject());
-  }
-
-  $("pdfBtn").onclick = async () => {
-    let lib;
-    try { lib = await ensureJsPDF(); } catch (e) { setStatus("PDF сан ачаалагдсангүй — PNG-ээр татна уу."); return; }
-    const c = await svgToCanvas(2, true);
-    const { jsPDF } = lib;
-    const pdf = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
-    const pw = 297 - 20, ph = 210 - 20, r = Math.min(pw / c.width, ph / c.height);
-    pdf.addImage(c.toDataURL("image/png"), "PNG", 10 + (pw - c.width * r) / 2, 10, c.width * r, c.height * r);
-    pdf.save(`zuselt_${stamp()}.pdf`);
+  $("expBtn").onclick = () => {
+    if (!currentSection) return;
+    const saved = store.get("stamp", {});
+    const pid = currentSection.projectId;
+    $("eqOrg").value = saved.org || "RegaPro";
+    $("eqProject").value = (saved.projects && saved.projects[pid]) || currentSection.projectLabel;
+    $("eqTitle").value = "Геологийн зүсэлт A–A′";
+    $("eqNo").value = "";
+    $("eqDrawn").value = saved.drawnBy || userFullName;
+    $("eqChecked").value = saved.checkedBy || "";
+    $("eqNote").value = "";
+    $("eqPaper").value = saved.paper || "A3";
+    const f = saved.fmt || "pdf";
+    const r = dlg.querySelector(`input[name=fmt][value="${f}"]`); if (r) r.checked = true;
+    setExp("");
+    dlg.showModal();
   };
-  $("csvBtn").onclick = () => {
-    const rows = [["hole_id", "distance_m", "offset_m", "collar_elev_m", "from_m", "to_m", "top_elev_m", "bot_elev_m", "lithology", "lithology_name", "comment"]];
-    currentSection.holes.forEach((h) => h.intervals.slice().sort((a, b) => a.from - b.from).forEach((iv) =>
-      rows.push([h.id, h.along.toFixed(1), h.off.toFixed(1), h.collarZ.toFixed(2), iv.from, iv.to, (h.collarZ - iv.from).toFixed(2), (h.collarZ - iv.to).toFixed(2), iv.lith, lithInfo(iv.lith)[1], iv.comment])));
-    const csv = "﻿" + rows.map((r) => r.map((v) => `"${String(v ?? "").replace(/"/g, '""')}"`).join(",")).join("\r\n");
-    download(URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" })), `zuselt_${stamp()}.csv`);
+  $("expClose").onclick = $("expCancel").onclick = () => dlg.close();
+  const setExp = (txt, err) => { const el = $("expStatus"); el.innerHTML = txt; el.className = err ? "err" : ""; };
+
+  $("expGo").onclick = async () => {
+    const btn = $("expGo");
+    const fmtSel = dlg.querySelector("input[name=fmt]:checked").value;
+    const paper = $("eqPaper").value;
+    const meta = Object.fromEntries(Object.entries(F).map(([k, id]) => [k, $(id).value.trim()]));
+    const saved = store.get("stamp", {});
+    saved.projects = saved.projects || {};
+    saved.projects[currentSection.projectId] = meta.project;
+    Object.assign(saved, { org: meta.org, drawnBy: meta.drawnBy, checkedBy: meta.checkedBy, paper, fmt: fmtSel });
+    store.set("stamp", saved);
+
+    const sec = currentSection;
+    const now = new Date();
+    Object.assign(meta, {
+      title: meta.title || "Геологийн зүсэлт A–A′", date: now.toISOString().slice(0, 10), crs: sec.crs,
+      elevSrc: "Esri World Elevation (Terrain3D), далайн түвшнээс", dataSrc: "ArcGIS Online · Drillhole_Lithology_3D_TEST",
+      fixNh: Number($("eqNh").value) || 0, fixNv: Number($("eqNv").value) || 0
+    });
+    const base = `zuselt_${sec.projectId}_${now.toISOString().slice(0, 16).replace(/[-:]/g, "").replace("T", "_")}`;
+    btn.disabled = true;
+    const step = (t) => setExp('<span class="spin"></span> ' + esc(t));
+    try {
+      if (fmtSel === "csv") {
+        saveBlob(new Blob([Z.buildCSV(sec)], { type: "text/csv;charset=utf-8" }), base + ".csv");
+      } else if (fmtSel === "dxf") {
+        saveBlob(new Blob([Z.buildDXF(sec, meta)], { type: "application/dxf" }), base + ".dxf");
+      } else {
+        step("Байрлалын зураг авч байна…");
+        const box = Z.mapBoxMm(paper);
+        const [mapShot, logo] = await Promise.all([captureMap(box.w / box.h, 1600).catch((e) => { console.warn(e); return null; }), loadLogo()]);
+        if (fmtSel === "png" || fmtSel === "svg") {
+          step("Хуудас зурж байна…");
+          const [sheet] = Z.buildReportPages(sec, meta, mapShot, logo, paper, false);
+          if (fmtSel === "svg") saveBlob(new Blob([sheet.svg], { type: "image/svg+xml;charset=utf-8" }), base + ".svg");
+          else saveBlob(await canvasBlob(await rasterize(sheet.svg, sheet.W, sheet.H, 250 / 96)), base + ".png");
+        } else if (fmtSel === "pdf") {
+          step("PDF сан ачаалж байна…");
+          const { jsPDF } = await loadLib("jspdf");
+          const pages = Z.buildReportPages(sec, meta, mapShot, logo, paper, true);
+          const P = Z.PAPERS[paper], fmtKey = paper.toLowerCase();
+          const pdf = new jsPDF({ orientation: "landscape", unit: "mm", format: fmtKey, compress: true });
+          for (let i = 0; i < pages.length; i++) {
+            step(`PDF хуудас ${i + 1}/${pages.length}…`);
+            const c = await rasterize(pages[i].svg, pages[i].W, pages[i].H, (i === 0 ? 220 : 160) / 96);
+            if (i > 0) pdf.addPage(fmtKey, "landscape");
+            pdf.addImage(c, "PNG", 0, 0, P.w, P.h, undefined, "FAST");
+          }
+          pdf.setProperties({ title: "Cross-section A-A' " + sec.projectId, creator: "RegaPro" });
+          saveBlob(pdf.output("blob"), base + ".pdf");
+        } else {
+          step("Зураг бэлтгэж байна…");
+          const [sheet] = Z.buildReportPages(sec, meta, mapShot, logo, paper, false);
+          const sheetImg = await canvasImg(await rasterize(sheet.svg, sheet.W, sheet.H, (fmtSel === "docx" ? 200 : 150) / 96));
+          let mapImg = null;
+          if (mapShot) { const ms = Z.mapFigureSVG(mapShot); mapImg = await canvasImg(await rasterize(ms, mapShot.wPx, mapShot.hPx, 1)); }
+          if (fmtSel === "docx") {
+            step("Word сан ачаалж байна…");
+            const D = await loadLib("docx");
+            step("Word файл үүсгэж байна…");
+            saveBlob(await D.Packer.toBlob(Z.buildDocx(D, sec, meta, sheetImg, mapImg, paper)), base + ".docx");
+          } else {
+            step("Excel сан ачаалж байна…");
+            const ExcelJS = await loadLib("exceljs");
+            step("Excel файл үүсгэж байна…");
+            const buf = await Z.buildXlsx(ExcelJS, sec, meta, sheetImg, mapImg).xlsx.writeBuffer();
+            saveBlob(new Blob([buf], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }), base + ".xlsx");
+          }
+        }
+      }
+      setExp("Бэлэн боллоо — файл татагдлаа." + (meta.scaleFallback ? " Сонгосон масштаб хуудсанд багтаагүй тул автомат масштаб хэрэглэлээ." : ""));
+    } catch (e) {
+      console.error(e);
+      setExp("Алдаа: " + esc(e && e.message ? e.message : e), true);
+    } finally {
+      btn.disabled = false;
+    }
   };
 });
 </script>
