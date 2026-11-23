@@ -6,7 +6,8 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Цооногийн зүсэлт · RegaPro</title>
 <link rel="stylesheet" href="https://js.arcgis.com/4.32/esri/themes/light/main.css">
-<script src="core.js?v=20261122c"></script>
+<script src="i18n-report.js?v=20261123a"></script>
+<script src="core.js?v=20261123a"></script>
 <script src="https://js.arcgis.com/4.32/"></script>
 <style>
   :root{--navy:#0f2236;--green:#2e7d32;--teal:#0b8fb0;--teal-d:#08536a;--ink:#1f2d3d;--muted:#556373;--line:#dde3ea;--bg:#f3f5f8}
@@ -165,6 +166,18 @@
         </div>
       </fieldset>
       <fieldset>
+        <legend>Тайлангийн хэл</legend>
+        <label class="fld" style="max-width:320px">Тайлангийн хэл
+          <select id="eqLang">
+            <option value="mn" selected>Монгол</option>
+            <option value="en">English</option>
+            <option value="ru">Русский</option>
+            <option value="zh">中文</option>
+          </select>
+        </label>
+        <span class="hint">Тайлан, штамп, хүснэгт, тэнхлэг, тайлбар, литологийн нэр сонгосон хэлээр гарна. Таны бичсэн нэр, дугаар, тайлбар хэвээр үлдэнэ.</span>
+      </fieldset>
+      <fieldset>
         <legend>Хуудас ба масштаб</legend>
         <div class="grid3">
           <label class="fld">Цаасны хэмжээ (хэвтээ)
@@ -235,6 +248,15 @@ const store = {
 let currentSection = null;
 let lastLine = null;
 let userFullName = "";
+
+const REPORT_LANGS = ["mn", "en", "ru", "zh"];
+function reportLangValue(v) { return REPORT_LANGS.includes(v) ? v : "mn"; }
+(function initReportLang() {
+  const sel = $("eqLang");
+  const saved = reportLangValue(store.get("reportLang", "mn"));
+  sel.value = saved;
+  sel.addEventListener("change", () => store.set("reportLang", reportLangValue(sel.value)));
+})();
 
 /* ---------- Төслийн сонголт ---------- */
 (function fillProjects() {
@@ -527,6 +549,7 @@ window.require([
     $("eqNote").value = "";
     $("eqPaper").value = saved.paper || "A3";
     $("eqIv").checked = saved.withIv !== false;
+    $("eqLang").value = reportLangValue(store.get("reportLang", "mn"));
     const f = saved.fmt || "pdf";
     const r = dlg.querySelector(`input[name=fmt][value="${f}"]`); if (r) r.checked = true;
     setExp("");
@@ -539,7 +562,10 @@ window.require([
     const btn = $("expGo");
     const fmtSel = dlg.querySelector("input[name=fmt]:checked").value;
     const paper = $("eqPaper").value;
+    const reportLang = reportLangValue($("eqLang").value);
+    store.set("reportLang", reportLang);
     const meta = Object.fromEntries(Object.entries(F).map(([k, id]) => [k, $(id).value.trim()]));
+    meta.lang = reportLang;
     const saved = store.get("stamp", {});
     saved.projects = saved.projects || {};
     saved.projects[currentSection.projectId] = meta.project;
@@ -559,10 +585,14 @@ window.require([
     const step = (t) => setExp('<span class="spin"></span> ' + esc(t));
     try {
       if (fmtSel === "csv") {
-        saveBlob(new Blob([Z.buildCSV(sec)], { type: "text/csv;charset=utf-8" }), base + ".csv");
+        saveBlob(new Blob([Z.buildCSV(sec, meta)], { type: "text/csv;charset=utf-8" }), base + ".csv");
       } else if (fmtSel === "dxf") {
         saveBlob(new Blob([Z.buildDXF(sec, meta)], { type: "application/dxf" }), base + ".dxf");
       } else {
+        if (reportLang === "zh") {
+          step("Хятад үсгийн фонт ачаалж байна…");
+          meta.svgFontCss = await Z.loadCjkFontCss(Z.reportSampleText(sec, meta));
+        }
         step("Байрлалын зураг авч байна…");
         const box = Z.mapBoxMm(paper);
         const [mapShot, logo] = await Promise.all([captureMap(box.w / box.h, 1600).catch((e) => { console.warn(e); return null; }), loadLogo()]);
@@ -583,14 +613,16 @@ window.require([
             if (i > 0) pdf.addPage(fmtKey, "landscape");
             pdf.addImage(c, "PNG", 0, 0, P.w, P.h, undefined, "FAST");
           }
-          pdf.setProperties({ title: "Cross-section A-A' " + sec.projectId, creator: "RegaPro" });
+          const pdfTitle = reportLang === "mn" ? "Cross-section A-A' " + sec.projectId : (meta.title + " · " + sec.projectId);
+          try { pdf.setProperties({ title: pdfTitle, creator: "RegaPro" }); }
+          catch (err) { pdf.setProperties({ title: "Cross-section A-A' " + sec.projectId, creator: "RegaPro" }); }
           saveBlob(pdf.output("blob"), base + ".pdf");
         } else {
           step("Зураг бэлтгэж байна…");
           const [sheet] = Z.buildReportPages(sec, meta, mapShot, logo, paper, false);
           const sheetImg = await canvasImg(await rasterize(sheet.svg, sheet.W, sheet.H, (fmtSel === "docx" ? 200 : 150) / 96));
           let mapImg = null;
-          if (mapShot) { const ms = Z.mapFigureSVG(mapShot); mapImg = await canvasImg(await rasterize(ms, mapShot.wPx, mapShot.hPx, 1)); }
+          if (mapShot) { const ms = Z.mapFigureSVG(mapShot, meta); mapImg = await canvasImg(await rasterize(ms, mapShot.wPx, mapShot.hPx, 1)); }
           if (fmtSel === "docx") {
             step("Word сан ачаалж байна…");
             const D = await loadLib("docx");
@@ -605,7 +637,8 @@ window.require([
           }
         }
       }
-      setExp("Бэлэн боллоо — файл татагдлаа." + (meta.scaleFallback ? " Сонгосон масштаб хуудсанд багтаагүй тул автомат масштаб хэрэглэлээ." : ""));
+      const fontNote = reportLang === "zh" && !meta.svgFontCss && fmtSel !== "csv" && fmtSel !== "dxf" ? " Хятад фонт ачаалагдаагүй тул системийн фонт ашиглагдлаа." : "";
+      setExp("Бэлэн боллоо — файл татагдлаа." + fontNote + (meta.scaleFallback ? " Сонгосон масштаб хуудсанд багтаагүй тул автомат масштаб хэрэглэлээ." : ""));
     } catch (e) {
       console.error(e);
       setExp("Алдаа: " + esc(e && e.message ? e.message : e), true);
