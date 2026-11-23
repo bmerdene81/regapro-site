@@ -1234,3 +1234,35 @@ h3 { font-size: 1.125rem; font-weight: 700; }
     .qr-label-body { grid-template-columns: 100px 1fr; }
     .qr-label-body .qr-code { width: 100px; height: 100px; }
 }
+
+
+/* =========================================================
+   Цооногийн зүсэлт (tsoonogiin-zuselt.html) + нүүрний хос карт
+   ========================================================= */
+.service-feature-row { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.service-feature-row .service--feature { grid-column: auto; grid-template-columns: auto 1fr; grid-template-rows: auto auto 1fr; align-items: start; }
+.service-feature-row .service--feature .service-icon { grid-row: 1 / span 3; align-self: start; }
+.service-feature-row .service--feature .service-more { align-self: end; }
+.service-feature-row .service--feature p { grid-column: 2; }
+.service-feature-row .service-more { grid-column: 2; grid-row: auto; justify-self: start; margin-top: 8px; }
+@media (max-width: 980px) { .service-feature-row { grid-template-columns: 1fr; } }
+@media (max-width: 760px) {
+    .service-feature-row .service--feature { grid-template-columns: 1fr; }
+    .service-feature-row .service--feature p, .service-feature-row .service-more { grid-column: 1; }
+}
+
+/* Хэлээр солигдох видео */
+.lang-en-only { display: none !important; }
+html[lang="en"] .lang-en-only { display: block !important; }
+html[lang="en"] .lang-mn-only { display: none !important; }
+
+.zus-shot { display: block; width: 100%; height: auto; border-radius: 10px; background: #fff; }
+.zus-shot--narrow { max-width: 420px; margin: 0 auto; }
+.zus-videos { display: grid; grid-template-columns: minmax(0, 1fr) 250px 250px; gap: 24px; align-items: start; }
+.zus-videos figure { margin: 0; }
+.zus-videos video { display: block; width: 100%; height: auto; border-radius: 14px; background: #000; box-shadow: 0 24px 50px -28px rgba(12, 40, 57, .55), 0 0 0 1px var(--line); }
+.zus-videos .v-wide video { aspect-ratio: 16 / 9; }
+.zus-videos .v-tall video { aspect-ratio: 9 / 16; }
+.zus-videos figcaption { margin-top: 10px; text-align: center; font-size: .85rem; color: var(--muted); }
+@media (max-width: 1100px) { .zus-videos { grid-template-columns: 1fr 1fr; } .zus-videos .v-wide { grid-column: 1 / -1; } }
+@media (max-width: 640px) { .zus-videos { grid-template-columns: 1fr; } .zus-videos .v-tall { max-width: 320px; margin: 0 auto; width: 100%; } }
