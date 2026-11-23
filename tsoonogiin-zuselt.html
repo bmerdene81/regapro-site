@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="zus.meta.title">Талбайн цооногуудын зүсэлт боловсруулалт | RegaPro</title>
+    <meta name="description" data-i18n-content="zus.meta.desc" content="RegaPro ArcGIS Online дахь цооног, литологийн өгөгдлөөс геологийн зүсэлтийг автоматаар зурж, штамп, масштаб, байршлын зурагтай тайланг PDF, Word, Excel, AutoCAD (DXF) зэрэг 7 төрлөөр гаргана.">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#0C2839">
+    <link rel="canonical" href="https://regapro.com/tsoonogiin-zuselt.html">
+    <link rel="alternate" hreflang="mn" href="https://regapro.com/tsoonogiin-zuselt.html">
+    <link rel="alternate" hreflang="en" href="https://regapro.com/tsoonogiin-zuselt.html?lang=en">
+    <link rel="alternate" hreflang="x-default" href="https://regapro.com/tsoonogiin-zuselt.html">
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="RegaPro">
+    <meta property="og:locale" content="mn_MN">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:title" data-i18n-content="zus.meta.title" content="Талбайн цооногуудын зүсэлт боловсруулалт | RegaPro">
+    <meta property="og:description" data-i18n-content="zus.meta.desc" content="RegaPro ArcGIS Online дахь цооног, литологийн өгөгдлөөс геологийн зүсэлтийг автоматаар зурж, штамп, масштаб, байршлын зурагтай тайланг PDF, Word, Excel, AutoCAD (DXF) зэрэг 7 төрлөөр гаргана.">
+    <meta property="og:url" content="https://regapro.com/tsoonogiin-zuselt.html">
+    <meta property="og:image" content="https://regapro.com/images/services/zuselt-report-a3.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" data-i18n-content="zus.meta.title" content="Талбайн цооногуудын зүсэлт боловсруулалт | RegaPro">
+    <meta name="twitter:description" data-i18n-content="zus.meta.desc" content="RegaPro ArcGIS Online дахь цооног, литологийн өгөгдлөөс геологийн зүсэлтийг автоматаар зурж, штамп, масштаб, байршлын зурагтай тайланг PDF, Word, Excel, AutoCAD (DXF) зэрэг 7 төрлөөр гаргана.">
+
+    <link rel="icon" href="images/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="images/favicon-192.png">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Хадгалсан хэлийг хуудас зурагдахаас өмнө тохируулна (анивчилт гаргахгүй) -->
+    <script>
+        (function () {
+            var lang = 'mn';
+            try {
+                var q = new URLSearchParams(location.search).get('lang');
+                lang = (q === 'en' || q === 'mn') ? q : (localStorage.getItem('regapro-lang') || 'mn');
+            } catch (e) {}
+            if (lang === 'en') document.documentElement.classList.add('lang-pending');
+        })();
+    </script>
+<script type="text/javascript">(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "z3935l0bdy");</script>
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Талбайн цооногуудын зүсэлт боловсруулалт (Drillhole cross-section processing)",
+    "serviceType": "Geological cross-section and report automation",
+    "url": "https://regapro.com/tsoonogiin-zuselt.html",
+    "description": "RegaPro draws geological cross-sections from drillhole and lithology data in ArcGIS Online and exports reports with a title block, scale, north arrow and location map as PDF, Word, Excel, PNG, SVG, DXF and CSV.",
+    "provider": { "@id": "https://regapro.com/#organization", "@type": "ProfessionalService", "name": "RegaPro", "url": "https://regapro.com/" },
+    "areaServed": { "@type": "Country", "name": "Mongolia" }
+}
+</script>
+</head>
+<body class="page-karotazh page-zuselt">
+
+<a class="skip-link" href="#main" data-i18n="a11y.skip">Үндсэн агуулга руу шилжих</a>
+
+<!-- ================= HEADER ================= -->
+<header class="site-header" id="top">
+    <div class="container header-inner">
+        <a href="index.html" class="brand" aria-label="RegaPro">
+            <img class="brand-logo brand-logo--light" src="images/logo-horizontal-white.png" alt="RegaPro" width="239" height="48">
+            <img class="brand-logo brand-logo--dark" src="images/logo-horizontal.png" alt="RegaPro" width="239" height="48">
+        </a>
+
+        <nav class="main-nav" id="main-nav" aria-label="Үндсэн цэс" data-i18n-aria="a11y.nav">
+            <a href="index.html#home" class="nav-link" data-i18n="nav.home">Нүүр</a>
+            <a href="index.html#workflow" class="nav-link" data-i18n="nav.workflow">Ажлын урсгал</a>
+            <a href="index.html#services" class="nav-link is-current" aria-current="page" data-i18n="nav.services">Үйлчилгээ</a>
+            <a href="index.html#advantages" class="nav-link" data-i18n="nav.advantages">Давуу талууд</a>
+            <a href="index.html#about" class="nav-link" data-i18n="nav.about">Бидний тухай</a>
+            <a href="index.html#contact" class="nav-link" data-i18n="nav.contact">Холбоо барих</a>
+            <a href="index.html#experience" class="btn btn-primary btn-sm nav-cta" data-i18n="nav.cta">Ажлын туршлага</a>
+        </nav>
+
+        <div class="header-actions">
+            <div class="lang-switch" role="group" aria-label="Хэл сонгох" data-i18n-aria="a11y.lang">
+                <button type="button" class="lang-btn is-active" data-lang="mn" aria-pressed="true" title="Монгол">MN</button>
+                <button type="button" class="lang-btn" data-lang="en" aria-pressed="false" title="English">EN</button>
+            </div>
+            <button class="nav-toggle" type="button" aria-controls="main-nav" aria-expanded="false" aria-label="Цэс нээх" data-i18n-aria="a11y.menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<main id="main">
+
+<!-- ================= PAGE HERO ================= -->
+<section class="kar-hero">
+    <div class="container kar-hero-grid">
+        <div class="kar-hero-text">
+            <nav class="kar-crumbs" aria-label="Breadcrumb">
+                <a href="index.html" data-i18n="nav.home">Нүүр</a><span aria-hidden="true">›</span>
+                <a href="index.html#services" data-i18n="nav.services">Үйлчилгээ</a><span aria-hidden="true">›</span>
+                <span data-i18n="zus.crumb">Цооногийн зүсэлт</span>
+            </nav>
+            <p class="eyebrow eyebrow--light" data-i18n="zus.hero.eyebrow">ArcGIS · Цооногийн зүсэлт</p>
+            <h1 class="kar-hero-title" data-i18n="zus.hero.title">Талбайн цооногуудын <span class="accent">зүсэлт ба бүрэн тайлан</span> — хэдхэн секундэд</h1>
+            <p class="kar-hero-lead" data-i18n="zus.hero.lead">ArcGIS-ийн бэлэн хэрэгслээр цооногийн дугаартай зүсэлт, штамптай тайлан гаргах боломжгүй байсан. RegaPro-гийн зүсэлтийн хуудас ArcGIS Online дахь цооног, литологийн өгөгдлөөс таны татсан шугамын дагуух геологийн зүсэлтийг автоматаар зурж, PDF, Word, Excel, AutoCAD зэрэг 7 төрлийн файлаар тайлан гаргана.</p>
+            <div class="kar-hero-actions">
+                <a href="#video" class="btn btn-primary" data-i18n="zus.hero.cta1">Видео үзэх</a>
+                <a href="index.html#contact" class="btn btn-ghost" data-i18n="nav.contact">Холбоо барих</a>
+            </div>
+        </div>
+        <figure class="kar-video lang-mn-only">
+            <video controls playsinline preload="none" poster="video/zuselt-reel-mn-poster.jpg" width="720" height="1280" aria-label="Цооногийн зүсэлтийн видео танилцуулга (монгол)">
+                <source src="video/zuselt-reel-mn.mp4" type="video/mp4">
+            </video>
+            <figcaption>Цооногийн зүсэлт ба тайлан — 1 минутад</figcaption>
+        </figure>
+        <figure class="kar-video lang-en-only">
+            <video controls playsinline preload="none" poster="video/zuselt-reel-en-poster.jpg" width="720" height="1280" aria-label="Drillhole cross-section video (English)">
+                <source src="video/zuselt-reel-en.mp4" type="video/mp4">
+            </video>
+            <figcaption>Cross-section and report — in one minute</figcaption>
+        </figure>
+    </div>
+</section>
+
+<!-- ================= STEPS ================= -->
+<section class="section kar-steps-sec">
+    <div class="container">
+        <header class="section-head reveal">
+            <p class="eyebrow" data-i18n="nav.workflow">Ажлын урсгал</p>
+            <h2 class="section-title" data-i18n="zus.steps.title">Шугамаас тайлан хүртэл 5 алхам</h2>
+        </header>
+        <ol class="kar-steps"><li class="kar-step reveal"><span class="kar-step-n">01</span><div class="kar-step-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 12h8M13 9l3 3-3 3"/></svg></div><h3 data-i18n="zus.s1.t">Товч дарах</h3><p data-i18n="zus.s1.d">ArcGIS апп дээрх «Зүсэлт хийх» товчоор тухайн төслийн зүсэлтийн хуудас нээгдэнэ.</p></li><li class="kar-step reveal"><span class="kar-step-n">02</span><div class="kar-step-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18 20 6"/><circle cx="4" cy="18" r="2"/><circle cx="20" cy="6" r="2"/><path d="M9 4.5v3M7.5 6h3"/></svg></div><h3 data-i18n="zus.s2.t">Шугам татах</h3><p data-i18n="zus.s2.d">Газрын зураг дээр 2 ба түүнээс олон цэг тавьж зүсэлтийн шугамаа татна. Буферийн өргөнийг сонгоно.</p></li><li class="kar-step reveal"><span class="kar-step-n">03</span><div class="kar-step-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8c3-2 5 1 9-1s6 0 9-1"/><path d="M7 7.6V20M12 7V16M17 6.6V18.5"/></svg></div><h3 data-i18n="zus.s3.t">Зүсэлт гарах</h3><p data-i18n="zus.s3.d">Буферт орсон цооногууд шугам дээр буулгагдаж, дугаар, литологи, газрын гадаргын профайлтай зүсэлт автоматаар зурагдана.</p></li><li class="kar-step reveal"><span class="kar-step-n">04</span><div class="kar-step-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4" width="17" height="16" rx="1.5"/><path d="M3.5 14.5h17M10 14.5V20M14 17.2h4"/></svg></div><h3 data-i18n="zus.s4.t">Штамп бөглөх</h3><p data-i18n="zus.s4.d">Байгууллага, төсөл, зурсан, хянасан хүний мэдээлэл, цаасны хэмжээ, масштабаа сонгоно. Мэдээлэл дараагийн удаа хадгалагдана.</p></li><li class="kar-step reveal"><span class="kar-step-n">05</span><div class="kar-step-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5"/><path d="M4.5 19.5h15"/></svg></div><h3 data-i18n="zus.s5.t">Тайлан татах</h3><p data-i18n="zus.s5.d">PDF, Word, Excel, PNG, SVG, DXF, CSV-ээс сонгоод нэг товчоор тайлангаа татна.</p></li></ol>
+    </div>
+</section>
+
+<!-- ================= DEMO ================= -->
+<section class="section kar-demo-sec" id="demo">
+    <div class="container">
+        <div class="kar-demo reveal">
+            <div class="kar-demo-head">
+                <div>
+                    <h2 data-i18n="zus.demo.title">Бодит өгөгдөл дээрх жишээ</h2>
+                    <p data-i18n="zus.demo.sub">Гидрогеологийн өрөмдлөгийн төслийн 7 цооногоор татсан 4.12 км урт зүсэлт ба түүний тайлан.</p>
+                </div>
+                <dl class="kar-stats">
+                    <div><dt>7</dt><dd data-i18n="zus.stat.holes">цооног</dd></div>
+                    <div><dt>4.12</dt><dd data-i18n="zus.stat.len">км зүсэлт</dd></div>
+                    <div><dt>784.7</dt><dd data-i18n="zus.stat.m">м өрөмдлөг</dd></div>
+                    <div><dt>7</dt><dd data-i18n="zus.stat.fmt">файлын төрөл</dd></div>
+                </dl>
+            </div>
+            <div class="kar-demo-grid">
+                <div class="kar-panel">
+                    <h3 data-i18n="zus.p.section">Зүсэлтийн хуудас</h3>
+                    <img class="zus-shot" src="images/services/zuselt-section.jpg" width="1400" height="862" loading="lazy" alt="Газрын зураг дээрх зүсэлтийн шугам, доор нь цооногийн дугаар, литологитой зүсэлт" data-i18n-alt="zus.alt.section">
+                </div>
+                <div class="kar-panel">
+                    <h3 data-i18n="zus.p.report">A3 тайлангийн хуудас</h3>
+                    <img class="zus-shot" src="images/services/zuselt-report-a3.jpg" width="1176" height="840" loading="lazy" alt="Штамп, масштаб, байршлын зураг, литологийн тайлбартай A3 тайлан" data-i18n-alt="zus.alt.report">
+                </div>
+                <div class="kar-panel">
+                    <h3 data-i18n="zus.p.export">Тайлан татах цонх</h3>
+                    <img class="zus-shot zus-shot--narrow" src="images/services/zuselt-export.jpg" width="666" height="733" loading="lazy" alt="Файлын төрөл, цаасны хэмжээ, масштаб, штампын мэдээлэл сонгох цонх" data-i18n-alt="zus.alt.export">
+                </div>
+                <div class="kar-panel">
+                    <h3 data-i18n="zus.p.cmp">ArcGIS дангаараа ба RegaPro</h3>
+                    <div class="kar-table-wrap">
+                    <table class="kar-table">
+                        <thead><tr><th data-i18n="zus.cmp.h1">Шаардлага</th><th data-i18n="zus.cmp.h2">ArcGIS дангаараа</th><th data-i18n="zus.cmp.h3">RegaPro-той</th></tr></thead>
+                        <tbody><tr><td data-i18n="zus.cmp.r1">Цооногийн дугаар</td><td data-i18n="zus.cmp.r1a">Харагдахгүй</td><td><strong data-i18n="zus.cmp.r1b">Багана бүрийн дээр</strong></td></tr><tr><td data-i18n="zus.cmp.r2">Штамп, масштаб, сум</td><td data-i18n="zus.cmp.r2a">Байхгүй</td><td><strong data-i18n="zus.cmp.r2b">Автоматаар</strong></td></tr><tr><td data-i18n="zus.cmp.r3">Татах файл</td><td data-i18n="zus.cmp.r3a">Зөвхөн CSV</td><td><strong data-i18n="zus.cmp.r3b">7 төрөл</strong></td></tr><tr><td data-i18n="zus.cmp.r4">Тайлан бэлдэх</td><td data-i18n="zus.cmp.r4a">Гараар</td><td><strong data-i18n="zus.cmp.r4b">1–13 секунд</strong></td></tr></tbody>
+                    </table>
+                    </div>
+                    <p class="kar-rule" data-i18n="zus.cmp.note">Өгөгдөл ArcGIS Online дээрээ хаалттай хэвээр. Тооцоолол хэрэглэгчийн хөтөч дээр хийгдэнэ.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= VIDEOS ================= -->
+<section class="section kar-steps-sec" id="video">
+    <div class="container">
+        <header class="section-head reveal">
+            <p class="eyebrow" data-i18n="zus.video.kicker">Видео</p>
+            <h2 class="section-title" data-i18n="zus.video.title">Зүсэлт хийхээс тайлан татах хүртэл</h2>
+            <p class="section-sub" data-i18n="zus.video.sub">Бодит төслийн өгөгдөл дээр бичсэн дэлгэцийн бичлэг, монгол, англи хэлний танилцуулга.</p>
+        </header>
+        <div class="zus-videos reveal">
+            <figure class="v-wide">
+                <video controls playsinline preload="none" poster="video/zuselt-demo-poster.jpg" width="1280" height="720" aria-label="Дэлгэцийн бичлэг — бүтэн ажлын урсгал" data-i18n-aria="zus.v1.cap">
+                    <source src="video/zuselt-demo.mp4" type="video/mp4">
+                </video>
+                <figcaption data-i18n="zus.v1.cap">Дэлгэцийн бичлэг — бүтэн ажлын урсгал</figcaption>
+            </figure>
+            <figure class="v-tall">
+                <video controls playsinline preload="none" poster="video/zuselt-reel-mn-poster.jpg" width="720" height="1280" aria-label="Рийл — монгол хэлээр" data-i18n-aria="zus.v2.cap">
+                    <source src="video/zuselt-reel-mn.mp4" type="video/mp4">
+                </video>
+                <figcaption data-i18n="zus.v2.cap">Рийл — монгол хэлээр</figcaption>
+            </figure>
+            <figure class="v-tall">
+                <video controls playsinline preload="none" poster="video/zuselt-reel-en-poster.jpg" width="720" height="1280" aria-label="Рийл — англи хэлээр" data-i18n-aria="zus.v3.cap">
+                    <source src="video/zuselt-reel-en.mp4" type="video/mp4">
+                </video>
+                <figcaption data-i18n="zus.v3.cap">Рийл — англи хэлээр</figcaption>
+            </figure>
+        </div>
+    </div>
+</section>
+
+<!-- ================= REPORT CONTENT + OUTPUTS ================= -->
+<section class="section kar-info-sec">
+    <div class="container">
+        <header class="section-head reveal">
+            <h2 class="section-title" data-i18n="zus.curves.title">Тайланд юу ордог вэ?</h2>
+            <p class="section-sub" data-i18n="zus.curves.sub">Геологийн зурагт шаардлагатай бүх элемент автоматаар нэмэгдэнэ</p>
+        </header>
+        <div class="kar-curves"><article class="kar-curve reveal" style="--c:#2E8B33"><h3><span data-i18n="zus.c1.t">Штамп</span><small data-i18n="zus.c1.u">A3 · A4</small></h3><p data-i18n="zus.c1.d">Байгууллага, төсөл, зургийн нэр, дугаар, зурсан, хянасан хүн, огноо, лого.</p></article><article class="kar-curve reveal" style="--c:#1F7BB8"><h3><span data-i18n="zus.c2.t">Масштаб ба сум</span><small data-i18n="zus.c2.u">1:15 000</small></h3><p data-i18n="zus.c2.d">Хэвтээ, босоо масштаб (босоо өсгөлттэй), масштабын шугам, хойд зүгийн сум.</p></article><article class="kar-curve reveal" style="--c:#C98A12"><h3><span data-i18n="zus.c3.t">Байршлын зураг</span><small data-i18n="zus.c3.u">WGS 84 · UTM</small></h3><p data-i18n="zus.c3.d">Хиймэл дагуулын зураг дээр зүсэлтийн шугам, буфер, цооногууд, A–A′ цэгүүд.</p></article><article class="kar-curve reveal" style="--c:#7B57C2"><h3><span data-i18n="zus.c4.t">Хүснэгтүүд</span><small data-i18n="zus.c4.u">Excel</small></h3><p data-i18n="zus.c4.d">Ерөнхий мэдээлэл, цооногийн жагсаалт, литологийн нэгтгэл, интервал бүрийн дэлгэрэнгүй.</p></article></div>
+
+        <header class="section-head kar-out-head reveal">
+            <h2 class="section-title" data-i18n="zus.out.title">Таны авах үр дүн</h2>
+        </header>
+        <ul class="kar-out reveal"><li data-i18n="zus.o1">PDF — штамптай зураг, бүх хүснэгт</li><li data-i18n="zus.o2">Word — засварлах боломжтой тайлан</li><li data-i18n="zus.o3">Excel — бүх өгөгдөл, 6 хүснэгт</li><li data-i18n="zus.o4">PNG, SVG — зураг ба вектор</li><li data-i18n="zus.o5">DXF — AutoCAD, бодит 1:1 координат</li><li data-i18n="zus.o6">CSV — интервалын түүхий өгөгдөл</li></ul>
+
+        <div class="kar-cta reveal">
+            <div>
+                <h2 data-i18n="zus.cta.title">Цооногийн зүсэлтээ автоматжуулах уу?</h2>
+                <p data-i18n="zus.cta.text">Танай ArcGIS Online дахь цооног, литологийн давхаргад холбож, зүсэлтийн хуудсыг тохируулж өгнө. Өгөгдөл тань ArcGIS дээрээ хаалттай хэвээр үлдэнэ.</p>
+            </div>
+            <a class="btn btn-primary" href="index.html#contact" data-i18n="nav.contact">Холбоо барих</a>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer">
+    <div class="container footer-grid">
+        <div class="footer-brand">
+            <img src="images/logo-horizontal-white.png" alt="RegaPro" width="199" height="40" loading="lazy">
+            <p data-i18n="footer.desc">ArcGIS Survey123 дээр суурилсан геологи, уул уурхайн хээрийн мэдээллийн цахим шийдэл.</p>
+        </div>
+        <nav class="footer-nav" aria-label="Footer">
+            <a href="index.html#workflow" data-i18n="nav.workflow">Ажлын урсгал</a>
+            <a href="index.html#services" data-i18n="nav.services">Үйлчилгээ</a>
+            <a href="karotazh.html" data-i18n="nav.karotazh">Каротаж</a>
+            <a href="tsoonogiin-zuselt.html" data-i18n="nav.zuselt">Зүсэлт</a>
+            <a href="index.html#about" data-i18n="nav.about">Бидний тухай</a>
+            <a href="index.html#contact" data-i18n="nav.contact">Холбоо барих</a>
+        </nav>
+    </div>
+    <div class="container">
+        <div class="footer-bottom">
+            <p>© <span class="js-year">2026</span> RegaPro. <span data-i18n="footer.rights">Бүх эрх хуулиар хамгаалагдсан.</span></p>
+            <p class="footer-tagline">COLLECT • CONNECT • ANALYZE • DECIDE</p>
+        </div>
+    </div>
+</footer>
+
+<script src="i18n.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
