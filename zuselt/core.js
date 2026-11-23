@@ -25,7 +25,12 @@
   };
   const LITH_DEFAULT = ["#bebebe", "Бусад"];
   const lithInfo = (c) => LITH[c] || LITH_DEFAULT;
-  const lithNameMn = (c) => lithInfo(c)[1].split(" / ")[0];
+  const I18N = root.ZREPORT;
+  if (!I18N) throw new Error("i18n-report.js must be loaded before core.js");
+  const langOf = (meta) => I18N.norm(meta && meta.lang);
+  const tr = (lang, id, vars) => I18N.t(lang, id, vars);
+  const lithName = (lang, code, opts) => I18N.lithName(lang, code, opts);
+  const lithNameMn = (c) => lithName("mn", c);
   const lithOrder = Object.keys(LITH);
   const lithRank = (c) => (lithOrder.indexOf(c) < 0 ? 999 : lithOrder.indexOf(c));
   const sortLith = (arr) => arr.sort((a, b) => lithRank(a) - lithRank(b) || String(a).localeCompare(String(b)));
@@ -37,6 +42,8 @@
   [100, 1000, 10000, 100000].forEach((p) => [1, 1.5, 2, 2.5, 3, 4, 5, 7.5].forEach((m) => STD_SCALES.push(p * m)));
   STD_SCALES.push(1000000);
   const FONT = "'Segoe UI', Arial, sans-serif";
+  const CJK_FONT = "'Noto Sans SC', 'Noto Sans CJK SC', 'Source Han Sans SC', 'Microsoft YaHei', 'PingFang SC', 'WenQuanYi Micro Hei', 'Droid Sans Fallback', 'Segoe UI', Arial, sans-serif";
+  const fontFamily = (lang) => (I18N.norm(lang) === "zh" ? CJK_FONT : FONT);
   const R_EARTH = 6378137;
 
   /* ---------------- Туслах функцууд ---------------- */
@@ -51,17 +58,38 @@
   const nice125Floor = (v) => { const p = Math.pow(10, Math.floor(Math.log10(v))), f = v / p; return (f >= 5 ? 5 : f >= 2 ? 2 : 1) * p; };
   const fitText = (str, maxW, px) => {
     str = String(str ?? "");
-    const cw = px * 0.56;
-    if (str.length * cw <= maxW) return str;
-    const n = Math.max(1, Math.floor(maxW / cw) - 1);
-    return str.slice(0, n) + "…";
+    const hasWide = /[\u1100-\u115F\u2E80-\u9FFF\uAC00-\uD7A3\uF900-\uFAFF\uFE30-\uFE6F\uFF00-\uFF60]/.test(str);
+    if (!hasWide) {
+      const cw = px * 0.56;
+      if (str.length * cw <= maxW) return str;
+      const n = Math.max(1, Math.floor(maxW / cw) - 1);
+      return str.slice(0, n) + "…";
+    }
+    const chars = Array.from(str);
+    const widthOf = (list) => list.reduce((w, ch) => {
+      const c = ch.codePointAt(0);
+      const wide = (c >= 0x1100 && c <= 0x115F) || (c >= 0x2E80 && c <= 0x9FFF) || (c >= 0xAC00 && c <= 0xD7A3) || (c >= 0xF900 && c <= 0xFAFF) || (c >= 0xFE30 && c <= 0xFE6F) || (c >= 0xFF00 && c <= 0xFF60);
+      return w + px * (wide ? 1 : 0.56);
+    }, 0);
+    if (widthOf(chars) <= maxW) return str;
+    const ell = "…";
+    let lo = 1, hi = chars.length;
+    while (lo < hi) {
+      const mid = (lo + hi + 1) >> 1;
+      if (widthOf(chars.slice(0, mid).concat(ell)) <= maxW) lo = mid;
+      else hi = mid - 1;
+    }
+    return chars.slice(0, lo).join("") + ell;
   };
   const textOn = (hex) => {
     const h = hex.replace("#", ""), r = parseInt(h.slice(0, 2), 16), g = parseInt(h.slice(2, 4), 16), b = parseInt(h.slice(4, 6), 16);
     return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? "#000000" : "#ffffff";
   };
   const holeDepth = (h) => Math.max(0, ...h.intervals.map((i) => i.to));
-  const distTxt = (m) => (m >= 1000 ? fmt(m / 1000, m >= 10000 ? 1 : 2) + " км" : fmt(m, 0) + " м");
+  const distTxt = (m, lang) => {
+    lang = I18N.norm(lang);
+    return m >= 1000 ? fmt(m / 1000, m >= 10000 ? 1 : 2) + " " + tr(lang, "unit.km") : fmt(m, 0) + " " + tr(lang, "unit.m");
+  };
 
   /* ---------------- Геометр ---------------- */
   const wmToLat = (y) => (Math.atan(Math.sinh(y / R_EARTH)) * 180) / Math.PI;
@@ -81,7 +109,7 @@
     return { E, N: Nn, zone, hemi: lat >= 0 ? "N" : "S" };
   }
   const azimuthDeg = (x1, y1, x2, y2) => ((Math.atan2(x2 - x1, y2 - y1) * 180) / Math.PI + 360) % 360;
-  const compass8 = (az) => ["Х", "ХЗү", "Зү", "ӨЗү", "Ө", "ӨБ", "Б", "ХБ"][Math.round(az / 45) % 8];
+  const compass8 = (az, lang) => I18N.compass(lang)[Math.round(az / 45) % 8];
 
   function cumLengths(pts) {
     const c = [0];
@@ -120,6 +148,7 @@
      o.header / o.legend — гарчиг, тайлбар харуулах эсэх
      ===================================================================== */
   function renderSection(sec, o = {}) {
+    const lang = I18N.norm(o.lang);
     const left = 72, right = 28, axisB = 46;
     const header = o.header !== false, showLegend = o.legend !== false;
     const holes = sec.holes.slice().sort((a, b) => a.along - b.along);
@@ -184,7 +213,7 @@
     const used = [];
     holes.forEach((h) => h.intervals.forEach((i) => { if (!used.includes(i.lith)) used.push(i.lith); }));
     sortLith(used);
-    const legendLabel = (c) => `${c} — ${lithInfo(c)[1]}`;
+    const legendLabel = (c) => `${c} — ${lithName(lang, c, { full: true })}`;
     const legendItemW = Math.max(190, Math.max(0, ...used.map((c) => legendLabel(c).length)) * 6.9 + 36);
     const legendCols = Math.max(1, Math.floor((W - left - right) / legendItemW));
     const legendRows = Math.ceil(used.length / legendCols);
@@ -194,7 +223,7 @@
     const s = [];
     s.push(`<rect x="0" y="0" width="${W.toFixed(1)}" height="${H.toFixed(1)}" fill="#ffffff"/>`);
     if (header) {
-      const veTxt = ve >= 1.05 ? ` · босоо өсгөлт ×${fmt(ve, ve < 10 ? 1 : 0)}` : "";
+      const veTxt = ve >= 1.05 ? tr(lang, "axis.ve", { n: fmt(ve, ve < 10 ? 1 : 0) }) : "";
       s.push(`<text x="${left}" y="22" font-size="16" font-weight="700" fill="#1f2d3d">${esc(sec.title)}</text>`);
       s.push(`<text x="${W - right}" y="22" font-size="12" fill="#556373" text-anchor="end">${esc((sec.subtitle || "") + veTxt)}</text>`);
     }
@@ -207,11 +236,11 @@
     for (let d = 0; d <= sec.lengthM + 1e-6; d += xStep) {
       const x = xOf(d);
       s.push(`<line x1="${x.toFixed(1)}" y1="${bottom}" x2="${x.toFixed(1)}" y2="${bottom + 5}" stroke="#6b7785"/>`);
-      const lab = sec.lengthM >= 2000 ? fmt(d / 1000, 2) + " км" : fmt(d, 0) + " м";
+      const lab = sec.lengthM >= 2000 ? fmt(d / 1000, 2) + " " + tr(lang, "unit.km") : fmt(d, 0) + " " + tr(lang, "unit.m");
       s.push(`<text x="${x.toFixed(1)}" y="${bottom + 20}" font-size="12" fill="#3d4b5c" text-anchor="middle">${lab}</text>`);
     }
-    s.push(`<text x="18" y="${(top + plotH / 2).toFixed(1)}" font-size="12" fill="#3d4b5c" text-anchor="middle" transform="rotate(-90 18 ${(top + plotH / 2).toFixed(1)})">Өндөр, м</text>`);
-    s.push(`<text x="${(left + plotW / 2).toFixed(1)}" y="${bottom + 40}" font-size="12" fill="#3d4b5c" text-anchor="middle">Шугамын дагуух зай</text>`);
+    s.push(`<text x="18" y="${(top + plotH / 2).toFixed(1)}" font-size="12" fill="#3d4b5c" text-anchor="middle" transform="rotate(-90 18 ${(top + plotH / 2).toFixed(1)})">${esc(tr(lang, "axis.elev", { u: tr(lang, "unit.m") }))}</text>`);
+    s.push(`<text x="${(left + plotW / 2).toFixed(1)}" y="${bottom + 40}" font-size="12" fill="#3d4b5c" text-anchor="middle">${esc(tr(lang, "axis.dist"))}</text>`);
 
     const gp = sec.ground.filter((g) => g.z != null && isFinite(g.z)).map((g) => `${xOf(g.d).toFixed(1)},${yOf(g.z).toFixed(1)}`);
     if (gp.length > 1) {
@@ -228,8 +257,9 @@
       const x = xOf(h.along), x0 = x - colW / 2;
       const ivs = h.intervals.slice().sort((a, b) => a.from - b.from);
       ivs.forEach((iv) => {
-        const yA = yOf(h.collarZ - iv.from), yB = yOf(h.collarZ - iv.to), [col, name] = lithInfo(iv.lith);
-        const tip = `${h.id}|${iv.lith}|${name}|${fmt(iv.from)}–${fmt(iv.to)} м|${fmt(h.collarZ - iv.from)}–${fmt(h.collarZ - iv.to)} м|${iv.comment || ""}`;
+        const yA = yOf(h.collarZ - iv.from), yB = yOf(h.collarZ - iv.to), col = lithInfo(iv.lith)[0], name = lithName(lang, iv.lith, { full: true });
+        const um = tr(lang, "unit.m");
+        const tip = `${h.id}|${iv.lith}|${name}|${fmt(iv.from)}–${fmt(iv.to)} ${um}|${fmt(h.collarZ - iv.from)}–${fmt(h.collarZ - iv.to)} ${um}|${iv.comment || ""}`;
         s.push(`<rect class="iv" data-tip="${esc(tip)}" x="${x0.toFixed(1)}" y="${yA.toFixed(1)}" width="${colW.toFixed(1)}" height="${Math.max(0.6, yB - yA).toFixed(1)}" fill="${col}"/>`);
       });
       const td = holeDepth(h), yTop = yOf(h.collarZ), yBot = yOf(h.collarZ - td);
@@ -239,11 +269,11 @@
       s.push(`<line x1="${x.toFixed(1)}" y1="${ly + 22}" x2="${x.toFixed(1)}" y2="${(yTop - 14).toFixed(1)}" stroke="#9aa6b2" stroke-dasharray="2 3"/>`);
       s.push(`<rect x="${(x - lw / 2).toFixed(1)}" y="${ly}" width="${lw.toFixed(1)}" height="22" rx="11" fill="#0f2236"/>`);
       s.push(`<text x="${x.toFixed(1)}" y="${ly + 15.5}" font-size="12.5" font-weight="700" fill="#ffffff" text-anchor="middle">${esc(h.id)}</text>`);
-      s.push(`<text x="${x.toFixed(1)}" y="${(yBot + 15).toFixed(1)}" font-size="11.5" fill="#3d4b5c" text-anchor="middle">${fmt(td, 1)} м</text>`);
+      s.push(`<text x="${x.toFixed(1)}" y="${(yBot + 15).toFixed(1)}" font-size="11.5" fill="#3d4b5c" text-anchor="middle">${fmt(td, 1)} ${tr(lang, "unit.m")}</text>`);
     });
 
     if (showLegend && used.length) {
-      s.push(`<text x="${left}" y="${legendTop}" font-size="12" font-weight="700" fill="#556373" letter-spacing="0.06em">ЛИТОЛОГИ</text>`);
+      s.push(`<text x="${left}" y="${legendTop}" font-size="12" font-weight="700" fill="#556373"${lang === "zh" ? "" : ` letter-spacing="0.06em"`}>${esc(tr(lang, "cap.lith"))}</text>`);
       const colWpx = (W - left - right) / legendCols;
       used.forEach((c, i) => {
         const cx = left + (i % legendCols) * colWpx, cy = legendTop + 14 + Math.floor(i / legendCols) * 24;
@@ -251,7 +281,7 @@
         s.push(`<text x="${(cx + 22).toFixed(1)}" y="${cy + 12}" font-size="12.5" fill="#1f2d3d">${esc(legendLabel(c))}</text>`);
       });
     }
-    const body = `<g font-family="${FONT}">${s.join("")}</g>`;
+    const body = `<g font-family="${fontFamily(lang)}">${s.join("")}</g>`;
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W.toFixed(1)} ${H.toFixed(1)}" width="${W.toFixed(1)}" height="${H.toFixed(1)}" role="img" aria-label="${esc(sec.title)}">${body}</svg>`;
     return { svg, body, W, H, Nh, Nv, ve, zMin, zMax, yStep, used, fallback };
   }
@@ -273,36 +303,38 @@
 
   /** Тайлангийн бүх хүснэгтийн мөрүүд (PDF/Word/Excel-д ижилхэн ашиглана) */
   function reportTables(sec, meta) {
+    const lang = langOf(meta);
+    const um = tr(lang, "unit.m");
     const holes = sec.holes.slice().sort((a, b) => a.along - b.along);
     const info = [
-      ["Байгууллага", meta.org],
-      ["Төсөл", meta.project],
-      ["Зургийн нэр", meta.title],
-      ["Зургийн дугаар", meta.drawingNo],
-      ["Зурсан", meta.drawnBy],
-      ["Хянасан", meta.checkedBy],
-      ["Огноо", meta.date],
-      ["Зүсэлтийн урт", distTxt(sec.lengthM) + ` (${fmt(sec.lengthM, 1)} м)`],
-      ["Чиглэл (азимут) A → A′", `${fmt(sec.azimuth, 1)}° (${compass8(sec.azimuth)})`],
-      ["Буферийн өргөн", `±${sec.bufM} м`],
-      ["A цэг (UTM)", `X = ${fmtSp(sec.A.E, 1)}, Y = ${fmtSp(sec.A.N, 1)}`],
-      ["A цэг (WGS 84)", `${fmt(sec.A.lat, 6)}°, ${fmt(sec.A.lon, 6)}°`],
-      ["A′ цэг (UTM)", `X = ${fmtSp(sec.B.E, 1)}, Y = ${fmtSp(sec.B.N, 1)}`],
-      ["A′ цэг (WGS 84)", `${fmt(sec.B.lat, 6)}°, ${fmt(sec.B.lon, 6)}°`],
-      ["Координатын систем", meta.crs],
-      ["Масштаб (хуудсан дээр)", meta.scaleText || "—"],
-      ["Цооногийн тоо", String(holes.length)],
-      ["Нийт өрөмдлөг", fmt(holes.reduce((a, h) => a + holeDepth(h), 0), 1) + " м"],
-      ["Газрын гадаргын өндөр", meta.elevSrc],
-      ["Өгөгдлийн эх сурвалж", meta.dataSrc]
+      [tr(lang, "stamp.org"), meta.org],
+      [tr(lang, "stamp.project"), meta.project],
+      [tr(lang, "stamp.title"), meta.title],
+      [tr(lang, "info.dwg"), meta.drawingNo],
+      [tr(lang, "stamp.drawn"), meta.drawnBy],
+      [tr(lang, "stamp.checked"), meta.checkedBy],
+      [tr(lang, "stamp.date"), meta.date],
+      [tr(lang, "info.length"), distTxt(sec.lengthM, lang) + ` (${fmt(sec.lengthM, 1)} ${um})`],
+      [tr(lang, "info.azimuth"), `${fmt(sec.azimuth, 1)}° (${compass8(sec.azimuth, lang)})`],
+      [tr(lang, "info.buffer"), `±${sec.bufM} ${um}`],
+      [tr(lang, "info.aUtm"), `X = ${fmtSp(sec.A.E, 1)}, Y = ${fmtSp(sec.A.N, 1)}`],
+      [tr(lang, "info.aWgs"), `${fmt(sec.A.lat, 6)}°, ${fmt(sec.A.lon, 6)}°`],
+      [tr(lang, "info.bUtm"), `X = ${fmtSp(sec.B.E, 1)}, Y = ${fmtSp(sec.B.N, 1)}`],
+      [tr(lang, "info.bWgs"), `${fmt(sec.B.lat, 6)}°, ${fmt(sec.B.lon, 6)}°`],
+      [tr(lang, "info.crs"), meta.crs],
+      [tr(lang, "info.scale"), meta.scaleText || "—"],
+      [tr(lang, "info.holes"), String(holes.length)],
+      [tr(lang, "info.drilled"), fmt(holes.reduce((a, h) => a + holeDepth(h), 0), 1) + " " + um],
+      [tr(lang, "info.elev"), tr(lang, "elevSrc")],
+      [tr(lang, "info.source"), tr(lang, "dataSrc")]
     ];
-    if (meta.note) info.push(["Тайлбар", meta.note]);
+    if (meta.note) info.push([tr(lang, "info.note"), meta.note]);
     const holeRows = holes.map((h, i) => [i + 1, h.id, h.E, h.N, h.lat, h.lon, h.collarZ, holeDepth(h), h.along, h.off, h.intervals.length]);
     const lith = lithSummary(sec);
     const ivRows = [];
     holes.forEach((h) => h.intervals.slice().sort((a, b) => a.from - b.from).forEach((iv) =>
-      ivRows.push([h.id, iv.from, iv.to, iv.to - iv.from, h.collarZ - iv.from, h.collarZ - iv.to, iv.lith, lithNameMn(iv.lith), iv.comment || ""])));
-    return { info, holeRows, lith, ivRows, holes };
+      ivRows.push([h.id, iv.from, iv.to, iv.to - iv.from, h.collarZ - iv.from, h.collarZ - iv.to, iv.lith, lithName(lang, iv.lith), iv.comment || ""])));
+    return { info, holeRows, lith, ivRows, holes, lang };
   }
 
   /* =====================================================================
@@ -311,25 +343,29 @@
   const T = (x, y, str, o = {}) =>
     `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="${o.size || 11}"${o.weight ? ` font-weight="${o.weight}"` : ""}${o.anchor ? ` text-anchor="${o.anchor}"` : ""} fill="${o.fill || "#111"}"${o.ls ? ` letter-spacing="${o.ls}"` : ""}>${esc(o.maxW ? fitText(str, o.maxW, o.size || 11) : str)}</text>`;
   const Ln = (x1, y1, x2, y2, w = 0.8, c = "#000") => `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${c}" stroke-width="${w}"/>`;
-  const svgOpen = (W, H) => `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${W.toFixed(1)} ${H.toFixed(1)}" width="${(W / MM).toFixed(1)}mm" height="${(H / MM).toFixed(1)}mm">`;
+  const svgOpen = (W, H, fontCss) => {
+    const defs = fontCss ? `<defs><style><![CDATA[${fontCss}]]></style></defs>` : "";
+    return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${W.toFixed(1)} ${H.toFixed(1)}" width="${(W / MM).toFixed(1)}mm" height="${(H / MM).toFixed(1)}mm">${defs}`;
+  };
 
   function frame(W, H) {
     const fx = 20 * MM, fy = 5 * MM, fw = W - 25 * MM, fh = H - 10 * MM;
     return { fx, fy, fw, fh, svg: `<rect x="0" y="0" width="${W.toFixed(1)}" height="${H.toFixed(1)}" fill="#ffffff"/><rect x="${fx.toFixed(1)}" y="${fy.toFixed(1)}" width="${fw.toFixed(1)}" height="${fh.toFixed(1)}" fill="none" stroke="#000" stroke-width="1.8"/>` };
   }
 
-  function northArrow(cx, cy, r) {
+  function northArrow(cx, cy, r, lang) {
     return `<g>
       <circle cx="${cx}" cy="${cy}" r="${r}" fill="#ffffff" fill-opacity="0.92" stroke="#111" stroke-width="0.8"/>
       <polygon points="${cx},${cy - r * 0.78} ${cx + r * 0.32},${cy + r * 0.45} ${cx},${cy + r * 0.2}" fill="#111"/>
       <polygon points="${cx},${cy - r * 0.78} ${cx - r * 0.32},${cy + r * 0.45} ${cx},${cy + r * 0.2}" fill="#ffffff" stroke="#111" stroke-width="0.8"/>
-      <text x="${cx}" y="${cy - r - 3}" font-size="${(r * 0.75).toFixed(1)}" font-weight="700" text-anchor="middle" fill="#111" stroke="#fff" stroke-width="3" paint-order="stroke">N</text>
+      <text x="${cx}" y="${cy - r - 3}" font-size="${(r * 0.75).toFixed(1)}" font-weight="700" text-anchor="middle" fill="#111" stroke="#fff" stroke-width="3" paint-order="stroke">${esc(tr(lang, "map.north"))}</text>
     </g>`;
   }
 
-  function scaleBar(x, y, metersPerPx, maxPx) {
+  function scaleBar(x, y, metersPerPx, maxPx, lang) {
+    lang = I18N.norm(lang);
     const L = nice125Floor(metersPerPx * maxPx), px = L / metersPerPx, h = 5;
-    const lab = (v) => (L >= 1000 ? fmt(v / 1000, v / 1000 < 1 ? 2 : 1) + (v === L ? " км" : "") : fmt(v, 0) + (v === L ? " м" : ""));
+    const lab = (v) => (L >= 1000 ? fmt(v / 1000, v / 1000 < 1 ? 2 : 1) + (v === L ? " " + tr(lang, "unit.km") : "") : fmt(v, 0) + (v === L ? " " + tr(lang, "unit.m") : ""));
     const s = [`<rect x="${(x - 5).toFixed(1)}" y="${(y - 15).toFixed(1)}" width="${(px + 26).toFixed(1)}" height="${(h + 22).toFixed(1)}" fill="#ffffff" fill-opacity="0.9" rx="2"/>`];
     for (let i = 0; i < 4; i++) s.push(`<rect x="${(x + (px / 4) * i).toFixed(1)}" y="${y}" width="${(px / 4).toFixed(1)}" height="${h}" fill="${i % 2 ? "#ffffff" : "#111"}" stroke="#111" stroke-width="0.6"/>`);
     [0, 0.5, 1].forEach((f) => s.push(T(x + px * f, y - 4, lab(L * f), { size: 8.5, anchor: "middle" })));
@@ -337,6 +373,7 @@
   }
 
   function stamp(x, y, w, h, meta, page, pages, logo) {
+    const lang = langOf(meta);
     const rows = 9, rh = h / rows, lw = 27 * MM, vx = x + lw, vw = w - lw;
     const fs = Math.min(11.5, rh * 0.42), small = Math.min(9.5, rh * 0.36);
     const s = [`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="#ffffff" stroke="#000" stroke-width="1.6"/>`];
@@ -346,7 +383,7 @@
     const lab = (i, str, k = 1) => s.push(T(x + 2 * MM, ty(i, k), str, { size: small, fill: "#333", maxW: lw - 3 * MM }));
     const val = (i, str, o = {}) => s.push(T(o.x || vx + 2 * MM, ty(i, o.k || 1), str, { size: o.size || fs, weight: o.weight, maxW: o.maxW || vw - 4 * MM }));
 
-    lab(0, "Байгууллага");
+    lab(0, tr(lang, "stamp.org"));
     let orgMax = vw - 4 * MM;
     if (logo) {
       const lh = rh * 0.72, lwid = (lh * logo.w) / logo.h;
@@ -354,60 +391,68 @@
       orgMax -= lwid + 2 * MM;
     }
     val(0, meta.org, { weight: 700, maxW: orgMax });
-    lab(1, "Төсөл"); val(1, meta.project);
-    lab(2, "Зургийн нэр", 2); val(2, meta.title, { k: 2, size: Math.min(15, rh * 0.55), weight: 700 });
-    lab(4, "Масштаб"); val(4, meta.scaleText);
-    lab(5, "Координат"); val(5, meta.crs);
+    lab(1, tr(lang, "stamp.project")); val(1, meta.project);
+    lab(2, tr(lang, "stamp.title"), 2); val(2, meta.title, { k: 2, size: Math.min(15, rh * 0.55), weight: 700 });
+    lab(4, tr(lang, "stamp.scale")); val(4, meta.scaleText);
+    lab(5, tr(lang, "stamp.crs")); val(5, meta.crs);
     const c1 = vx + vw * 0.52;
     [6, 7].forEach((i) => {
-      lab(i, i === 6 ? "Зурсан" : "Хянасан");
+      lab(i, tr(lang, i === 6 ? "stamp.drawn" : "stamp.checked"));
       val(i, i === 6 ? meta.drawnBy : meta.checkedBy, { maxW: vw * 0.52 - 4 * MM });
       s.push(Ln(c1, y + rh * i, c1, y + rh * (i + 1), 0.7));
-      s.push(T(c1 + 1.5 * MM, ty(i), "Гарын үсэг:", { size: small, fill: "#333" }));
+      s.push(T(c1 + 1.5 * MM, ty(i), tr(lang, "stamp.sign"), { size: small, fill: "#333" }));
     });
-    lab(8, "Огноо");
+    lab(8, tr(lang, "stamp.date"));
     const d1 = vx + vw * 0.3, d2 = vx + vw * 0.55;
     val(8, meta.date, { maxW: vw * 0.3 - 3 * MM });
     s.push(Ln(d1, y + rh * 8, d1, y + h, 0.7), Ln(d2, y + rh * 8, d2, y + h, 0.7));
-    s.push(T(d1 + 1.5 * MM, ty(8), `Хуудас ${page}/${pages}`, { size: fs }));
-    s.push(T(d2 + 1.5 * MM, ty(8), "Зураг №: " + (meta.drawingNo || "—"), { size: fs, maxW: vw * 0.45 - 3 * MM }));
+    s.push(T(d1 + 1.5 * MM, ty(8), tr(lang, "stamp.page", { page, pages }), { size: fs }));
+    s.push(T(d2 + 1.5 * MM, ty(8), tr(lang, "stamp.dwg", { no: meta.drawingNo || "—" }), { size: fs, maxW: vw * 0.45 - 3 * MM }));
     return s.join("");
   }
 
   function miniStamp(x, y, w, h, meta, page, pages) {
+    const lang = langOf(meta);
     const rh = h / 2, s = [`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="#fff" stroke="#000" stroke-width="1.4"/>`];
     s.push(Ln(x, y + rh, x + w, y + rh, 0.7), Ln(x + w * 0.42, y, x + w * 0.42, y + h, 0.7), Ln(x + w * 0.72, y + rh, x + w * 0.72, y + h, 0.7));
     s.push(T(x + 2 * MM, y + rh * 0.68, meta.org, { size: 10.5, weight: 700, maxW: w * 0.42 - 4 * MM }));
     s.push(T(x + w * 0.42 + 2 * MM, y + rh * 0.68, meta.title, { size: 10.5, weight: 700, maxW: w * 0.58 - 4 * MM }));
     s.push(T(x + 2 * MM, y + rh * 1.68, meta.project, { size: 9.5, maxW: w * 0.42 - 4 * MM }));
     s.push(T(x + w * 0.42 + 2 * MM, y + rh * 1.68, meta.date + (meta.drawingNo ? " · №" + meta.drawingNo : ""), { size: 9.5, maxW: w * 0.3 - 4 * MM }));
-    s.push(T(x + w * 0.72 + 2 * MM, y + rh * 1.68, `Хуудас ${page}/${pages}`, { size: 9.5 }));
+    s.push(T(x + w * 0.72 + 2 * MM, y + rh * 1.68, tr(lang, "stamp.page", { page, pages }), { size: 9.5 }));
     return s.join("");
   }
 
   /** 1-р хуудас: зүсэлт + байрлалын зураг + тайлбар + штамп */
   function sheetPage(sec, meta, mapShot, logo, paperKey, page, pages) {
+    const lang = langOf(meta);
     const P = PAPERS[paperKey], W = P.w * MM, H = P.h * MM, A3 = paperKey === "A3";
     const F = frame(W, H), { fx, fy, fw, fh } = F;
     const titleH = (A3 ? 15 : 13) * MM, bandH = (A3 ? 84 : 64) * MM;
     const stampW = (A3 ? 185 : 128) * MM, mapW = (A3 ? 118 : 80) * MM;
-    const s = [svgOpen(W, H), `<g font-family="${FONT}">`, F.svg];
+    const ls = lang === "zh" ? "" : "0.04em";
+    const s = [svgOpen(W, H, meta && meta.svgFontCss), `<g font-family="${fontFamily(lang)}">`, F.svg];
 
     // --- Зүсэлт
     const secBox = { x: fx + 2 * MM, y: fy + titleH + 1 * MM, w: fw - 4 * MM, h: fh - titleH - bandH - 2 * MM };
-    const r = renderSection(sec, { maxW: secBox.w, maxH: secBox.h, header: false, legend: false, fixNh: meta.fixNh, fixNv: meta.fixNv });
+    const r = renderSection(sec, { maxW: secBox.w, maxH: secBox.h, header: false, legend: false, fixNh: meta.fixNh, fixNv: meta.fixNv, lang });
     meta.scaleFallback = r.fallback;
-    meta.scaleText = `Хэвтээ ${scaleTxt(r.Nh)} · Босоо ${scaleTxt(r.Nv)}` + (r.Nh !== r.Nv ? ` (өсгөлт ×${fmt(r.Nh / r.Nv, 1)})` : "");
+    meta.scaleText = `${tr(lang, "scale.h")} ${scaleTxt(r.Nh)} · ${tr(lang, "scale.v")} ${scaleTxt(r.Nv)}` + (r.Nh !== r.Nv ? ` (${tr(lang, "scale.ve")} ×${fmt(r.Nh / r.Nv, 1)})` : "");
     const sx = secBox.x + Math.max(0, (secBox.w - r.W) / 2);
     s.push(`<g transform="translate(${sx.toFixed(1)},${secBox.y.toFixed(1)})">${r.body}</g>`);
 
     // --- Гарчиг
+    const subtitle = [
+      tr(lang, "sheet.project") + (meta.project || ""),
+      tr(lang, "sheet.length") + distTxt(sec.lengthM, lang),
+      tr(lang, "sheet.azimuth") + `${fmt(sec.azimuth, 0)}° (${compass8(sec.azimuth, lang)})`,
+      tr(lang, "sheet.buffer") + `±${sec.bufM} ${tr(lang, "unit.m")}`,
+      `${sec.holes.length} ${I18N.holesWord(lang, sec.holes.length)}`
+    ].join(" · ");
     s.push(T(fx + 4 * MM, fy + 7.2 * MM, String(meta.title || "").toUpperCase(), { size: A3 ? 21 : 18, weight: 800, fill: "#0f2236", maxW: fw * 0.55 }));
-    s.push(T(fx + 4 * MM, fy + (A3 ? 12.2 : 11) * MM,
-      `Төсөл: ${meta.project} · Урт ${distTxt(sec.lengthM)} · Азимут ${fmt(sec.azimuth, 0)}° (${compass8(sec.azimuth)}) · Буфер ±${sec.bufM} м · ${sec.holes.length} цооног`,
-      { size: A3 ? 12 : 10.5, fill: "#333", maxW: fw * 0.58 }));
-    s.push(T(fx + fw - 4 * MM, fy + 7.2 * MM, "Масштаб: " + meta.scaleText, { size: A3 ? 13 : 11, weight: 700, anchor: "end" }));
-    s.push(T(fx + fw - 4 * MM, fy + (A3 ? 12.2 : 11) * MM, meta.crs + " · Өндөр: далайн түвшнээс, м", { size: A3 ? 11 : 9.5, anchor: "end", fill: "#333" }));
+    s.push(T(fx + 4 * MM, fy + (A3 ? 12.2 : 11) * MM, subtitle, { size: A3 ? 12 : 10.5, fill: "#333", maxW: fw * 0.58 }));
+    s.push(T(fx + fw - 4 * MM, fy + 7.2 * MM, tr(lang, "sheet.scalePrefix") + meta.scaleText, { size: A3 ? 13 : 11, weight: 700, anchor: "end" }));
+    s.push(T(fx + fw - 4 * MM, fy + (A3 ? 12.2 : 11) * MM, meta.crs + " · " + tr(lang, "sheet.elevNote"), { size: A3 ? 11 : 9.5, anchor: "end", fill: "#333" }));
     s.push(Ln(fx, fy + titleH, fx + fw, fy + titleH, 1.2));
 
     // --- Доод хэсэг
@@ -417,7 +462,7 @@
     // Байрлалын зураг
     const capH = 6.5 * MM, img = { x: fx + 1.5 * MM, y: by + capH, w: mapW - 3 * MM, h: bandH - capH - 1.5 * MM };
     s.push(Ln(fx + mapW, by, fx + mapW, fy + fh, 1.2));
-    s.push(T(fx + 2 * MM, by + 4.6 * MM, "БАЙРЛАЛЫН ЗУРАГ", { size: 10.5, weight: 700, ls: "0.04em" }));
+    s.push(T(fx + 2 * MM, by + 4.6 * MM, tr(lang, "cap.map"), { size: 10.5, weight: 700, ls }));
     if (mapShot) {
       const mPerPxOut = (mapShot.metersPerPx * mapShot.wPx) / img.w;          // м / хуудасны px
       const mapScale = mPerPxOut * MM * 1000;
@@ -427,35 +472,35 @@
       s.push(`<image xlink:href="${mapShot.dataUrl}" href="${mapShot.dataUrl}" x="${img.x.toFixed(1)}" y="${img.y.toFixed(1)}" width="${img.w.toFixed(1)}" height="${img.h.toFixed(1)}" preserveAspectRatio="xMidYMid slice" clip-path="url(#mapclip)"/>`);
       s.push(`<rect x="${img.x.toFixed(1)}" y="${img.y.toFixed(1)}" width="${img.w.toFixed(1)}" height="${img.h.toFixed(1)}" fill="none" stroke="#111" stroke-width="0.8"/>`);
       const nr = (A3 ? 7.5 : 6) * MM;
-      s.push(northArrow(img.x + img.w - nr - 2 * MM, img.y + nr + 5 * MM, nr));
-      s.push(scaleBar(img.x + 4 * MM, img.y + img.h - 5 * MM, mPerPxOut, img.w * 0.38));
+      s.push(northArrow(img.x + img.w - nr - 2 * MM, img.y + nr + 5 * MM, nr, lang));
+      s.push(scaleBar(img.x + 4 * MM, img.y + img.h - 5 * MM, mPerPxOut, img.w * 0.38, lang));
     } else {
       s.push(`<rect x="${img.x.toFixed(1)}" y="${img.y.toFixed(1)}" width="${img.w.toFixed(1)}" height="${img.h.toFixed(1)}" fill="#f3f5f8" stroke="#999"/>`);
-      s.push(T(img.x + img.w / 2, img.y + img.h / 2, "Газрын зураг байхгүй", { size: 11, anchor: "middle", fill: "#666" }));
+      s.push(T(img.x + img.w / 2, img.y + img.h / 2, tr(lang, "map.missing"), { size: 11, anchor: "middle", fill: "#666" }));
     }
 
     // Тайлбар (литологи + тэмдэг)
     const lx = fx + mapW, lw = fw - mapW - stampW, ly = by;
-    s.push(T(lx + 3 * MM, ly + 4.6 * MM, "ТАЙЛБАР", { size: 10.5, weight: 700, ls: "0.04em" }));
+    s.push(T(lx + 3 * MM, ly + 4.6 * MM, tr(lang, "cap.legend"), { size: 10.5, weight: 700, ls }));
     const itemH = (A3 ? 5.6 : 4.1) * MM, fsz = A3 ? 10.5 : 8.6, symH = itemH * 3 + 2 * MM;
     const avail = bandH - capH - symH - 2 * MM, perCol = Math.max(1, Math.floor(avail / itemH));
     const cols = Math.max(1, Math.ceil(r.used.length / perCol)), colW = (lw - 4 * MM) / cols;
     r.used.forEach((c, i) => {
       const cx = lx + 3 * MM + Math.floor(i / perCol) * colW, cy = ly + capH + (i % perCol) * itemH;
       s.push(`<rect x="${cx.toFixed(1)}" y="${(cy + 0.6 * MM).toFixed(1)}" width="${(7 * MM).toFixed(1)}" height="${(itemH - 1.6 * MM).toFixed(1)}" fill="${lithInfo(c)[0]}" stroke="#333" stroke-width="0.5"/>`);
-      s.push(T(cx + 8.5 * MM, cy + itemH * 0.62, `${c} — ${lithNameMn(c)}`, { size: fsz, maxW: colW - 10 * MM }));
+      s.push(T(cx + 8.5 * MM, cy + itemH * 0.62, `${c} — ${lithName(lang, c)}`, { size: fsz, maxW: colW - 10 * MM }));
     });
     const sy0 = by + bandH - symH;
     s.push(Ln(lx, sy0, lx + lw, sy0, 0.6, "#999"));
     const sx0 = lx + 3 * MM;
     s.push(`<line x1="${sx0.toFixed(1)}" y1="${(sy0 + itemH * 0.55).toFixed(1)}" x2="${(sx0 + 7 * MM).toFixed(1)}" y2="${(sy0 + itemH * 0.55).toFixed(1)}" stroke="#b54900" stroke-width="2.2"/>`);
-    s.push(T(sx0 + 8.5 * MM, sy0 + itemH * 0.72, "Газрын гадарга", { size: fsz }));
+    s.push(T(sx0 + 8.5 * MM, sy0 + itemH * 0.72, tr(lang, "sym.ground"), { size: fsz }));
     const ty2 = sy0 + itemH * 1.55;
     s.push(`<polygon points="${(sx0 + 2 * MM).toFixed(1)},${(ty2 - 1.4 * MM).toFixed(1)} ${(sx0 + 5 * MM).toFixed(1)},${(ty2 - 1.4 * MM).toFixed(1)} ${(sx0 + 3.5 * MM).toFixed(1)},${(ty2 + 1.2 * MM).toFixed(1)}" fill="#111"/>`);
-    s.push(T(sx0 + 8.5 * MM, sy0 + itemH * 1.72, "Цооногийн ам · доор нь нийт гүн", { size: fsz, maxW: lw - 12 * MM }));
+    s.push(T(sx0 + 8.5 * MM, sy0 + itemH * 1.72, tr(lang, "sym.collar"), { size: fsz, maxW: lw - 12 * MM }));
     const py = sy0 + itemH * 2.15;
     s.push(`<rect x="${sx0.toFixed(1)}" y="${py.toFixed(1)}" width="${(7 * MM).toFixed(1)}" height="${(itemH * 0.7).toFixed(1)}" rx="${(itemH * 0.35).toFixed(1)}" fill="#0f2236"/>`);
-    s.push(T(sx0 + 8.5 * MM, sy0 + itemH * 2.72, "Цооногийн дугаар", { size: fsz }));
+    s.push(T(sx0 + 8.5 * MM, sy0 + itemH * 2.72, tr(lang, "sym.holeId"), { size: fsz }));
 
     // Штамп
     s.push(Ln(fx + fw - stampW, by, fx + fw - stampW, fy + fh, 1.6));
@@ -467,35 +512,37 @@
 
   /** Хүснэгтэн хуудсууд: ерөнхий мэдээлэл, цооног, литологи, интервал */
   function tablePages(sec, meta, paperKey, firstPage, withIntervals = true) {
+    const lang = langOf(meta);
     const P = PAPERS[paperKey], W = P.w * MM, H = P.h * MM, A3 = paperKey === "A3";
     const t = reportTables(sec, meta);
     const fs = A3 ? 10.4 : 9.2, rowH = (A3 ? 5.2 : 4.7) * MM, headH = rowH * 1.2;
     const F0 = frame(W, H);
     const cx = F0.fx + 5 * MM, cw = F0.fw - 10 * MM, cTop = F0.fy + 7 * MM, stampH = 15 * MM, cBottom = F0.fy + F0.fh - stampH - 5 * MM;
+    const C = (id) => tr(lang, id);
 
     const N = (v, d) => ({ v: fmt(v, d), a: "end" });
     const blocks = [
-      { h: "1. ЕРӨНХИЙ МЭДЭЭЛЭЛ" },
-      { cols: [{ t: "Үзүүлэлт", w: 0.32 }, { t: "Утга", w: 0.68 }], rows: t.info.map((r) => [{ v: r[0], b: true }, r[1] ?? ""]) },
-      { h: "2. ЦООНОГИЙН ЖАГСААЛТ" },
+      { h: "1. " + C("h.info.up") },
+      { cols: [{ t: C("col.item"), w: 0.32 }, { t: C("col.value"), w: 0.68 }], rows: t.info.map((r) => [{ v: r[0], b: true }, r[1] ?? ""]) },
+      { h: "2. " + C("h.holes.up") },
       {
-        cols: [{ t: "№", w: 0.04, a: "end" }, { t: "Цооног", w: 0.13 }, { t: "X (UTM E), м", w: 0.11, a: "end" }, { t: "Y (UTM N), м", w: 0.12, a: "end" },
-          { t: "Өргөрөг, °", w: 0.1, a: "end" }, { t: "Уртраг, °", w: 0.1, a: "end" }, { t: "Амны өндөр, м", w: 0.1, a: "end" }, { t: "Гүн, м", w: 0.07, a: "end" },
-          { t: "Зай A-аас, м", w: 0.09, a: "end" }, { t: "Шугамаас, м", w: 0.08, a: "end" }, { t: "Интервал", w: 0.06, a: "end" }],
+        cols: [{ t: C("col.no"), w: 0.04, a: "end" }, { t: C("col.hole"), w: 0.13 }, { t: C("col.x"), w: 0.11, a: "end" }, { t: C("col.y"), w: 0.12, a: "end" },
+          { t: C("col.lat"), w: 0.1, a: "end" }, { t: C("col.lon"), w: 0.1, a: "end" }, { t: C("col.collar"), w: 0.1, a: "end" }, { t: C("col.depth"), w: 0.07, a: "end" },
+          { t: C("col.fromA"), w: 0.09, a: "end" }, { t: C("col.offset"), w: 0.08, a: "end" }, { t: C("col.nIv"), w: 0.06, a: "end" }],
         rows: t.holeRows.map((r) => [{ v: r[0], a: "end" }, { v: r[1], b: true }, { v: fmtSp(r[2], 1), a: "end" }, { v: fmtSp(r[3], 1), a: "end" }, N(r[4], 6), N(r[5], 6), N(r[6], 1), N(r[7], 1), N(r[8], 0), N(r[9], 1), { v: r[10], a: "end" }])
       },
-      { h: "3. ЛИТОЛОГИЙН НЭГТГЭЛ" },
+      { h: "3. " + C("h.lith.up") },
       {
-        cols: [{ t: "Код", w: 0.1 }, { t: "Литологи", w: 0.4 }, { t: "Цооног", w: 0.1, a: "end" }, { t: "Интервал", w: 0.12, a: "end" }, { t: "Нийт зузаан, м", w: 0.15, a: "end" }, { t: "Хувь, %", w: 0.13, a: "end" }],
-        rows: t.lith.map((l) => [{ v: l.code, fill: lithInfo(l.code)[0], b: true }, lithInfo(l.code)[1], { v: l.holes, a: "end" }, { v: l.n, a: "end" }, N(l.m, 1), N(l.pct, 1)])
+        cols: [{ t: C("col.code"), w: 0.1 }, { t: C("col.lith"), w: 0.4 }, { t: C("col.holeN"), w: 0.1, a: "end" }, { t: C("col.nIv"), w: 0.12, a: "end" }, { t: C("col.thickTotal"), w: 0.15, a: "end" }, { t: C("col.pct"), w: 0.13, a: "end" }],
+        rows: t.lith.map((l) => [{ v: l.code, fill: lithInfo(l.code)[0], b: true }, lithName(lang, l.code, { full: true }), { v: l.holes, a: "end" }, { v: l.n, a: "end" }, N(l.m, 1), N(l.pct, 1)])
       },
-      ...(withIntervals ? [{ h: "4. ИНТЕРВАЛЫН ДЭЛГЭРЭНГҮЙ" }, {
+      ...(withIntervals ? [{ h: "4. " + C("h.iv.up") }, {
         split: true,
         cols: A3
-          ? [{ t: "Цооног", w: 0.15 }, { t: "Эхлэл", w: 0.08, a: "end" }, { t: "Төгсгөл", w: 0.09, a: "end" }, { t: "Зузаан", w: 0.09, a: "end" },
-            { t: "Дээд өнд.", w: 0.1, a: "end" }, { t: "Доод өнд.", w: 0.1, a: "end" }, { t: "Код", w: 0.08 }, { t: "Литологи", w: 0.19 }, { t: "Тайлбар", w: 0.12 }]
-          : [{ t: "Цооног", w: 0.12 }, { t: "Эхлэл, м", w: 0.08, a: "end" }, { t: "Төгсгөл, м", w: 0.08, a: "end" }, { t: "Зузаан, м", w: 0.08, a: "end" },
-            { t: "Дээд өндөр, м", w: 0.1, a: "end" }, { t: "Доод өндөр, м", w: 0.1, a: "end" }, { t: "Код", w: 0.07 }, { t: "Литологи", w: 0.2 }, { t: "Тайлбар", w: 0.17 }],
+          ? [{ t: C("col.hole"), w: 0.15 }, { t: C("col.from"), w: 0.08, a: "end" }, { t: C("col.to"), w: 0.09, a: "end" }, { t: C("col.thk"), w: 0.09, a: "end" },
+            { t: C("col.topShort"), w: 0.1, a: "end" }, { t: C("col.botShort"), w: 0.1, a: "end" }, { t: C("col.code"), w: 0.08 }, { t: C("col.lith"), w: 0.19 }, { t: C("info.note"), w: 0.12 }]
+          : [{ t: C("col.hole"), w: 0.12 }, { t: C("col.fromM"), w: 0.08, a: "end" }, { t: C("col.toM"), w: 0.08, a: "end" }, { t: C("col.thick"), w: 0.08, a: "end" },
+            { t: C("col.top"), w: 0.1, a: "end" }, { t: C("col.bot"), w: 0.1, a: "end" }, { t: C("col.code"), w: 0.07 }, { t: C("col.lith"), w: 0.2 }, { t: C("info.note"), w: 0.17 }],
         rows: t.ivRows.map((r) => [{ v: r[0], b: true }, N(r[1], 2), N(r[2], 2), N(r[3], 2), N(r[4], 2), N(r[5], 2), { v: r[6], fill: lithInfo(r[6])[0], b: true }, r[7], r[8]])
       }] : [])
     ];
@@ -551,7 +598,7 @@
       count: pages.length,
       render: (pagesTotal) => pages.map((frag, i) => {
         const F = frame(W, H);
-        return { W, H, svg: [svgOpen(W, H), `<g font-family="${FONT}">`, F.svg, frag.join(""),
+        return { W, H, svg: [svgOpen(W, H, meta && meta.svgFontCss), `<g font-family="${fontFamily(lang)}">`, F.svg, frag.join(""),
           miniStamp(F.fx + F.fw - 150 * MM, F.fy + F.fh - stampH, 150 * MM, stampH, meta, firstPage + i, pagesTotal), "</g></svg>"].join("") };
       })
     };
@@ -564,11 +611,13 @@
   }
 
   /** Word/Excel-д: газрын зураг + хойд зүгийн сум + масштабын шугам */
-  function mapFigureSVG(mapShot) {
+  function mapFigureSVG(mapShot, meta) {
+    const lang = langOf(meta);
     const W = mapShot.wPx, H = mapShot.hPx, k = Math.max(1, W / 600), r = 26;
-    return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}"><g font-family="${FONT}">
+    const defs = meta && meta.svgFontCss ? `<defs><style><![CDATA[${meta.svgFontCss}]]></style></defs>` : "";
+    return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">${defs}<g font-family="${fontFamily(lang)}">
       <image xlink:href="${mapShot.dataUrl}" href="${mapShot.dataUrl}" x="0" y="0" width="${W}" height="${H}"/>
-      <g transform="scale(${k})">${northArrow(W / k - r - 14, r + 26, r)}${scaleBar(18, H / k - 18, mapShot.metersPerPx * k, (W / k) * 0.32)}</g>
+      <g transform="scale(${k})">${northArrow(W / k - r - 14, r + 26, r, lang)}${scaleBar(18, H / k - 18, mapShot.metersPerPx * k, (W / k) * 0.32, lang)}</g>
       <rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" fill="none" stroke="#111" stroke-width="1"/></g></svg>`;
   }
 
@@ -588,8 +637,11 @@
     const { Document, Paragraph, TextRun, ImageRun, Table, TableRow, TableCell, WidthType, AlignmentType, HeadingLevel,
       PageOrientation, ShadingType, Footer, PageNumber, VerticalAlign, TableLayoutType } = D;
     const P = PAPERS[paperKey], tw = (mm) => Math.round(mm * 56.6929);
+    const lang = langOf(meta);
+    const C = (id) => tr(lang, id);
+    const runFont = lang === "zh" ? { ascii: "Arial", hAnsi: "Arial", cs: "Arial", eastAsia: "Microsoft YaHei" } : "Arial";
     const t = reportTables(sec, meta);
-    const run = (text, o = {}) => new TextRun({ text: String(text ?? ""), bold: o.b, size: o.size || 18, color: o.color, font: "Arial" });
+    const run = (text, o = {}) => new TextRun({ text: String(text ?? ""), bold: o.b, size: o.size || 18, color: o.color, font: runFont });
     const cell = (c, o = {}) => {
       const v = c && typeof c === "object" ? c : { v: c };
       return new TableCell({
@@ -610,9 +662,11 @@
       ]
     });
     const H = (txt) => new Paragraph({ heading: HeadingLevel.HEADING_2, spacing: { before: 240, after: 120 }, children: [run(txt, { b: true, size: 24, color: "0F2236" })] });
+    const pageKids = [C("docx.pagePrefix"), PageNumber.CURRENT, "/", PageNumber.TOTAL_PAGES];
+    if (C("docx.pageSuffix")) pageKids.push(C("docx.pageSuffix"));
     const footer = new Footer({ children: [new Paragraph({ alignment: AlignmentType.RIGHT, children: [
       run(`${meta.org} · ${meta.title} · `, { size: 16, color: "555555" }),
-      new TextRun({ children: ["Хуудас ", PageNumber.CURRENT, "/", PageNumber.TOTAL_PAGES], size: 16, color: "555555", font: "Arial" })] })] });
+      new TextRun({ children: pageKids, size: 16, color: "555555", font: runFont })] })] });
 
     // 1-р хэсэг: хуудсан зураг (хэвтээ)
     const innerW = (P.w - 16) * MM, innerH = (P.h - 20) * MM;
@@ -627,37 +681,41 @@
     const N = (v, d) => ({ v: fmt(v, d), a: "end" });
     const kids = [
       new Paragraph({ alignment: AlignmentType.LEFT, spacing: { after: 60 }, children: [run(meta.title, { b: true, size: 36, color: "0F2236" })] }),
-      new Paragraph({ spacing: { after: 200 }, children: [run(`${meta.org} · Төсөл: ${meta.project} · ${meta.date}`, { size: 20, color: "555555" })] }),
-      H("1. Ерөнхий мэдээлэл"),
-      table([{ t: "Үзүүлэлт", w: 0.34 }, { t: "Утга", w: 0.66 }], t.info.map((r) => [{ v: r[0], b: true }, r[1] ?? ""]), 18)
+      new Paragraph({ spacing: { after: 200 }, children: [run(`${meta.org} · ${C("sheet.project")}${meta.project} · ${meta.date}`, { size: 20, color: "555555" })] }),
+      H("1. " + C("h.info")),
+      table([{ t: C("col.item"), w: 0.34 }, { t: C("col.value"), w: 0.66 }], t.info.map((r) => [{ v: r[0], b: true }, r[1] ?? ""]), 18)
     ];
+    let hn = 2;
     if (mapImg) {
       const mw = 170 * MM, mh = (mw * mapImg.hPx) / mapImg.wPx;
-      kids.push(H("2. Байрлалын зураг"),
+      kids.push(H(hn + ". " + C("h.map")),
         new Paragraph({ alignment: AlignmentType.CENTER, children: [new ImageRun({ type: "png", data: mapImg.data, transformation: { width: Math.round(mw), height: Math.round(mh) } })] }),
-        new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 120 }, children: [run("Зүсэлтийн шугам A–A′, буфер ба цооногууд (дээд тал — хойд зүг)", { size: 16, color: "555555" })] }));
+        new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 120 }, children: [run(C("map.docxCaption"), { size: 16, color: "555555" })] }));
+      hn++;
     }
-    kids.push(H((mapImg ? "3" : "2") + ". Цооногийн жагсаалт"),
-      table([{ t: "№", w: 0.05, a: "end" }, { t: "Цооног", w: 0.14 }, { t: "X (UTM E), м", w: 0.13, a: "end" }, { t: "Y (UTM N), м", w: 0.14, a: "end" },
-        { t: "Амны өндөр, м", w: 0.12, a: "end" }, { t: "Гүн, м", w: 0.1, a: "end" }, { t: "Зай A-аас, м", w: 0.11, a: "end" }, { t: "Шугамаас, м", w: 0.11, a: "end" }, { t: "Интервал", w: 0.1, a: "end" }],
-      t.holeRows.map((r) => [{ v: r[0], a: "end" }, { v: r[1], b: true }, { v: fmtSp(r[2], 1), a: "end" }, { v: fmtSp(r[3], 1), a: "end" }, N(r[6], 1), N(r[7], 1), N(r[8], 0), N(r[9], 1), { v: r[10], a: "end" }])),
-      H((mapImg ? "4" : "3") + ". Литологийн нэгтгэл"),
-      table([{ t: "Код", w: 0.1 }, { t: "Литологи", w: 0.42 }, { t: "Цооног", w: 0.1, a: "end" }, { t: "Интервал", w: 0.12, a: "end" }, { t: "Зузаан, м", w: 0.14, a: "end" }, { t: "Хувь, %", w: 0.12, a: "end" }],
-        t.lith.map((l) => [{ v: l.code, fill: lithInfo(l.code)[0], b: true }, lithInfo(l.code)[1], { v: l.holes, a: "end" }, { v: l.n, a: "end" }, N(l.m, 1), N(l.pct, 1)])),
-      H((mapImg ? "5" : "4") + ". Интервалын дэлгэрэнгүй"),
-      table([{ t: "Цооног", w: 0.14 }, { t: "Эхлэл, м", w: 0.09, a: "end" }, { t: "Төгсгөл, м", w: 0.09, a: "end" }, { t: "Зузаан, м", w: 0.09, a: "end" },
-        { t: "Дээд өндөр, м", w: 0.11, a: "end" }, { t: "Доод өндөр, м", w: 0.11, a: "end" }, { t: "Код", w: 0.08 }, { t: "Литологи", w: 0.17 }, { t: "Тайлбар", w: 0.12 }],
+    kids.push(H(hn + ". " + C("h.holes")),
+      table([{ t: C("col.no"), w: 0.05, a: "end" }, { t: C("col.hole"), w: 0.14 }, { t: C("col.x"), w: 0.13, a: "end" }, { t: C("col.y"), w: 0.14, a: "end" },
+        { t: C("col.collar"), w: 0.12, a: "end" }, { t: C("col.depth"), w: 0.1, a: "end" }, { t: C("col.fromA"), w: 0.11, a: "end" }, { t: C("col.offset"), w: 0.11, a: "end" }, { t: C("col.nIv"), w: 0.1, a: "end" }],
+      t.holeRows.map((r) => [{ v: r[0], a: "end" }, { v: r[1], b: true }, { v: fmtSp(r[2], 1), a: "end" }, { v: fmtSp(r[3], 1), a: "end" }, N(r[6], 1), N(r[7], 1), N(r[8], 0), N(r[9], 1), { v: r[10], a: "end" }])));
+    hn++;
+    kids.push(H(hn + ". " + C("h.lith")),
+      table([{ t: C("col.code"), w: 0.1 }, { t: C("col.lith"), w: 0.42 }, { t: C("col.holeN"), w: 0.1, a: "end" }, { t: C("col.nIv"), w: 0.12, a: "end" }, { t: C("col.thick"), w: 0.14, a: "end" }, { t: C("col.pct"), w: 0.12, a: "end" }],
+        t.lith.map((l) => [{ v: l.code, fill: lithInfo(l.code)[0], b: true }, lithName(lang, l.code, { full: true }), { v: l.holes, a: "end" }, { v: l.n, a: "end" }, N(l.m, 1), N(l.pct, 1)])));
+    hn++;
+    kids.push(H(hn + ". " + C("h.iv")),
+      table([{ t: C("col.hole"), w: 0.14 }, { t: C("col.fromM"), w: 0.09, a: "end" }, { t: C("col.toM"), w: 0.09, a: "end" }, { t: C("col.thick"), w: 0.09, a: "end" },
+        { t: C("col.top"), w: 0.11, a: "end" }, { t: C("col.bot"), w: 0.11, a: "end" }, { t: C("col.code"), w: 0.08 }, { t: C("col.lith"), w: 0.17 }, { t: C("info.note"), w: 0.12 }],
         t.ivRows.map((r) => [{ v: r[0], b: true }, N(r[1], 2), N(r[2], 2), N(r[3], 2), N(r[4], 2), N(r[5], 2), { v: r[6], fill: lithInfo(r[6])[0], b: true }, r[7], r[8]]), 15),
-      H("Гарын үсэг"),
-      table([{ t: "", w: 0.2 }, { t: "Нэр", w: 0.4 }, { t: "Гарын үсэг", w: 0.25 }, { t: "Огноо", w: 0.15 }],
-        [[{ v: "Зурсан", b: true }, meta.drawnBy, "", meta.date], [{ v: "Хянасан", b: true }, meta.checkedBy, "", ""]], 18));
+      H(C("h.sign")),
+      table([{ t: "", w: 0.2 }, { t: C("col.name"), w: 0.4 }, { t: C("col.sign"), w: 0.25 }, { t: C("stamp.date"), w: 0.15 }],
+        [[{ v: C("stamp.drawn"), b: true }, meta.drawnBy, "", meta.date], [{ v: C("stamp.checked"), b: true }, meta.checkedBy, "", ""]], 18));
     const sec2 = {
       properties: { page: { size: { width: tw(210), height: tw(297) }, margin: { top: tw(15), bottom: tw(15), left: tw(20), right: tw(12) } } },
       footers: { default: footer },
       children: kids
     };
     return new Document({
-      creator: meta.drawnBy || meta.org, title: meta.title, description: "Цооногийн геологийн зүсэлт",
+      creator: meta.drawnBy || meta.org, title: meta.title, description: tr(lang, "docx.desc"),
       styles: { default: { document: { run: { font: "Arial", size: 18 } } } },
       sections: [sec1, sec2]
     });
@@ -667,6 +725,8 @@
      Excel (.xlsx) — ExcelJS
      ===================================================================== */
   function buildXlsx(ExcelJS, sec, meta, sheetImg, mapImg) {
+    const lang = langOf(meta);
+    const C = (id) => tr(lang, id);
     const t = reportTables(sec, meta);
     const wb = new ExcelJS.Workbook();
     wb.creator = meta.drawnBy || meta.org; wb.created = new Date(); wb.title = meta.title; wb.company = meta.org;
@@ -676,11 +736,11 @@
     const argb = (hex) => "FF" + hex.replace("#", "").toUpperCase();
 
     // Тайлан
-    const ws = wb.addWorksheet("Тайлан", { views: [{ showGridLines: false }], pageSetup: { orientation: "landscape", paperSize: 9, fitToPage: true } });
+    const ws = wb.addWorksheet(C("x.report"), { views: [{ showGridLines: false }], pageSetup: { orientation: "landscape", paperSize: 9, fitToPage: true } });
     ws.columns = [{ width: 30 }, { width: 70 }];
     ws.mergeCells("A1:B1");
     ws.getCell("A1").value = meta.title; ws.getCell("A1").font = { bold: true, size: 16, color: { argb: navy } };
-    ws.getCell("A2").value = `${meta.org} · Төсөл: ${meta.project} · ${meta.date}`; ws.getCell("A2").font = { color: { argb: "FF555555" } };
+    ws.getCell("A2").value = `${meta.org} · ${C("sheet.project")}${meta.project} · ${meta.date}`; ws.getCell("A2").font = { color: { argb: "FF555555" } };
     ws.mergeCells("A2:B2");
     let r = 4;
     t.info.forEach(([k, v]) => {
@@ -691,7 +751,7 @@
       row.eachCell((c) => { c.border = border; c.alignment = { vertical: "middle", wrapText: true }; });
     });
     r += 1;
-    ws.getCell(`A${r}`).value = "Зүсэлтийн хуудас (штамп, масштаб, байрлалын зурагтай)"; ws.getCell(`A${r}`).font = { bold: true, size: 12, color: { argb: navy } };
+    ws.getCell(`A${r}`).value = C("xlsx.sheetNote"); ws.getCell(`A${r}`).font = { bold: true, size: 12, color: { argb: navy } };
     r += 1;
     if (sheetImg) {
       const id = wb.addImage({ base64: sheetImg.dataUrl, extension: "png" });
@@ -700,29 +760,29 @@
       r += Math.ceil(h / 20) + 2;
     }
     if (mapImg) {
-      ws.getCell(`A${r}`).value = "Байрлалын зураг (дээд тал — хойд зүг)"; ws.getCell(`A${r}`).font = { bold: true, size: 12, color: { argb: navy } };
+      ws.getCell(`A${r}`).value = C("map.xlsxCaption"); ws.getCell(`A${r}`).font = { bold: true, size: 12, color: { argb: navy } };
       const id2 = wb.addImage({ base64: mapImg.dataUrl, extension: "png" });
       const w2 = 700, h2 = (w2 * mapImg.hPx) / mapImg.wPx;
       ws.addImage(id2, { tl: { col: 0, row: r }, ext: { width: w2, height: h2 } });
     }
 
     // Цооногууд
-    const wh = wb.addWorksheet("Цооногууд", { views: [{ state: "frozen", ySplit: 1 }] });
+    const wh = wb.addWorksheet(C("x.holes"), { views: [{ state: "frozen", ySplit: 1 }] });
     wh.columns = [
-      { header: "№", width: 5 }, { header: "Цооног", width: 16 }, { header: "X (UTM E), м", width: 14, style: { numFmt: "0.0" } }, { header: "Y (UTM N), м", width: 15, style: { numFmt: "0.0" } },
-      { header: "Өргөрөг, °", width: 12, style: { numFmt: "0.000000" } }, { header: "Уртраг, °", width: 12, style: { numFmt: "0.000000" } },
-      { header: "Амны өндөр, м", width: 14, style: { numFmt: "0.00" } }, { header: "Гүн, м", width: 10, style: { numFmt: "0.0" } },
-      { header: "Зай A-аас, м", width: 13, style: { numFmt: "0.0" } }, { header: "Шугамаас, м", width: 12, style: { numFmt: "0.0" } }, { header: "Интервал", width: 10 }];
+      { header: C("col.no"), width: 5 }, { header: C("col.hole"), width: 16 }, { header: C("col.x"), width: 14, style: { numFmt: "0.0" } }, { header: C("col.y"), width: 15, style: { numFmt: "0.0" } },
+      { header: C("col.lat"), width: 12, style: { numFmt: "0.000000" } }, { header: C("col.lon"), width: 12, style: { numFmt: "0.000000" } },
+      { header: C("col.collar"), width: 14, style: { numFmt: "0.00" } }, { header: C("col.depth"), width: 10, style: { numFmt: "0.0" } },
+      { header: C("col.fromA"), width: 13, style: { numFmt: "0.0" } }, { header: C("col.offset"), width: 12, style: { numFmt: "0.0" } }, { header: C("col.nIv"), width: 10 }];
     headStyle(wh.getRow(1));
     t.holeRows.forEach((x) => wh.addRow(x));
     wh.autoFilter = { from: "A1", to: "K1" };
 
     // Интервалууд
-    const wi = wb.addWorksheet("Интервалууд", { views: [{ state: "frozen", ySplit: 1 }] });
+    const wi = wb.addWorksheet(C("x.intervals"), { views: [{ state: "frozen", ySplit: 1 }] });
     wi.columns = [
-      { header: "Цооног", width: 16 }, { header: "Эхлэл, м", width: 10, style: { numFmt: "0.00" } }, { header: "Төгсгөл, м", width: 10, style: { numFmt: "0.00" } },
-      { header: "Зузаан, м", width: 10, style: { numFmt: "0.00" } }, { header: "Дээд өндөр, м", width: 13, style: { numFmt: "0.00" } }, { header: "Доод өндөр, м", width: 13, style: { numFmt: "0.00" } },
-      { header: "Код", width: 8 }, { header: "Литологи", width: 30 }, { header: "Тайлбар", width: 30 }];
+      { header: C("col.hole"), width: 16 }, { header: C("col.fromM"), width: 10, style: { numFmt: "0.00" } }, { header: C("col.toM"), width: 10, style: { numFmt: "0.00" } },
+      { header: C("col.thick"), width: 10, style: { numFmt: "0.00" } }, { header: C("col.top"), width: 13, style: { numFmt: "0.00" } }, { header: C("col.bot"), width: 13, style: { numFmt: "0.00" } },
+      { header: C("col.code"), width: 8 }, { header: C("col.lith"), width: 30 }, { header: C("info.note"), width: 30 }];
     headStyle(wi.getRow(1));
     t.ivRows.forEach((x) => {
       const row = wi.addRow(x), c = row.getCell(7), col = lithInfo(x[6])[0];
@@ -732,31 +792,36 @@
     wi.autoFilter = { from: "A1", to: "I1" };
 
     // Литологи
-    const wl = wb.addWorksheet("Литологи");
-    wl.columns = [{ header: "Код", width: 8 }, { header: "Литологи", width: 44 }, { header: "Өнгө", width: 10 }, { header: "Цооног", width: 9 },
-      { header: "Интервал", width: 10 }, { header: "Нийт зузаан, м", width: 15, style: { numFmt: "0.0" } }, { header: "Хувь, %", width: 10, style: { numFmt: "0.0" } }];
+    const wl = wb.addWorksheet(C("x.lith"));
+    wl.columns = [{ header: C("col.code"), width: 8 }, { header: C("col.lith"), width: 44 }, { header: C("col.color"), width: 10 }, { header: C("col.holeN"), width: 9 },
+      { header: C("col.nIv"), width: 10 }, { header: C("col.thickTotal"), width: 15, style: { numFmt: "0.0" } }, { header: C("col.pct"), width: 10, style: { numFmt: "0.0" } }];
     headStyle(wl.getRow(1));
     t.lith.forEach((l) => {
-      const col = lithInfo(l.code)[0], row = wl.addRow([l.code, lithInfo(l.code)[1], col, l.holes, l.n, l.m, l.pct]);
+      const col = lithInfo(l.code)[0], row = wl.addRow([l.code, lithName(lang, l.code, { full: true }), col, l.holes, l.n, l.m, l.pct]);
       row.getCell(3).fill = { type: "pattern", pattern: "solid", fgColor: { argb: argb(col) } };
       row.getCell(3).font = { color: { argb: argb(textOn(col)) } };
     });
 
     // Газрын профиль
-    const wg = wb.addWorksheet("Газрын профиль", { views: [{ state: "frozen", ySplit: 1 }] });
-    wg.columns = [{ header: "Зай A-аас, м", width: 14, style: { numFmt: "0.0" } }, { header: "Өндөр, м", width: 12, style: { numFmt: "0.00" } },
-      { header: "X (UTM E), м", width: 14, style: { numFmt: "0.0" } }, { header: "Y (UTM N), м", width: 15, style: { numFmt: "0.0" } }];
+    const wg = wb.addWorksheet(C("x.ground"), { views: [{ state: "frozen", ySplit: 1 }] });
+    wg.columns = [{ header: C("col.fromA"), width: 14, style: { numFmt: "0.0" } }, { header: tr(lang, "axis.elev", { u: tr(lang, "unit.m") }), width: 12, style: { numFmt: "0.00" } },
+      { header: C("col.x"), width: 14, style: { numFmt: "0.0" } }, { header: C("col.y"), width: 15, style: { numFmt: "0.0" } }];
     headStyle(wg.getRow(1));
     sec.ground.forEach((g) => wg.addRow([g.d, g.z, g.E ?? null, g.N ?? null]));
 
     // Шугам
-    const wsl = wb.addWorksheet("Шугам");
-    wsl.columns = [{ header: "Цэг", width: 8 }, { header: "X (UTM E), м", width: 14, style: { numFmt: "0.0" } }, { header: "Y (UTM N), м", width: 15, style: { numFmt: "0.0" } },
-      { header: "Өргөрөг, °", width: 12, style: { numFmt: "0.000000" } }, { header: "Уртраг, °", width: 12, style: { numFmt: "0.000000" } }];
+    const wsl = wb.addWorksheet(C("x.line"));
+    wsl.columns = [{ header: C("col.point"), width: 8 }, { header: C("col.x"), width: 14, style: { numFmt: "0.0" } }, { header: C("col.y"), width: 15, style: { numFmt: "0.0" } },
+      { header: C("col.lat"), width: 12, style: { numFmt: "0.000000" } }, { header: C("col.lon"), width: 12, style: { numFmt: "0.000000" } }];
     headStyle(wsl.getRow(1));
     (sec.vertices || []).forEach((v, i, arr) => wsl.addRow([i === 0 ? "A" : i === arr.length - 1 ? "A′" : String(i), v.E, v.N, v.lat, v.lon]));
     wsl.addRow([]);
-    wsl.addRow(["Координатын систем", meta.crs]);
+    wsl.addRow([C("info.crs"), meta.crs]);
+    if (lang === "zh") {
+      wb.worksheets.forEach((sheet) => sheet.eachRow((row) => row.eachCell((cell) => {
+        cell.font = Object.assign({}, cell.font, { name: "Microsoft YaHei" });
+      })));
+    }
     return wb;
   }
 
@@ -777,7 +842,9 @@
     return best;
   }
   function buildDXF(sec, meta) {
+    const lang = langOf(meta);
     const o = [], p = (c, v) => o.push(String(c), String(v));
+    // R12 TEXT is ASCII. Cyrillic and CJK go out as AutoCAD \\U+XXXX escapes.
     const u = (s) => String(s ?? "").replace(/[^\x20-\x7e]/g, (ch) => "\\U+" + ch.charCodeAt(0).toString(16).toUpperCase().padStart(4, "0"));
     const r = renderSection(sec, { width: 1200, header: false, legend: false });
     const zMin = r.zMin, zMax = r.zMax, L = sec.lengthM, th = Math.max(0.8, L / 220), cw = Math.max(1, L / 160);
@@ -808,7 +875,7 @@
     }
     poly("ZUSELT_GRID", [[0, zMin], [L, zMin], [L, zMax], [0, zMax]], true);
     const xs = niceStep(L, 8);
-    for (let d = 0; d <= L + 1e-6; d += xs) text("ZUSELT_GRID", d, zMin - th * 1.8, th, L >= 2000 ? fmt(d / 1000, 2) + " км" : fmt(d, 0) + " м", 1);
+    for (let d = 0; d <= L + 1e-6; d += xs) text("ZUSELT_GRID", d, zMin - th * 1.8, th, L >= 2000 ? fmt(d / 1000, 2) + " " + tr(lang, "unit.km") : fmt(d, 0) + " " + tr(lang, "unit.m"), 1);
     // Газрын гадарга
     poly("ZUSELT_GROUND", sec.ground.filter((g) => g.z != null && isFinite(g.z)).map((g) => [g.d, g.z]), false);
     // Цооногууд
@@ -822,34 +889,123 @@
       const td = holeDepth(h);
       poly("ZUSELT_HOLES", [[x0, h.collarZ], [x1, h.collarZ], [x1, h.collarZ - td], [x0, h.collarZ - td]], true);
       text("ZUSELT_TEXT", h.along, h.collarZ + th * 1.2, th * 1.1, h.id, 1);
-      text("ZUSELT_TEXT", h.along, h.collarZ - td - th * 1.6, th * 0.85, fmt(td, 1) + " м", 1);
+      text("ZUSELT_TEXT", h.along, h.collarZ - td - th * 1.6, th * 0.85, fmt(td, 1) + " " + tr(lang, "unit.m"), 1);
     });
     text("ZUSELT_TEXT", 0, zMax + th * 2, th * 1.3, "A", 1);
     text("ZUSELT_TEXT", L, zMax + th * 2, th * 1.3, "A'", 1);
     text("ZUSELT_TEXT", 0, zMax + th * 5.5, th * 1.6, `${meta.title} · ${meta.project}`);
-    text("ZUSELT_TEXT", 0, zMax + th * 3.6, th * 0.9, `${meta.org} · ${meta.date} · ${meta.crs} · X=зай (м), Y=өндөр (м), 1:1 · Азимут ${fmt(sec.azimuth, 0)}°`);
+    text("ZUSELT_TEXT", 0, zMax + th * 3.6, th * 0.9, `${meta.org} · ${meta.date} · ${meta.crs} · ${tr(lang, "dxf.axes")} · ${tr(lang, "dxf.az")} ${fmt(sec.azimuth, 0)}°`);
     // Тайлбар
     used.forEach((c, i) => {
       const y = zMin - th * (5 + i * 1.8), x = 0, layer = "LITH_" + c.replace(/[^A-Za-z0-9_]/g, "_");
       p(0, "SOLID"); p(8, layer); p(10, x); p(20, y); p(30, 0); p(11, x + th * 2.5); p(21, y); p(31, 0); p(12, x); p(22, y + th * 1.2); p(32, 0); p(13, x + th * 2.5); p(23, y + th * 1.2); p(33, 0);
-      text("ZUSELT_TEXT", x + th * 3.2, y + th * 0.15, th * 0.9, `${c} - ${lithInfo(c)[1]}`);
+      text("ZUSELT_TEXT", x + th * 3.2, y + th * 0.15, th * 0.9, `${c} - ${lithName(lang, c, { full: true })}`);
     });
     p(0, "ENDSEC"); p(0, "EOF");
     return o.join("\r\n") + "\r\n";
   }
 
   /* ---------------- CSV ---------------- */
-  function buildCSV(sec) {
-    const rows = [["hole_id", "distance_m", "offset_m", "collar_elev_m", "utm_e", "utm_n", "from_m", "to_m", "thickness_m", "top_elev_m", "bot_elev_m", "lithology", "lithology_name", "comment"]];
+  function buildCSV(sec, meta) {
+    const lang = langOf(meta);
+    const C = (id) => tr(lang, id);
+    const rows = [[C("col.hole"), C("col.fromA"), C("col.offset"), C("col.collar"), C("col.x"), C("col.y"), C("col.fromM"), C("col.toM"), C("col.thick"), C("col.top"), C("col.bot"), C("col.code"), C("col.lith"), C("info.note")]];
     sec.holes.slice().sort((a, b) => a.along - b.along).forEach((h) => h.intervals.slice().sort((a, b) => a.from - b.from).forEach((iv) =>
       rows.push([h.id, h.along.toFixed(1), h.off.toFixed(1), h.collarZ.toFixed(2), h.E != null ? h.E.toFixed(1) : "", h.N != null ? h.N.toFixed(1) : "",
-        iv.from, iv.to, (iv.to - iv.from).toFixed(2), (h.collarZ - iv.from).toFixed(2), (h.collarZ - iv.to).toFixed(2), iv.lith, lithInfo(iv.lith)[1], iv.comment])));
+        iv.from, iv.to, (iv.to - iv.from).toFixed(2), (h.collarZ - iv.from).toFixed(2), (h.collarZ - iv.to).toFixed(2), iv.lith, lithName(lang, iv.lith, { full: true }), iv.comment])));
     return "﻿" + rows.map((r) => r.map((v) => `"${String(v ?? "").replace(/"/g, '""')}"`).join(",")).join("\r\n");
   }
 
+  /* Хятад фонт: зөвхөн 中文 тайланд, Google Fonts-оос тухайн тэмдэгтийн дэд олонлог. */
+  const FONT_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
+  const fontPromiseCache = new Map();
+
+  function uniqueChars(s) {
+    return Array.from(new Set(Array.from(String(s)))).filter((ch) => ch.trim() !== "").sort().join("");
+  }
+  function bytesToBase64(bytes) {
+    let bin = "";
+    for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+    return btoa(bin);
+  }
+  async function fetchFontCss(weight, text) {
+    const url = "https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@" + weight + "&text=" + encodeURIComponent(text);
+    const headers = { Accept: "text/css,*/*;q=0.1" };
+    if (typeof navigator === "undefined") headers["User-Agent"] = FONT_UA;
+    const res = await fetch(url, { headers });
+    if (!res.ok) throw new Error("font css " + res.status);
+    const css = await res.text();
+    if (!/@font-face/.test(css) || !/url\(/.test(css)) throw new Error("font css empty");
+    return css;
+  }
+  async function embedFontFaces(css) {
+    const parts = css.split(/@font-face/);
+    const out = [];
+    const seen = new Set();
+    for (let i = 1; i < parts.length; i++) {
+      const block = parts[i];
+      const weight = (block.match(/font-weight:\s*([0-9]+)/) || [])[1] || "400";
+      const style = ((block.match(/font-style:\s*([^;]+)/) || [])[1] || "normal").trim();
+      const family = ((block.match(/font-family:\s*([^;]+)/) || [])[1] || "'Noto Sans SC'").trim();
+      const range = ((block.match(/unicode-range:\s*([^;]+)/) || [])[1] || "").trim();
+      const rawUrl = (block.match(/url\(\s*([^)]+?)\s*\)/) || [])[1];
+      if (!rawUrl) continue;
+      const src = rawUrl.replace(/^['"]|['"]$/g, "");
+      const key = weight + "|" + src;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const fmt = /woff2/i.test(block) ? "woff2" : /woff/i.test(block) ? "woff" : "truetype";
+      const buf = new Uint8Array(await (await fetch(src)).arrayBuffer());
+      if (!buf.length) throw new Error("font empty");
+      const b64 = bytesToBase64(buf);
+      const rangeCss = range ? "unicode-range:" + range + ";" : "";
+      const face = (w) => `@font-face{font-family:${family};font-style:${style};font-weight:${w};src:url("data:font/${fmt};base64,${b64}") format("${fmt}");${rangeCss}}`;
+      out.push(face(weight));
+      if (weight === "700") out.push(face("800"));
+    }
+    return out.join("\n");
+  }
+  function reportSampleText(sec, meta) {
+    const bits = [];
+    const push = (v) => { if (v != null && v !== "") bits.push(String(v)); };
+    if (meta) ["org", "project", "title", "drawingNo", "drawnBy", "checkedBy", "note", "date", "crs"].forEach((k) => push(meta[k]));
+    if (sec) {
+      push(sec.title); push(sec.subtitle); push(sec.crs);
+      (sec.holes || []).forEach((h) => {
+        push(h.id);
+        (h.intervals || []).forEach((iv) => { push(iv.lith); push(iv.comment); });
+      });
+    }
+    return bits.join("\n");
+  }
+  async function loadCjkFontCss(sampleText) {
+    const base = uniqueChars(I18N.allText("zh"));
+    let extra = Array.from(new Set(Array.from(String(sampleText || "")))).filter((ch) => ch.trim() !== "");
+    let chars = Array.from(new Set(Array.from(base + extra.join(""))));
+    if (chars.length > 900) chars = chars.slice(0, 900);
+    const text = chars.join("");
+    if (!text) return "";
+    if (fontPromiseCache.has(text)) return fontPromiseCache.get(text);
+    const pending = (async () => {
+      const [a, b] = await Promise.all([fetchFontCss(400, text), fetchFontCss(700, text)]);
+      const css = await embedFontFaces(a + "\n" + b);
+      if (!css) throw new Error("no faces");
+      return css;
+    })();
+    fontPromiseCache.set(text, pending);
+    try {
+      return await pending;
+    } catch (e) {
+      fontPromiseCache.delete(text);
+      console.warn("CJK font:", e && e.message ? e.message : e);
+      return "";
+    }
+  }
+
   root.ZCORE = {
-    LITH, LITH_DEFAULT, lithInfo, lithNameMn, MM, PAPERS, STD_SCALES,
+    LANGS: I18N.LANGS, LITH, LITH_DEFAULT, lithInfo, lithName, lithNameMn, MM, PAPERS, STD_SCALES,
     esc, fmt, fmtSp, niceStep, cumLengths, samplePoints, projectOnLine, wmToLat, wmToLon, toUTM, utmZone, azimuthDeg, compass8, distTxt, holeDepth,
-    renderSection, renderSectionSVG, lithSummary, reportTables, buildReportPages, sheetPage, mapBoxMm, mapFigureSVG, buildDocx, buildXlsx, buildDXF, buildCSV, nearestAci
+    renderSection, renderSectionSVG, lithSummary, reportTables, buildReportPages, sheetPage, mapBoxMm, mapFigureSVG, buildDocx, buildXlsx, buildDXF, buildCSV, nearestAci,
+    loadCjkFontCss, reportSampleText, fontFamily
   };
 })(typeof window !== "undefined" ? window : globalThis);
