@@ -110,8 +110,9 @@
                 <a href="index.html#contact" class="btn btn-ghost" data-i18n="nav.contact">Холбоо барих</a>
             </div>
         </div>
-        <figure class="svc-hero-img">
-            <img src="images/services/avtomatjuulalt.jpg" alt="Өрмөөс оффис руу мэдээлэл автоматаар урсаж байгаа дүрслэл" data-i18n-alt="auto.hero.alt" width="1200" height="675" fetchpriority="high">
+        <figure class="svc-hero-img svc-hero-3d" data-rp3d="avtomatjuulalt">
+            <img class="svc-hero-3d__poster" src="images/services/avtomatjuulalt.jpg" alt="Өрмөөс оффис руу мэдээлэл автоматаар урсаж байгаа дүрслэл" data-i18n-alt="auto.hero.alt" width="1200" height="675" fetchpriority="high">
+            <div class="svc-hero-3d__stage" aria-hidden="true"></div>
         </figure>
     </div>
 </section>
@@ -202,5 +203,8 @@
 
 <script src="i18n.js"></script>
 <script src="script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+<script src="js/regapro-3d-base.js" defer></script>
+<script src="js/visuals/avtomatjuulalt.js" defer></script>
 </body>
 </html>
