@@ -320,8 +320,7 @@ window.REGAPRO_I18N = {
         "kar.cta.text": "Send us your LAS files and get advice on the right processing for your project.",
         "nav.karotazh": "Well logging",
         "services.s12.title": "Well log data processing",
-        "services.s12.text": "We read borehole geophysics LAS files automatically, standardize them, run quality checks, pick coal seams and load the results into a database.",
-        "services.s12.more": "Learn more",
+        "services.s12.text": "Automatically read borehole LAS files, standardize them, pick coal seams and load the results into a database.",
 
         /* Үйлчилгээний дэлгэрэнгүй хуудсууд */
         "services.more": "Learn more",
@@ -729,11 +728,9 @@ window.REGAPRO_I18N = {
         /* Цооногийн зүсэлт (tsoonogiin-zuselt.html) */
         "nav.zuselt": "Cross-sections",
         "services.s13.title": "Drillhole cross-section processing",
-        "services.s13.text": "Draw a line on the map to get a geological section with hole IDs, lithology and the ground surface, then download a report with a title block as PDF, Word, Excel or AutoCAD.",
-        "services.s13.more": "Learn more",
+        "services.s13.text": "Draw a line on the map to generate a geological section, then download the report as PDF, Word, Excel or AutoCAD.",
         "services.s14.title": "Legacy Data Digitization & Onboarding",
-        "services.s14.text": "Clean and migrate historical Excel and paper logs into a standardized database, paired with hands-on team training and rollout.",
-        "services.s14.more": "Learn more",
+        "services.s14.text": "Clean and migrate historical Excel and paper logs into a standardized database, with team training and rollout.",
         "zus.meta.title": "Drillhole cross-section processing | RegaPro",
         "zus.meta.desc": "RegaPro draws geological cross-sections automatically from drillhole and lithology data in ArcGIS Online and exports reports with a title block, scale and location map in 7 formats, including PDF, Word, Excel and AutoCAD (DXF).",
         "zus.crumb": "Cross-sections",
