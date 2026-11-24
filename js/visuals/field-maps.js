@@ -1,4 +1,4 @@
-/* Field Maps апп — V2 terrain; GPS pins drop in, a polygon and a traverse line are traced,
+/* Хээрийн зураглалын апп — V2 terrain; GPS pins drop in, a polygon and a traverse line are traced,
    and a sync pulse rises to a satellite. */
 window.RegaPro3D && RegaPro3D.register('field-maps', function (c) {
   var T = c.THREE, S = c.scene, SIZE = 64;

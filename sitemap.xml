@@ -169,4 +169,18 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://regapro.com/hadgalalt.html?lang=en"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://regapro.com/hadgalalt.html"/>
   </url>
+  <url>
+    <loc>https://regapro.com/tsakhimjuulalt.html</loc>
+    <lastmod>2026-11-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="mn" href="https://regapro.com/tsakhimjuulalt.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://regapro.com/tsakhimjuulalt.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://regapro.com/tsakhimjuulalt.html"/>
+  </url>
+  <url>
+    <loc>https://regapro.com/tsakhimjuulalt.html?lang=en</loc>
+    <lastmod>2026-11-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="mn" href="https://regapro.com/tsakhimjuulalt.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://regapro.com/tsakhimjuulalt.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://regapro.com/tsakhimjuulalt.html"/>
+  </url>
 </urlset>
