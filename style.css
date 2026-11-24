@@ -339,6 +339,7 @@ h3 { font-size: 1.125rem; font-weight: 700; }
 .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .service {
     position: relative; overflow: hidden;
+    display: flex; flex-direction: column; height: 100%;
     background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
     padding: 32px 28px 30px;
     box-shadow: var(--shadow-sm);
@@ -638,7 +639,7 @@ h3 { font-size: 1.125rem; font-weight: 700; }
     .feature-strip { grid-template-columns: repeat(3, 1fr); }
     .feature:nth-child(4) { border-left: 0; }
     .feature:nth-child(n+4) { border-top: 1px solid rgba(255, 255, 255, .1); }
-    /* Keep 3 columns so the 3×3 + 3 service grid has no leftover card */
+    /* Keep 3 columns so the 4×3 service grid has no leftover card */
     .service-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
@@ -870,22 +871,8 @@ h3 { font-size: 1.125rem; font-weight: 700; }
 }
 
 /* =========================================================
-   КАРОТАЖ — karotazh.html (+ нүүр хуудасны онцлох карт)
+   КАРОТАЖ — karotazh.html
    ========================================================= */
-/* Нүүр хуудасны үйлчилгээний жагсаалтын онцлох карт */
-.service--feature { grid-column: 1 / -1; display: grid; grid-template-columns: auto 1fr auto; gap: 8px 24px; align-items: center; border-color: #CFE3D2; background: linear-gradient(100deg, #fff 55%, rgba(87, 169, 58, .08)); }
-.service--feature .service-icon { margin: 0; grid-row: span 2; }
-.service--feature h3 { margin: 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.service--feature p { grid-column: 2; }
-.service-more { grid-column: 3; grid-row: 1 / span 2; white-space: nowrap; }
-.service-more::after { content: " →"; }
-@media (max-width: 760px) {
-    .service--feature { grid-template-columns: 1fr; }
-    .service--feature .service-icon { grid-row: auto; margin-bottom: 8px; }
-    .service--feature p, .service-more { grid-column: 1; grid-row: auto; }
-    .service-more { justify-self: start; margin-top: 10px; }
-}
-
 /* Hero */
 .kar-hero {
     background: radial-gradient(900px 520px at 100% 0%, rgba(87, 169, 58, .16), transparent 60%), var(--navy-800);
@@ -991,7 +978,7 @@ h3 { font-size: 1.125rem; font-weight: 700; }
 .service-link::after { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: inherit; }
 .service-link:focus-visible { outline: none; }
 .service:has(.service-link:focus-visible) { outline: 3px solid var(--green-500); outline-offset: 3px; }
-.service-more-text { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font: 700 .85rem var(--font-head); color: var(--green-700); }
+.service-more-text { display: inline-flex; align-items: center; gap: 6px; margin-top: auto; padding-top: 14px; font: 700 .85rem var(--font-head); color: var(--green-700); }
 .service-more-text::after { content: "→"; transition: transform .25s var(--ease); }
 .service:hover .service-more-text::after { transform: translateX(4px); }
 
@@ -1280,25 +1267,8 @@ h3 { font-size: 1.125rem; font-weight: 700; }
 
 
 /* =========================================================
-   Цооногийн зүсэлт (tsoonogiin-zuselt.html) + нүүрний хос карт
+   Цооногийн зүсэлт (tsoonogiin-zuselt.html)
    ========================================================= */
-.service-feature-row { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: stretch; }
-.service-feature-row .service--feature { grid-column: auto; grid-template-columns: auto 1fr; grid-template-rows: auto auto 1fr; align-items: start; height: 100%; }
-.service-feature-row .service--feature .service-icon { grid-row: 1 / span 3; align-self: start; }
-.service-feature-row .service--feature h3 { min-height: 2.6em; }
-.service-feature-row .service--feature .service-more { align-self: end; }
-.service-feature-row .service--feature p { grid-column: 2; }
-.service-feature-row .service-more { grid-column: 2; grid-row: auto; justify-self: start; margin-top: 8px; }
-@media (max-width: 980px) {
-    .service-grid { grid-template-columns: 1fr; }
-    .service-feature-row { grid-template-columns: 1fr; }
-    .service-feature-row .service--feature h3 { min-height: 0; }
-}
-@media (max-width: 760px) {
-    .service-feature-row .service--feature { grid-template-columns: 1fr; }
-    .service-feature-row .service--feature p, .service-feature-row .service-more { grid-column: 1; }
-}
-
 /* Хэлээр солигдох видео */
 .lang-en-only { display: none !important; }
 html[lang="en"] .lang-en-only { display: block !important; }
