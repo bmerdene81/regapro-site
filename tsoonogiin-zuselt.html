@@ -98,7 +98,7 @@
 
 <!-- ================= PAGE HERO ================= -->
 <section class="kar-hero">
-    <div class="container kar-hero-grid">
+    <div class="container kar-hero-grid kar-hero-grid--3d">
         <div class="kar-hero-text">
             <nav class="kar-crumbs" aria-label="Breadcrumb">
                 <a href="index.html" data-i18n="nav.home">Нүүр</a><span aria-hidden="true">›</span>
@@ -113,17 +113,9 @@
                 <a href="index.html#contact" class="btn btn-ghost" data-i18n="nav.contact">Холбоо барих</a>
             </div>
         </div>
-        <figure class="kar-video lang-mn-only">
-            <video controls playsinline preload="none" poster="video/zuselt-reel-mn-poster.jpg" width="720" height="1280" aria-label="Цооногийн зүсэлтийн видео танилцуулга (монгол)">
-                <source src="video/zuselt-reel-mn.mp4" type="video/mp4">
-            </video>
-            <figcaption>Цооногийн зүсэлт ба тайлан — 1 минутад</figcaption>
-        </figure>
-        <figure class="kar-video lang-en-only">
-            <video controls playsinline preload="none" poster="video/zuselt-reel-en-poster.jpg" width="720" height="1280" aria-label="Drillhole cross-section video (English)">
-                <source src="video/zuselt-reel-en.mp4" type="video/mp4">
-            </video>
-            <figcaption>Cross-section and report — in one minute</figcaption>
+        <figure class="svc-hero-img svc-hero-3d svc-hero-3d--clear" data-rp3d="tsoonogiin-zuselt" data-rp3d-pullback="1.16" style="--grow:.3;--shift:-.02;--grow-mid:.2;--shift-mid:.01;--fade:12%">
+            <img class="svc-hero-3d__poster" src="images/services/tsoonogiin-zuselt-clear.webp" alt="Газрын гадаргыг зүссэн геологийн зүсэлт, цооногууд ба давхаргуудын 3D дүрслэл" data-i18n-alt="zus.hero3d.alt" width="1200" height="675" fetchpriority="high">
+            <div class="svc-hero-3d__stage" aria-hidden="true"></div>
         </figure>
     </div>
 </section>
@@ -266,5 +258,8 @@
 
 <script src="i18n.js"></script>
 <script src="script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+<script src="js/regapro-3d-base.js" defer></script>
+<script src="js/visuals/tsoonogiin-zuselt.js" defer></script>
 </body>
 </html>

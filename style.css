@@ -1032,6 +1032,54 @@ h3 { font-size: 1.125rem; font-weight: 700; }
 @media (max-width: 900px) {
     .svc-hero-img.svc-hero-3d { aspect-ratio: 4 / 3; }
 }
+/* Тунгалаг хувилбар: бараан хайрцаггүй, ард нь хуудасны дэвсгэр харагдана.
+   Хуудас бүр figure дээр style="--grow:…; --shift:…; --grow-mid:…; --shift-mid:…; --fade:…" өгнө.
+   --grow  : зурах талбайг хэдэн хувиар томруулах (0.3 = 30%), 1280px-ээс өргөн дэлгэцэд
+   --shift : зүүн тийш шилжүүлэх (зурах талбайн өргөний хувиар)
+   --*-mid : 901–1279px дэлгэцэд;  --fade : ирмэгийг бүдгэрүүлэх өргөн (жишээ 8%) */
+.svc-hero-img.svc-hero-3d.svc-hero-3d--clear {
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    --g: 0;
+    --s: 0;
+}
+.svc-hero-3d--clear .svc-hero-3d__stage { pointer-events: none; }
+.svc-hero-3d--clear .svc-hero-3d__stage,
+.svc-hero-img.svc-hero-3d.svc-hero-3d--clear .svc-hero-3d__poster {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--fade, 0%), #000 calc(100% - var(--fade, 0%)), transparent),
+                        linear-gradient(to bottom, transparent, #000 var(--fade, 0%), #000 calc(100% - var(--fade, 0%)), transparent);
+    -webkit-mask-composite: source-in;
+            mask-image: linear-gradient(to right, transparent, #000 var(--fade, 0%), #000 calc(100% - var(--fade, 0%)), transparent),
+                        linear-gradient(to bottom, transparent, #000 var(--fade, 0%), #000 calc(100% - var(--fade, 0%)), transparent);
+            mask-composite: intersect;
+}
+@media (min-width: 901px) {
+    .svc-hero-img.svc-hero-3d.svc-hero-3d--clear { overflow: visible; }
+    .svc-hero-3d--clear .svc-hero-3d__stage,
+    .svc-hero-img.svc-hero-3d.svc-hero-3d--clear .svc-hero-3d__poster {
+        inset: auto;
+        top: calc(var(--g) * -50%);
+        left: calc((var(--g) / 2 + var(--s)) * -100%);
+        width: calc(100% + var(--g) * 100%);
+        height: calc(100% + var(--g) * 100%);
+        max-width: none;
+    }
+    .svc-hero:has(.svc-hero-3d--clear),
+    .kar-hero:has(.svc-hero-3d--clear) { overflow-x: clip; }
+    .kar-hero-grid--3d { grid-template-columns: 1.05fr .95fr; }
+}
+@media (min-width: 1280px) {
+    .svc-hero-img.svc-hero-3d.svc-hero-3d--clear { --g: var(--grow, 0); --s: var(--shift, 0); }
+}
+@media (min-width: 901px) and (max-width: 1279px) {
+    .svc-hero-img.svc-hero-3d.svc-hero-3d--clear { --g: var(--grow-mid, 0); --s: var(--shift-mid, 0); }
+}
+
+/* Каротаж хуудасны видео (дээд хэсгээс доош шилжсэн) */
+.kar-video-solo { margin: 0 auto; max-width: 300px; }
+.kar-video-solo video { display: block; width: 100%; height: auto; aspect-ratio: 9 / 16; border-radius: 14px; background: #000; box-shadow: 0 24px 50px -28px rgba(12, 40, 57, .55), 0 0 0 1px var(--line); }
+.kar-video-solo figcaption { margin-top: 10px; text-align: center; font-size: .85rem; color: var(--muted); }
 
 /* Features */
 .svc-feats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }

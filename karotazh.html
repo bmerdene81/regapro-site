@@ -99,7 +99,7 @@
 
 <!-- ================= PAGE HERO ================= -->
 <section class="kar-hero">
-    <div class="container kar-hero-grid">
+    <div class="container kar-hero-grid kar-hero-grid--3d">
         <div class="kar-hero-text">
             <nav class="kar-crumbs" aria-label="Breadcrumb">
                 <a href="index.html" data-i18n="nav.home">Нүүр</a><span aria-hidden="true">›</span>
@@ -114,11 +114,9 @@
                 <a href="index.html#contact" class="btn btn-ghost" data-i18n="nav.contact">Холбоо барих</a>
             </div>
         </div>
-        <figure class="kar-video">
-            <video controls playsinline preload="none" poster="video/karotazh-reel-poster.jpg" width="720" height="1280" aria-label="Каротажийн автоматжуулалтын видео танилцуулга" data-i18n-aria="kar.video.aria">
-                <source src="video/karotazh-reel.mp4" type="video/mp4">
-            </video>
-            <figcaption data-i18n="kar.video.cap">Каротажийн автоматжуулалт — 50 секундэд</figcaption>
+        <figure class="svc-hero-img svc-hero-3d svc-hero-3d--clear" data-rp3d="karotazh" data-rp3d-pullback="1.12" style="--grow:.3;--shift:.02;--grow-mid:.2;--shift-mid:.04;--fade:12%">
+            <img class="svc-hero-3d__poster" src="images/services/karotazh-clear.webp" alt="Каротажийн муруйтай цооногууд ба нүүрсний давхаргын корреляцийн 3D дүрслэл" data-i18n-alt="kar.hero3d.alt" width="1200" height="675" fetchpriority="high">
+            <div class="svc-hero-3d__stage" aria-hidden="true"></div>
         </figure>
     </div>
 </section>
@@ -261,6 +259,22 @@
     </div>
 </section>
 
+<!-- ================= VIDEO ================= -->
+<section class="section kar-steps-sec" id="video">
+    <div class="container">
+        <header class="section-head reveal">
+            <p class="eyebrow" data-i18n="zus.video.kicker">Видео</p>
+            <h2 class="section-title" data-i18n="kar.video.title">Видео танилцуулга</h2>
+        </header>
+        <figure class="kar-video-solo reveal">
+            <video controls playsinline preload="none" poster="video/karotazh-reel-poster.jpg" width="720" height="1280" aria-label="Каротажийн автоматжуулалтын видео танилцуулга" data-i18n-aria="kar.video.aria">
+                <source src="video/karotazh-reel.mp4" type="video/mp4">
+            </video>
+            <figcaption data-i18n="kar.video.cap">Каротажийн автоматжуулалт — 50 секундэд</figcaption>
+        </figure>
+    </div>
+</section>
+
 <!-- ================= CURVES + OUTPUTS ================= -->
 <section class="section kar-info-sec">
     <div class="container">
@@ -312,5 +326,8 @@
 
 <script src="i18n.js"></script>
 <script src="script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+<script src="js/regapro-3d-base.js" defer></script>
+<script src="js/visuals/karotazh.js" defer></script>
 </body>
 </html>
