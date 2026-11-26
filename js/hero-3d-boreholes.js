@@ -1,6 +1,8 @@
 /* Embeddable contour-glow borehole terrain for the 3d-durslel.html hero.
    Renders into [data-hero-3d]. Keeps the poster image until the first frame,
-   and leaves it in place if WebGL is unavailable. */
+   and leaves it in place if WebGL is unavailable.
+   Transparent mode: class "svc-hero-3d--clear" on the figure (no navy box, page shows through);
+   data-rp3d-pullback="1.1" moves the camera back to leave room for the CSS edge fade. */
 (function () {
   'use strict';
 
@@ -166,18 +168,20 @@
     return [ax + (bx - ax) * t, ay + (by - ay) * t, az + (bz - az) * t];
   }
 
-  function buildScene(THREE, stage, quality) {
+  function buildScene(THREE, stage, quality, opts) {
+    opts = opts || {};
+    var clear = !!opts.clear, pull = opts.pullback || 1;
     var scene = new THREE.Scene();
-    scene.background = new THREE.Color(BG);
-    scene.fog = new THREE.Fog(BG, 58, 170);
+    scene.background = clear ? null : new THREE.Color(BG);
+    scene.fog = clear ? null : new THREE.Fog(BG, 58, 170);
 
     var camera = new THREE.PerspectiveCamera(48, 16 / 9, 0.1, 400);
     var renderer = new THREE.WebGLRenderer({
       antialias: quality.antialias,
-      alpha: false,
+      alpha: clear,
       powerPreference: 'low-power'
     });
-    renderer.setClearColor(BG, 1);
+    renderer.setClearColor(BG, clear ? 0 : 1);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     stage.appendChild(renderer.domElement);
 
@@ -458,6 +462,7 @@
       var radius = 66;
       var elev = 26 + mouseY * 14;
       camera.position.set(Math.cos(yawOff) * radius, elev, Math.sin(yawOff) * radius);
+      if (pull !== 1) camera.position.sub(look).multiplyScalar(pull).add(look);
       camera.lookAt(look);
     }
 
@@ -523,7 +528,11 @@
 
     loadThree().then(function (THREE) {
       var quality = qualityFor(stage.clientWidth || root.clientWidth || 800);
-      var app = buildScene(THREE, stage, quality);
+      var app = buildScene(THREE, stage, quality, {
+        clear: root.classList.contains('svc-hero-3d--clear'),
+        pullback: parseFloat(root.getAttribute('data-rp3d-pullback')) || 1
+      });
+      root.__hero3d = app;
       var inView = true;
       var pageVisible = typeof document.hidden === 'boolean' ? !document.hidden : true;
       var running = false;

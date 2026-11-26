@@ -10,6 +10,9 @@
  * The canvas goes into .svc-hero-3d__stage (or the element itself); the root gets .is-ready after the
  * first frame (poster fades out) or .is-fallback when WebGL / three.js is unavailable (poster stays).
  * Labels may be {mn, en} objects; they follow <html lang> (MN/EN toggle) live.
+ * Transparent mode: add class "svc-hero-3d--clear" to the figure (or pass {transparent:true}) — no navy box,
+ * the page background shows through the scene.
+ * data-rp3d-pullback="1.12" on the figure moves the camera back (×1.12) to leave room for the soft CSS edge fade.
  *   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
  *   <script src="js/regapro-3d-base.js"></script>
  *   <script src="js/visuals/geologiin-log.js"></script>
@@ -240,22 +243,24 @@
     var stage = container.querySelector('.svc-hero-3d__stage') || container;
 
     var w = stage.clientWidth || container.clientWidth || 560, h = stage.clientHeight || container.clientHeight || 350;
+    var clear = opts.transparent != null ? !!opts.transparent : container.classList.contains('svc-hero-3d--clear');
+    var pull = opts.pullback || parseFloat(container.getAttribute('data-rp3d-pullback')) || 1;
     var renderer;
     try {
-      renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'low-power' });
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: clear, powerPreference: 'low-power' });
     } catch (err) { return fail(); }
     if (!renderer.getContext()) return fail();
     var dprCap = opts.dprCap || (coarse ? 1.5 : 2);
     renderer.setPixelRatio(Math.min(global.devicePixelRatio || 1, dprCap));
     renderer.setSize(w, h, false);
-    renderer.setClearColor(BG, 1);
+    renderer.setClearColor(BG, clear ? 0 : 1);
     var canvas = renderer.domElement;
     canvas.style.cssText = 'display:block;width:100%;height:100%;';
     canvas.setAttribute('aria-hidden', 'true');
     stage.appendChild(canvas);
 
     var scene = new THREE.Scene();
-    scene.background = new THREE.Color(BG);
+    scene.background = clear ? null : new THREE.Color(BG);
     var camera = new THREE.PerspectiveCamera(opts.fov || 42, w / h, 0.1, 600);
     scene.add(new THREE.AmbientLight(0xbfd9ff, 0.62));
     var sun = new THREE.DirectionalLight(0xffffff, 0.75);
@@ -267,7 +272,7 @@
     var kit = makeKit(THREE, i18nLabels);
     var ctx = {
       THREE: THREE, scene: scene, camera: camera, renderer: renderer, container: container,
-      BG: BG, CYAN: CYAN, STRATA: STRATA, mobile: coarse, reduceMotion: reduce,
+      BG: BG, CYAN: CYAN, STRATA: STRATA, mobile: coarse, reduceMotion: reduce, transparent: clear,
       orbit: { target: new THREE.Vector3(), radius: 60, elev: 24, yaw: 0.6, speed: 0.12,
                sway: 0, swaySpeed: 0.35, tiltYaw: 0.4, tiltElev: 10 },
       lang: pageLang, rng: rng, fbm: fbm, v2Height: v2Height, lerp: lerp, clamp: clamp, smooth: smooth
@@ -284,7 +289,7 @@
       var yaw = o.sway ? o.yaw + Math.sin(time * o.swaySpeed) * o.sway : o.yaw + time * o.speed;
       yaw += mouse.x * o.tiltYaw;
       /* framed for 16:10; pull back on narrower cards (e.g. 4:3 on mobile) so nothing is cropped */
-      var k = Math.pow(Math.max(1, (o.refAspect || 1.6) / camera.aspect), 0.9);
+      var k = Math.pow(Math.max(1, (o.refAspect || 1.6) / camera.aspect), 0.9) * pull;
       var el = (o.elev + mouse.y * o.tiltElev) * k;
       camera.position.set(o.target.x + Math.cos(yaw) * o.radius * k, o.target.y + el, o.target.z + Math.sin(yaw) * o.radius * k);
       camera.lookAt(o.target);
@@ -339,7 +344,7 @@
 
     var inst = {
       name: typeof name === 'string' ? name : 'custom', ctx: ctx, canvas: canvas,
-      start: start, stop: stop,
+      start: start, stop: stop, setPullback: function (v) { pull = v || 1; frame(0); },
       renderAt: function (t) { stop(); time = t; mouse.x = mouse.y = mouse.tx = mouse.ty = 0; frame(0); return canvas; },
       dispose: function () {
         disposed = true; stop();
