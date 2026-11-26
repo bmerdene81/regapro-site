@@ -85,7 +85,7 @@
       'dq.nullM': 'Өрөмдсөн метр хоосон', 'dq.nullM.why': 'Өрөмдлөгийн мэдээнд өдөрт өрөмдсөн метрийг бөглөөгүй (0 ч биш).',
       'dq.soil': 'Хөрсний дээжийн бүртгэл', 'dq.soil.why': 'Хөрсний дээжийг чулуулгийн талбарт бүртгэсэн, эсвэл тэмдэглэлд дурдсан ч хөрсний талбар хоосон. Тайланд хөрс гэж тооцсон.',
       'dq.sentOver': 'Илгээсэн дээж авснаасаа их', 'dq.sentOver.why': 'Тээврийн мэдээнүүдийн нийлбэр тухайн цооногт авсан нийт дээжээс их. Олон цооногийн дээжийг нэг бичлэгт оруулсан байж болно.',
-      'dq.rockLog': 'Rock Sampling бүртгэлтэй тулгалт', 'dq.rockLog.why': 'Өдөр тутмын мэдээний нийт дээж Rock Sampling маягтад бүртгэсэн дээжийн тоотой таарахгүй байна.',
+      'dq.rockLog': 'Rock Sampling бүртгэлтэй тулгалт', 'dq.rockLog.why': 'Өдөр тутмын мэдээний нийт дээж Rock Sampling маягтад бүртгэсэн дээжийн тоотой таарахгүй байна. Rock Sampling-ийг сүүлийн мэдээний дараа өдрийн 12:00 хүртэлх бүртгэлээр тоолсон.',
       'dq.late': 'Хоцорч оруулсан мэдээ', 'dq.late.why': 'Тайлангийн өдрөөс 2-оос дээш хоногийн дараа оруулсан мэдээ.',
       'm.depthDrop': '{0} м → {1} м', 'm.seq': 'Байх ёстой {0}, бичигдсэн {1} (өмнөх {2} + {3})', 'm.dup': '{0} бичлэг',
       'm.shift': 'Өдөр {0} + шөнө {1} = {2}, нийт {3} ({4})', 'm.metres': 'метр', 'm.samples': 'дээж',
@@ -158,7 +158,7 @@
       'dq.nullM': 'Metres left blank', 'dq.nullM.why': 'A drilling report with the metres-drilled field left empty (not even 0).',
       'dq.soil': 'Soil sample recording', 'dq.soil.why': 'Soil samples were recorded in the rock field, or the note mentions soil samples while the soil field is empty. Counted as soil in this report.',
       'dq.sentOver': 'More samples sent than taken', 'dq.sentOver.why': 'Shipments recorded for the hole add up to more than its total samples. Samples of several holes may be in one record.',
-      'dq.rockLog': 'Check against Rock Sampling log', 'dq.rockLog.why': 'Total samples in the daily report differ from the number of samples logged in the Rock Sampling form.',
+      'dq.rockLog': 'Check against Rock Sampling log', 'dq.rockLog.why': 'Total samples in the daily report differ from the number of samples logged in the Rock Sampling form (counted up to 12:00 on the day after the latest report).',
       'dq.late': 'Late entries', 'dq.late.why': 'Reports entered more than 2 days after the report date.',
       'm.depthDrop': '{0} m → {1} m', 'm.seq': 'Expected {0}, recorded {1} (previous {2} + {3})', 'm.dup': '{0} records',
       'm.shift': 'Day {0} + night {1} = {2}, total {3} ({4})', 'm.metres': 'metres', 'm.samples': 'samples',
@@ -1338,7 +1338,9 @@
   const OUT_FIELDS = ['objectid', 'CreationDate', '_date', 'drillholes', 'drillholes_other', 'drilled_m_per_day', 'sample_per_day', 'total_depth_m', 'total_sample', 'total_test_pit_per_day', 'total_samples', 'rock_sample', 'soil_sample', 'note_', 'drilled_m_day', 'sample_day', 'drilled_m_night', 'sample_night', 'is_transport'];
   async function loadRock() {
     try {
-      const d = await API.query(CONFIG.rockUrl, { where: "hole_id IS NOT NULL AND hole_id <> 'other'", groupByFieldsForStatistics: 'hole_id', outStatistics: JSON.stringify([{ statisticType: 'count', onStatisticField: 'objectid', outStatisticFieldName: 'n' }]), returnGeometry: false });
+      // Тайлангийн сүүлийн өдрийн маргааш 12:00 (УБ) хүртэл бүртгэсэн дээжийг тоолно — өдөр тутмын мэдээ мөн тэр үед ордог
+      const cut = new Date(toMs(addDays(DATA_MAX, 1)) + (12 - CONFIG.tzOffsetH) * 3600e3).toISOString().slice(0, 19).replace('T', ' ');
+      const d = await API.query(CONFIG.rockUrl, { where: "hole_id IS NOT NULL AND hole_id <> 'other' AND CreationDate < TIMESTAMP '" + cut + "'", groupByFieldsForStatistics: 'hole_id', outStatistics: JSON.stringify([{ statisticType: 'count', onStatisticField: 'objectid', outStatisticFieldName: 'n' }]), returnGeometry: false });
       if (d.error) throw new Error(d.error.message);
       const m = {}; (d.features || []).forEach((f) => { const h = normHole(f.attributes.hole_id || f.attributes.HOLE_ID); if (h) m[h] = (m[h] || 0) + (f.attributes.n || f.attributes.N || 0); });
       ROCK = m; ROCK_ERR = false;
@@ -1366,8 +1368,9 @@
     const btn = $('refreshBtn'); btn.disabled = true;
     try {
       const prevMax = DATA_MAX;
-      const [attrs] = await Promise.all([queryAll(CONFIG.dailyUrl, { outFields: OUT_FIELDS.join(',') }), loadRock(), loadPlansTable()]);
+      const [attrs] = await Promise.all([queryAll(CONFIG.dailyUrl, { outFields: OUT_FIELDS.join(',') }), loadPlansTable()]);
       ingest(attrs);
+      await loadRock();
       if (!F.from || (F.to === prevMax && F.preset !== 'custom')) setPreset(F.preset === 'custom' ? String(CONFIG.defaultDays) : F.preset);
       showError('');
       afterLoad();
