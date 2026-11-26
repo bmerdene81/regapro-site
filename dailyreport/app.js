@@ -73,7 +73,7 @@
       'h.table': 'Цооногийн дэлгэрэнгүй', 'h.etaNote': 'Дуусах таамаг: сүүлийн 7 хоногийн дундаж хурдаар үлдсэн гүнийг өрөмдөх хугацаа.',
       'h.curves': 'Гүний өсөлт', 'h.curvesSub': '· цооног бүрийн нийт гүн хугацаагаар', 'h.plan': 'Төлөвлөгөө {0} м',
       'p.total': 'Нийт өрөмдсөн', 'p.holeDays': 'Өрөмдсөн цооног-өдөр', 'p.idle': 'өрөмдөөгүй мэдээ: {0}', 'p.avg': 'Дундаж / цооног-өдөр',
-      'p.per10': 'Дээж / 10 м', 'p.best': 'Хамгийн их өдөр', 'p.shiftShare': 'Ээлжийн харьцаа', 'p.weekly': 'Долоо хоногийн өрөмдлөг',
+      'p.per10': 'Дээж / 10 м', 'p.best': 'Хамгийн их өдөр', 'p.shiftShare': 'Ээлжийн харьцаа', 'p.shiftDaily': 'Ээлжээр өрөмдлөг, дээжлэлт', 'p.weekly': 'Долоо хоногийн өрөмдлөг',
       'p.weeklySub': '· метр', 'p.heat': 'Цооног × өдөр', 'p.heatSub': '· өдөрт өрөмдсөн метр', 'p.noReport': 'Мэдээгүй',
       'p.down': 'Зогсолт, засварын тэмдэглэл', 'p.downSub': '· {0} бичлэг', 'p.week': '{0} – {1}', 'p.samplesTaken': 'Авсан дээж: {0}',
       'dq.checks': 'Шалгалтууд', 'dq.scope': 'Сонгосон хугацаа, цооногт хамаарна. «Засах» нь Survey123-ийн бичлэгийг нээнэ.',
@@ -163,7 +163,7 @@
       'h.table': 'Hole details', 'h.etaNote': 'Forecast finish: time to drill the remaining depth at the average rate of the last 7 days.',
       'h.curves': 'Depth over time', 'h.curvesSub': '· total depth of each hole by date', 'h.plan': 'Plan {0} m',
       'p.total': 'Total drilled', 'p.holeDays': 'Drilling hole-days', 'p.idle': 'reports with no metres: {0}', 'p.avg': 'Avg per hole-day',
-      'p.per10': 'Samples per 10 m', 'p.best': 'Best day', 'p.shiftShare': 'Shift split', 'p.weekly': 'Weekly metres',
+      'p.per10': 'Samples per 10 m', 'p.best': 'Best day', 'p.shiftShare': 'Shift split', 'p.shiftDaily': 'Drilling and sampling by shift', 'p.weekly': 'Weekly metres',
       'p.weeklySub': '· metres', 'p.heat': 'Hole × day', 'p.heatSub': '· metres drilled per day', 'p.noReport': 'No report',
       'p.down': 'Downtime and repair notes', 'p.downSub': '· {0} records', 'p.week': '{0} – {1}', 'p.samplesTaken': 'Samples taken: {0}',
       'dq.checks': 'Checks', 'dq.scope': 'Uses the selected range and holes. “Edit” opens the record in Survey123.',
@@ -1061,6 +1061,128 @@
   /* ---------------------------------------------------------------
      3. БҮТЭЭМЖ
      --------------------------------------------------------------- */
+  // Бүтээмж: ээлжээр өдөр тутмын өрөмдлөг (дээд самбар, м) ба дээжлэлт (доод самбар, ш) — нэг X тэнхлэг, хоёр самбар, 7 хоногийн дундаж
+  function rollingS(d, n) { let s = 0; for (let i = 0; i < n; i++) s += dayS(addDays(d, -i)); return s / n; }
+  let prodFocus = -1;
+  function renderShiftPanels(hostArg, exp) {
+    const host = hostArg || $('prodShift'); host.innerHTML = '';
+    const days = dateRange(F.from, F.to);
+    if (!exp) $('prodShiftSub').textContent = t('c.days', days.length);
+    const leg = [];
+    if (F.day) leg.push({ color: COLORS.day, label: t('shift.day') });
+    if (F.night) leg.push({ color: COLORS.night, label: t('shift.night') });
+    const anyUnk = F.day && F.night && days.some((d) => dayRecs(d).some((r) => mParts(r).unk > 0 || sParts(r).unk > 0));
+    if (anyUnk) leg.push({ color: COLORS.unk, label: t('shift.unk') });
+    leg.push({ color: COLORS.avg, label: t('avg7'), line: true });
+    if (!exp) legend($('prodShiftLegend'), leg);
+    if (!days.length) { el('div', { class: 'empty' }, host, t('noData')); return null; }
+
+    const W = Math.max(300, host.clientWidth || 600), narrow = W < 520;
+    const ph1 = exp ? 230 : (narrow ? 170 : 220), ph2 = exp ? 120 : (narrow ? 90 : 112), gap = 30;
+    const m = { l: 40, r: 10, t: exp ? 46 : 22, b: 26 };
+    const H = m.t + ph1 + gap + ph2 + m.b, pw = W - m.l - m.r;
+    const top1 = m.t, top2 = m.t + ph1 + gap;
+    const agg = (d, fn) => { const p = { day: 0, night: 0, unk: 0 }; dayRecs(d).forEach((r) => { const q = fn(r); p.day += q.day; p.night += q.night; p.unk += q.unk; }); p.tot = p.day + p.night + p.unk; return p; };
+    const vals = days.map((d) => { const p = agg(d, mParts); p.avg = rolling(d, 7); return p; });
+    const svals = days.map((d) => { const p = agg(d, sParts); p.avg = rollingS(d, 7); return p; });
+    const sc1 = nice(Math.max(10, ...vals.map((v) => Math.max(v.tot, v.avg))) * 1.04, narrow ? 4 : 5);
+    const sc2 = nice(Math.max(5, ...svals.map((v) => Math.max(v.tot, v.avg))) * 1.06, 3);
+    const y1 = (v) => top1 + ph1 - (v / sc1.top) * ph1, y2 = (v) => top2 + ph2 - (v / sc2.top) * ph2;
+    const band = pw / days.length, bw = Math.min(24, Math.max(2, band * 0.7));
+    const D = repDay();
+    const sumM = vals.reduce((a, v) => a + v.tot, 0), sumS = svals.reduce((a, v) => a + v.tot, 0);
+    const svg = S('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': t('p.shiftDaily') + ', ' + fmtDate(F.from) + ' – ' + fmtDate(F.to) + ': ' + mtr(sumM) + ', ' + pcs(sumS) }, host);
+    // Долоо хоногийн ээлжилсэн суурь, сонгосон өдөр (хоёр самбарт)
+    const bands = (top, h) => {
+      let wk = 0, startI = 0;
+      days.forEach((d, i) => {
+        if (i > 0 && weekday(d) === 1) { if (wk % 2 === 1) S('rect', { x: m.l + startI * band, y: top, width: (i - startI) * band, height: h, fill: '#f4f6f8' }, svg); wk++; startI = i; }
+        if (i === days.length - 1 && wk % 2 === 1) S('rect', { x: m.l + startI * band, y: top, width: (i + 1 - startI) * band, height: h, fill: '#f4f6f8' }, svg);
+      });
+    };
+    bands(top1, ph1); bands(top2, ph2);
+    const di = days.indexOf(D);
+    if (di >= 0) { S('rect', { x: m.l + di * band, y: top1, width: band, height: ph1, fill: '#e6f2e6' }, svg); S('rect', { x: m.l + di * band, y: top2, width: band, height: ph2, fill: '#e6f2e6' }, svg); }
+    // Тор, Y тэмдэглэгээ
+    const grid = (sc, y, digits) => sc.ticks.forEach((v) => {
+      S('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: v === 0 ? cssVar('--axis') : cssVar('--grid'), 'stroke-width': 1, 'shape-rendering': 'crispEdges' }, svg);
+      S('text', { x: m.l - 6, y: y(v) + 4, 'text-anchor': 'end', 'font-size': 11, fill: '#5b6670', style: 'font-variant-numeric:tabular-nums' }, svg, fmt(v, digits));
+    });
+    grid(sc1, y1, 0); grid(sc2, y2, 0);
+    // Самбарын гарчиг
+    S('text', { x: m.l, y: top1 - 8, 'font-size': 12, 'font-weight': 600, fill: '#191919' }, svg, t('c.panelM'));
+    S('text', { x: m.l, y: top2 - 8, 'font-size': 12, 'font-weight': 600, fill: '#191919' }, svg, t('c.panelS'));
+    // Багана
+    const bars = (arr, y) => arr.forEach((v, i) => {
+      const x = m.l + i * band + (band - bw) / 2;
+      const segs = [['day', COLORS.day], ['night', COLORS.night], ['unk', COLORS.unk]].filter(([k]) => v[k] > 0);
+      let base = 0;
+      segs.forEach(([k, c], si) => {
+        const y0 = y(base), yt = y(base + v[k]);
+        const g = si > 0 ? 2 : 0, h = Math.max(0.8, y0 - yt - g);
+        if (si === segs.length - 1) S('path', { d: colPath(x, y0 - g - h, bw, h, 4), fill: c }, svg);
+        else S('rect', { x, y: y0 - g - h, width: bw, height: h, fill: c }, svg);
+        base += v[k];
+      });
+    });
+    bars(vals, y1); bars(svals, y2);
+    // 7 хоногийн дундаж (самбар бүрт)
+    const avgLine = (arr, y) => {
+      const pts = arr.map((v, i) => [m.l + i * band + band / 2, y(v.avg)]);
+      S('path', { d: 'M' + pts.map((p) => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join('L'), fill: 'none', stroke: COLORS.avg, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, svg);
+      const lp = pts[pts.length - 1];
+      S('circle', { cx: lp[0], cy: lp[1], r: 4, fill: COLORS.avg, stroke: '#fff', 'stroke-width': 2 }, svg);
+    };
+    avgLine(vals, y1); avgLine(svals, y2);
+    // X тэнхлэг
+    const step = Math.max(1, Math.ceil(48 / band));
+    for (let i = days.length - 1; i >= 0; i -= step) {
+      S('text', { x: m.l + i * band + band / 2, y: H - 8, 'text-anchor': 'middle', 'font-size': 11, fill: '#5b6670' }, svg, fmtDate(days[i], 'short'));
+    }
+    if (di >= 0) S('path', { d: `M${m.l + di * band + band / 2 - 5},${top2 + ph2 + 7}l5,-6l5,6z`, fill: cssVar('--green-700') }, svg);
+    if (exp) { svgLegend(svg, leg, m.l, 12); return svg; }
+    // Hover давхарга (хоёр самбарыг хамарна)
+    const hlA = S('rect', { x: 0, y: top1, width: band, height: ph1, fill: 'rgba(12,40,57,.06)', visibility: 'hidden', 'pointer-events': 'none' }, svg);
+    const hlB = S('rect', { x: 0, y: top2, width: band, height: ph2, fill: 'rgba(12,40,57,.06)', visibility: 'hidden', 'pointer-events': 'none' }, svg);
+    const build = (i) => (T) => {
+      const d = days[i], v = vals[i], s = svals[i];
+      tipHead(T, fmtDateWd(d));
+      tipRow(T, null, mtr(v.tot), t('c.panelM'));
+      if (F.day) tipRow(T, COLORS.day, mtr(v.day), t('shift.day'), true);
+      if (F.night) tipRow(T, COLORS.night, mtr(v.night), t('shift.night'), true);
+      if (v.unk > 0) tipRow(T, COLORS.unk, mtr(v.unk), t('shift.unk'), true);
+      tipRow(T, COLORS.avg, mtr(v.avg), t('avg7'));
+      tipSep(T);
+      tipRow(T, null, pcs(s.tot), t('c.panelS'));
+      if (F.day) tipRow(T, COLORS.day, pcs(s.day), t('shift.day'), true);
+      if (F.night) tipRow(T, COLORS.night, pcs(s.night), t('shift.night'), true);
+      if (s.unk > 0) tipRow(T, COLORS.unk, pcs(s.unk), t('shift.unk'), true);
+      tipRow(T, COLORS.avg, pcs(Math.round(s.avg * 10) / 10), t('avg7'));
+      const byH = new Map();
+      dayRecs(d).forEach((r) => { if (!r.drillRec) return; const k = r.hole || r.other || '?'; const o = byH.get(k) || { m: 0, s: 0 }; o.m += mVal(r); o.s += sVal(r); byH.set(k, o); });
+      if (byH.size) { tipSep(T); byH.forEach((o, h) => tipRow(T, null, mtr(o.m) + ' · ' + pcs(o.s), h)); }
+      const sent = daySent(d); if (sent) tipRow(T, null, pcs(sent), t('k.sent'));
+    };
+    const hit = S('rect', { x: m.l, y: top1, width: pw, height: top2 + ph2 - top1, fill: 'transparent', style: 'cursor:pointer' }, svg);
+    const idxAt = (e) => { const b = svg.getBoundingClientRect(); const sx = (e.clientX - b.left) * (W / b.width); return Math.max(0, Math.min(days.length - 1, Math.floor((sx - m.l) / band))); };
+    const showAt = (i, cx, cy) => { [hlA, hlB].forEach((h) => { h.setAttribute('x', m.l + i * band); h.setAttribute('visibility', 'visible'); }); tipShow(cx, cy, build(i)); };
+    const hideHl = () => { [hlA, hlB].forEach((h) => h.setAttribute('visibility', 'hidden')); tipHide(); };
+    hit.addEventListener('pointermove', (e) => showAt(idxAt(e), e.clientX, e.clientY));
+    hit.addEventListener('pointerleave', hideHl);
+    hit.addEventListener('click', (e) => { const d = days[idxAt(e)]; F.repDay = d === F.to ? null : d; update(); });
+    host.tabIndex = 0; host.setAttribute('aria-label', t('p.shiftDaily') + '. ' + t('c.shiftNote'));
+    host.onkeydown = (e) => {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight' && e.key !== 'Enter') return;
+      e.preventDefault();
+      if (prodFocus < 0 || prodFocus >= days.length) prodFocus = Math.max(0, days.indexOf(D));
+      if (e.key === 'ArrowLeft') prodFocus = Math.max(0, prodFocus - 1);
+      if (e.key === 'ArrowRight') prodFocus = Math.min(days.length - 1, prodFocus + 1);
+      if (e.key === 'Enter') { const d = days[prodFocus]; F.repDay = d === F.to ? null : d; update(); setTimeout(() => $('prodShift').focus(), 0); return; }
+      const b = svg.getBoundingClientRect(), sc = b.width / W;
+      showAt(prodFocus, b.left + (m.l + prodFocus * band + band) * sc, b.top + top1 * sc);
+    };
+    host.onblur = hideHl;
+  }
   function renderProd() {
     const rs = recsInRange();
     const drill = rs.filter((r) => r.drillRec);
@@ -1075,6 +1197,7 @@
     tile(t('p.avg'), active ? fmt(tot / active) : '–', t('u.m'));
     tile(t('p.per10'), tot > 0 ? fmt(samples / tot * 10) : '–', '', t('p.samplesTaken', fmtI(samples)));
     tile(t('p.best'), best && best.v > 0 ? fmt(best.v) : '–', t('u.m'), best && best.v > 0 ? fmtDateWd(best.d) : '');
+    renderShiftPanels();
 
     // Ээлжийн харьцаа — өндөр сегментлэсэн багана
     const P = { day: 0, night: 0, unk: 0 }, PS = { day: 0, night: 0, unk: 0 }, NS_ = { day: 0, night: 0 };
@@ -1637,7 +1760,9 @@
       if (sel.prod) {
         const pm = prodModel(), ws = weeklySeries(); host.style.width = '760px';
         const img = await png(columnChart(host, ws.weeks, [{ key: 'm', color: COLORS.total, values: ws.values }], { height: 250, label: t('p.weekly'), fmt: (v) => fmt(v, 0), catLabel: (w) => fmtDate(w < F.from ? F.from : w, 'short') }));
+        host.style.width = '1000px'; const imgS = await png(renderShiftPanels(host, true));
         const blocks = [Object.assign({ type: 'table' }, pm.stats)];
+        if (imgS) blocks.push({ type: 'chart', title: t('p.shiftDaily') + ' ' + t('c.days', dateRange(F.from, F.to).length), img: imgS, w: 1 });
         if (img) blocks.push({ type: 'chart', title: t('p.weekly') + ' ' + t('p.weeklySub'), img, w: 0.5 });
         blocks.push(Object.assign({ type: 'table' }, pm.shift), Object.assign({ type: 'table' }, pm.down));
         M.sections.push({ key: 'prod', title: t('exp.s.prod'), blocks });

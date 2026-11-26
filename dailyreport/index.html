@@ -274,6 +274,7 @@ dialog#expDlg::backdrop{background:rgba(8,28,41,.5)}
   .filters.open{display:block}
   .tabs .fbtn{display:inline-flex}
   .row-2{grid-template-columns:minmax(0,1fr)}
+  #shiftTbl{display:block;overflow-x:auto;max-width:100%}
   .top{padding:10px 12px}
   .top .sep{display:none}
   .kpi .spark{display:none}
@@ -441,6 +442,12 @@ dialog#expDlg::backdrop{background:rgba(8,28,41,.5)}
     <!-- 3. Бүтээмж -->
     <section class="panel" id="p-prod" role="tabpanel" aria-labelledby="t-prod">
       <div class="grid kpis" id="prodKpis"></div>
+      <div class="card mt">
+        <div class="hd"><h2><span data-i18n="p.shiftDaily">Ээлжээр өрөмдлөг, дээжлэлт</span> <small id="prodShiftSub"></small></h2>
+          <div class="legend" id="prodShiftLegend"></div></div>
+        <div class="chart" id="prodShift"></div>
+        <div class="note" data-i18n="c.shiftNote">Багана дээр дарж тухайн өдрийг тайлангийн өдөр болгоно.</div>
+      </div>
       <div class="grid row-2">
         <div class="card">
           <div class="hd"><h2 data-i18n="p.shiftShare">Ээлжийн харьцаа</h2></div>
@@ -529,7 +536,7 @@ dialog#expDlg::backdrop{background:rgba(8,28,41,.5)}
   </div>
 </dialog>
 
-<script src="app.js?v=20261126f"></script>
+<script src="app.js?v=20261126g"></script>
 <script src="https://js.arcgis.com/4.32/"></script>
 <script>DR.boot();</script>
 </body>
