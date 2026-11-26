@@ -105,7 +105,20 @@
       'ph.err': 'Зураг уншигдсангүй', 'ph.loading': 'Ачаалж байна…', 'ph.open': 'Бүтэн хэмжээгээр ↗', 'ph.attErr': 'Зургийн мэдээлэл уншигдсангүй: {0}',
       'col.photo': 'Зураг', 'ph.n': '{0}/{1}',
       'dq.noPhoto': 'Зураг хавсаргаагүй мэдээ', 'dq.noPhoto.why': 'Өрөмдлөг хийсэн өдрийн мэдээнд Survey123-ийн «Зураг» хэсэгт зураг хавсаргаагүй.',
-      'm.noPhoto': '{0} м өрөмдсөн, зураг алга', 'csv.photos': 'Зураг (ш)'
+      'm.noPhoto': '{0} м өрөмдсөн, зураг алга', 'csv.photos': 'Зураг (ш)',
+      'exp.btn': 'Тайлан татах', printOnly: 'Хэвлэх', 'exp.title': 'Тайлан татах', 'exp.format': 'Формат',
+      'exp.pdf': 'Хэвлэх, илгээхэд', 'exp.docx': 'Засварлаж болно (.docx)', 'exp.xlsx': 'Хүснэгт, тооцоолол (.xlsx)', 'exp.csv': 'Зөвхөн бичлэгүүд (.csv)',
+      'exp.sections': 'Хэсгүүд', 'exp.lang': 'Тайлангийн хэл', 'exp.go': 'Татах',
+      'exp.scope': 'Одоогийн шүүлтүүрээр: {0} · тайлангийн өдөр {1} · цооног: {2}',
+      'exp.s.summary': 'Хураангуй, графикууд', 'exp.s.notes': 'Цооногийн сүүлийн тэмдэглэл', 'exp.s.samples': 'Лаб руу илгээсэн дээж',
+      'exp.s.holes': 'Цооногийн дэлгэрэнгүй', 'exp.s.daily': 'Өдөр тутмын хүснэгт', 'exp.s.prod': 'Бүтээмж', 'exp.s.dq': 'Өгөгдлийн чанар', 'exp.s.photos': 'Тайлангийн өдрийн зураг',
+      'exp.working': 'Тайлан бэлтгэж байна…', 'exp.err': 'Тайлан үүсгэж чадсангүй: {0}', 'exp.done': 'Татаж авлаа ✓', 'exp.pick': 'Дор хаяж нэг хэсэг сонгоно уу.',
+      'exp.generated': 'Үүсгэсэн', 'exp.holesAll': 'бүгд ({0})', 'exp.shiftBoth': 'Өдөр, шөнө', 'exp.shipments': 'Тээврийн мэдээ (сонгосон хугацаанд)',
+      'exp.kpi': 'Үзүүлэлт', 'exp.value': 'Утга', 'exp.repVal': 'Тайлангийн өдөр', 'exp.periodVal': 'Сонгосон хугацаанд',
+      'exp.records': 'Бичлэгүүд', 'exp.charts': 'Графикууд', 'exp.summarySheet': 'Хураангуй', 'exp.page': 'Хуудас {0}/{1}',
+      'exp.photoDay': 'Зургийн өдөр: {0}', 'exp.noPhotos': 'Энэ өдөр зураг алга.', 'exp.wd': 'Гараг',
+      'col.active': 'Идэвхтэй цооног', 'col.dayM': 'Өдрийн ээлж, м', 'col.nightM': 'Шөнийн ээлж, м', 'col.unkM': 'Ээлж бүртгээгүй, м', 'col.totM': 'Нийт, м',
+      'col.sev': 'Түвшин', 'col.check': 'Шалгалт'
     },
     en: {
       docTitle: 'Daily Drilling Report · RegaPro',
@@ -178,7 +191,20 @@
       'ph.err': 'Photo could not be loaded', 'ph.loading': 'Loading…', 'ph.open': 'Full size ↗', 'ph.attErr': 'Photo information could not be read: {0}',
       'col.photo': 'Photo', 'ph.n': '{0} of {1}',
       'dq.noPhoto': 'Reports without a photo', 'dq.noPhoto.why': 'A drilling report with metres drilled but no photo attached in the Survey123 “Photo” section.',
-      'm.noPhoto': '{0} m drilled, no photo', 'csv.photos': 'Photos'
+      'm.noPhoto': '{0} m drilled, no photo', 'csv.photos': 'Photos',
+      'exp.btn': 'Download report', printOnly: 'Print', 'exp.title': 'Download report', 'exp.format': 'Format',
+      'exp.pdf': 'To print or send', 'exp.docx': 'Editable (.docx)', 'exp.xlsx': 'Tables for analysis (.xlsx)', 'exp.csv': 'Records only (.csv)',
+      'exp.sections': 'Sections', 'exp.lang': 'Report language', 'exp.go': 'Download',
+      'exp.scope': 'Uses the current filters: {0} · report day {1} · holes: {2}',
+      'exp.s.summary': 'Summary and charts', 'exp.s.notes': 'Latest note per hole', 'exp.s.samples': 'Samples sent to lab',
+      'exp.s.holes': 'Hole details', 'exp.s.daily': 'Daily table', 'exp.s.prod': 'Productivity', 'exp.s.dq': 'Data quality', 'exp.s.photos': 'Photos of the report day',
+      'exp.working': 'Preparing the report…', 'exp.err': 'Couldn’t create the report: {0}', 'exp.done': 'Downloaded ✓', 'exp.pick': 'Pick at least one section.',
+      'exp.generated': 'Generated', 'exp.holesAll': 'all ({0})', 'exp.shiftBoth': 'Day and night', 'exp.shipments': 'Shipments in the selected range',
+      'exp.kpi': 'Measure', 'exp.value': 'Value', 'exp.repVal': 'Report day', 'exp.periodVal': 'Selected range',
+      'exp.records': 'Records', 'exp.charts': 'Charts', 'exp.summarySheet': 'Summary', 'exp.page': 'Page {0} of {1}',
+      'exp.photoDay': 'Photo day: {0}', 'exp.noPhotos': 'No photos on this day.', 'exp.wd': 'Weekday',
+      'col.active': 'Active holes', 'col.dayM': 'Day shift, m', 'col.nightM': 'Night shift, m', 'col.unkM': 'Shift not recorded, m', 'col.totM': 'Total, m',
+      'col.sev': 'Level', 'col.check': 'Check'
     }
   };
   const MONTHS_EN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -529,30 +555,6 @@
     const tm = photoTime(it.p.name);
     return (it.r.holes.join(', ') || it.r.other || '–') + ' · ' + fmtDate(it.r.date, 'short') + (tm ? ' ' + tm : '');
   }
-  function renderGallery() {
-    const g = $('gallery'); g.innerHTML = '';
-    if (!ATT_READY) { $('photoSub').textContent = ''; el('div', { class: 'empty' }, g, t('ph.loading')); return; }
-    if (ATT_ERR && !ATT.size) { $('photoSub').textContent = ''; el('div', { class: 'empty' }, g, t('ph.attErr', ATT_ERR)); return; }
-    const D = repDay();
-    let day = D, items = photoItems(dayRecs(D)), noneMsg = '';
-    if (!items.length) {
-      const prev = FREC.filter((r) => r.date <= D && r.date >= F.from && photosOf(r).length);
-      if (prev.length) { day = prev[prev.length - 1].date; items = photoItems(dayRecs(day)); noneMsg = t('ph.none', fmtDate(D, 'short'), fmtDate(day, 'short')); }
-    }
-    $('photoSub').textContent = items.length ? t('ph.sub', fmtDate(day, 'short'), items.length) : '';
-    if (!items.length) { el('div', { class: 'empty' }, g, t('ph.empty')); return; }
-    if (noneMsg) el('div', { class: 'note', style: 'grid-column:1/-1;margin:0 0 2px' }, g, noneMsg);
-    items.forEach((it, i) => {
-      const b = el('button', { type: 'button', class: 'ph', 'aria-label': photoCaption(it) }, g);
-      const im = el('div', { class: 'im' }, b);
-      lazyImg(im, it.p, true);
-      const cap = el('div', { class: 'cap' }, b);
-      el('b', null, cap, it.r.holes.join(', ') || it.r.other || '–');
-      const tm = photoTime(it.p.name);
-      el('span', null, cap, fmtDateWd(it.r.date) + (tm ? ' · ' + tm : ''));
-      b.addEventListener('click', () => openPhotos(items, i));
-    });
-  }
   let PV = { items: [], i: 0 };
   function openPhotos(items, i) {
     PV = { items, i };
@@ -678,21 +680,33 @@
   }
 
   let shiftFocus = -1;
-  function renderShiftChart() {
-    const host = $('shiftChart'); host.innerHTML = '';
+  function svgLegend(svg, items, x, y) {
+    let cx = x;
+    items.forEach((it) => {
+      if (it.line) S('line', { x1: cx, x2: cx + 14, y1: y, y2: y, stroke: it.color, 'stroke-width': 2, 'stroke-linecap': 'round' }, svg);
+      else S('rect', { x: cx, y: y - 5, width: 10, height: 10, rx: 2, fill: it.color }, svg);
+      const off = it.line ? 19 : 15;
+      const tx = S('text', { x: cx + off, y: y + 4, 'font-size': 11.5, fill: '#5b6670' }, svg, it.label);
+      let w = 0; try { w = tx.getComputedTextLength(); } catch (e) { w = 0; }
+      if (!w) w = it.label.length * 6.5;
+      cx += off + w + 16;
+    });
+  }
+  function renderShiftChart(hostArg, exp) {
+    const host = hostArg || $('shiftChart'); host.innerHTML = '';
     const days = dateRange(F.from, F.to);
-    $('shiftSub').textContent = t('c.days', days.length);
+    if (!exp) $('shiftSub').textContent = t('c.days', days.length);
     const leg = [];
     if (F.day) leg.push({ color: COLORS.day, label: t('shift.day') });
     if (F.night) leg.push({ color: COLORS.night, label: t('shift.night') });
     const anyUnk = F.day && F.night && days.some((d) => dayRecs(d).some((r) => mParts(r).unk > 0));
     if (anyUnk) leg.push({ color: COLORS.unk, label: t('shift.unk') });
     leg.push({ color: COLORS.avg, label: t('avg7'), line: true });
-    legend($('shiftLegend'), leg);
-    if (!days.length) { el('div', { class: 'empty' }, host, t('noData')); return; }
+    if (!exp) legend($('shiftLegend'), leg);
+    if (!days.length) { el('div', { class: 'empty' }, host, t('noData')); return null; }
 
-    const W = Math.max(300, host.clientWidth || 600), H = W < 520 ? 230 : 290;
-    const m = { l: 38, r: 10, t: 10, b: 26 }, pw = W - m.l - m.r, ph = H - m.t - m.b;
+    const W = Math.max(300, host.clientWidth || 600), H = exp ? 330 : (W < 520 ? 230 : 290);
+    const m = { l: 38, r: 10, t: exp ? 30 : 10, b: 26 }, pw = W - m.l - m.r, ph = H - m.t - m.b;
     const vals = days.map((d) => {
       const p = { day: 0, night: 0, unk: 0 };
       dayRecs(d).forEach((r) => { const q = mParts(r); p.day += q.day; p.night += q.night; p.unk += q.unk; });
@@ -742,6 +756,7 @@
       S('text', { x: m.l + i * band + band / 2, y: H - 8, 'text-anchor': 'middle', 'font-size': 11, fill: '#5b6670' }, svg, fmtDate(days[i], 'short'));
     }
     if (di >= 0) S('path', { d: `M${m.l + di * band + band / 2 - 5},${m.t + ph + 7}l5,-6l5,6z`, fill: cssVar('--green-700') }, svg);
+    if (exp) { svgLegend(svg, leg, m.l, 11); return svg; }
     // Hover давхарга
     const hl = S('rect', { x: 0, y: m.t, width: band, height: ph, fill: 'rgba(12,40,57,.06)', visibility: 'hidden', 'pointer-events': 'none' }, svg);
     const build = (i) => (T) => {
@@ -781,9 +796,9 @@
     opts = opts || {};
     host.innerHTML = '';
     const rows = holes.filter((h) => h.depth > 0 || h.plan);
-    if (!rows.length) { el('div', { class: 'empty' }, host, t('noData')); return; }
+    if (!rows.length) { el('div', { class: 'empty' }, host, t('noData')); return null; }
     const W = Math.max(280, host.clientWidth || 400), narrow = W < 460;
-    const lw = narrow ? 92 : 104, rw = narrow ? 112 : 150, rowH = 30, m = { t: 4, b: 22 };
+    const lw = narrow ? 92 : 104, rw = narrow ? 112 : 150, rowH = 30, m = { t: opts.exp ? 30 : 4, b: 22 };
     const H = m.t + rows.length * rowH + m.b, pw = W - lw - rw - 6;
     const max = Math.max(...rows.map((h) => Math.max(h.depth, h.plan || 0))) * 1.02;
     const { top, ticks } = nice(max, narrow ? 3 : 4);
@@ -819,8 +834,11 @@
         tipSep(T); tipRow(T, null, fmtDate(h.last, 'short'), t('col.last'));
       });
     });
-    if (!opts.noLegend) legend($('statusLegend'), ['drill', 'done', 'lab'].concat(holes.some((h) => h.status === 'prep') ? ['prep'] : []).map((s) => ({ color: statusColor(s), label: t('status.' + s) }))
-      .concat(holes.some((h) => h.plan) ? [{ color: COLORS.avg, label: t('plan'), line: true }] : []));
+    const legItems = ['drill', 'done', 'lab'].concat(holes.some((h) => h.status === 'prep') ? ['prep'] : []).map((s) => ({ color: statusColor(s), label: t('status.' + s) }))
+      .concat(holes.some((h) => h.plan) ? [{ color: COLORS.avg, label: t('plan'), line: true }] : []);
+    if (opts.exp) { svgLegend(svg, legItems, 8, 11); return svg; }
+    if (!opts.noLegend) legend($('statusLegend'), legItems);
+    return svg;
   }
   function etaText(e) {
     if (!e) return '–';
@@ -875,9 +893,9 @@
   // Ерөнхий багана график (нэг эсвэл давхарласан цуваа)
   function columnChart(host, cats, series, opts) {
     host.innerHTML = '';
-    if (!cats.length) { el('div', { class: 'empty' }, host, t('noData')); return; }
+    if (!cats.length) { el('div', { class: 'empty' }, host, t('noData')); return null; }
     const W = Math.max(260, host.clientWidth || 400), H = opts.height || 200;
-    const m = { l: 36, r: 8, t: 18, b: 26 }, pw = W - m.l - m.r, ph = H - m.t - m.b;
+    const m = { l: 36, r: 8, t: opts.legend && opts.legend.length ? 34 : 18, b: 26 }, pw = W - m.l - m.r, ph = H - m.t - m.b;
     const totals = cats.map((_, i) => series.reduce((a, s) => a + (s.values[i] || 0), 0));
     const { top, ticks } = nice(Math.max(opts.minTop || 5, ...totals) * 1.08, 4);
     const y = (v) => m.t + ph - (v / top) * ph;
@@ -907,6 +925,8 @@
       hit.addEventListener('pointerenter', () => hit.setAttribute('fill', 'rgba(12,40,57,.05)'));
       hit.addEventListener('pointerleave', () => hit.setAttribute('fill', 'transparent'));
     });
+    if (opts.legend && opts.legend.length) svgLegend(svg, opts.legend, m.l, 12);
+    return svg;
   }
 
   function weeksOfRange() {
@@ -1248,6 +1268,614 @@
   }
 
   /* ---------------------------------------------------------------
+     ТАЙЛАН ТАТАХ — PDF, Word, Excel, CSV
+     Сангууд /zuselt/lib-ээс (байхгүй бол CDN), PDF-ийн монгол фонт lib/Inter-*.ttf
+     --------------------------------------------------------------- */
+  const LIBS = {
+    jspdf: { ok: () => window.jspdf && window.jspdf.jsPDF, urls: ['../zuselt/lib/jspdf.umd.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'] },
+    autotable: { ok: () => window.jspdf && window.jspdf.jsPDF && window.jspdf.jsPDF.API && window.jspdf.jsPDF.API.autoTable, urls: ['lib/jspdf.plugin.autotable.min.js', 'https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js'] },
+    docx: { ok: () => window.docx && window.docx.Document, urls: ['../zuselt/lib/docx.iife.js', 'https://cdn.jsdelivr.net/npm/docx@9.16.0/dist/index.iife.js'] },
+    exceljs: { ok: () => window.ExcelJS, urls: ['../zuselt/lib/exceljs.min.js', 'https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js'] }
+  };
+  const libCache = {};
+  function loadLib(name) {
+    const L = LIBS[name];
+    if (L.ok()) return Promise.resolve();
+    if (libCache[name]) return libCache[name];
+    const tryUrl = (src) => new Promise((res, rej) => {
+      const d = window.define; window.define = undefined;          // ArcGIS-ийн AMD loader-ийг түр нууна
+      const sc = document.createElement('script'); sc.src = src; sc.async = true;
+      sc.onload = () => { window.define = d; L.ok() ? res() : rej(new Error(name)); };
+      sc.onerror = () => { window.define = d; sc.remove(); rej(new Error(name)); };
+      document.head.appendChild(sc);
+    });
+    libCache[name] = L.urls.reduce((p, u) => p.catch(() => tryUrl(u)), Promise.reject(new Error('start')))
+      .catch((e) => { delete libCache[name]; throw new Error(name + ' сан ачаалагдсангүй'); });
+    return libCache[name];
+  }
+  function saveBlob(blob, name) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 60000);
+  }
+  function toB64(buf) {
+    const u = new Uint8Array(buf); let s = '';
+    for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000));
+    return btoa(s);
+  }
+  function dataUrlBytes(dataUrl) {
+    const b = atob(dataUrl.split(',')[1]); const u = new Uint8Array(b.length);
+    for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i);
+    return u;
+  }
+  function loadImage(src) { return new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = () => rej(new Error('image')); im.src = src; }); }
+
+  // SVG графикийг PNG болгох
+  async function svgPng(svg, scale) {
+    const W = +svg.getAttribute('width'), H = +svg.getAttribute('height');
+    const c = svg.cloneNode(true);
+    c.setAttribute('xmlns', NS);
+    c.setAttribute('font-family', "Inter, 'Segoe UI', Arial, sans-serif");
+    c.querySelectorAll('[visibility="hidden"]').forEach((n) => n.remove());
+    const str = new XMLSerializer().serializeToString(c);
+    const img = await loadImage('data:image/svg+xml;charset=utf-8,' + encodeURIComponent(str));
+    const cv = document.createElement('canvas'); cv.width = Math.round(W * scale); cv.height = Math.round(H * scale);
+    const ctx = cv.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, cv.width, cv.height);
+    ctx.drawImage(img, 0, 0, cv.width, cv.height);
+    const dataUrl = cv.toDataURL('image/png');
+    return { dataUrl, data: dataUrlBytes(dataUrl), w: W, h: H, type: 'png' };
+  }
+  let LOGO = null;
+  async function loadLogo() {
+    if (LOGO !== null) return LOGO;
+    try {
+      const blob = await (await fetch('../images/logo-horizontal.png')).blob();
+      const dataUrl = await new Promise((r) => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(blob); });
+      const im = await loadImage(dataUrl);
+      LOGO = { dataUrl, data: dataUrlBytes(dataUrl), w: im.naturalWidth, h: im.naturalHeight, type: 'png' };
+    } catch (e) { LOGO = undefined; }
+    return LOGO;
+  }
+  let FONTS = null;
+  async function pdfFonts(doc) {
+    if (!FONTS) {
+      FONTS = Promise.all(['lib/Inter-Regular.ttf', 'lib/Inter-SemiBold.ttf'].map((u) => fetch(u).then((r) => { if (!r.ok) throw new Error(u); return r.arrayBuffer(); }).then(toB64)));
+      FONTS.catch(() => { FONTS = null; });
+    }
+    const [reg, bold] = await FONTS;
+    doc.addFileToVFS('Inter-Regular.ttf', reg); doc.addFont('Inter-Regular.ttf', 'Inter', 'normal');
+    doc.addFileToVFS('Inter-SemiBold.ttf', bold); doc.addFont('Inter-SemiBold.ttf', 'Inter', 'bold');
+    doc.setFont('Inter', 'normal');
+  }
+
+  /* ---------- Тайлангийн агуулга (бүх форматад нэг загвар) ---------- */
+  const isNum = (c) => c.type === 'num' || c.type === 'int' || c.type === 'pct';
+  function cellText(v, c) {
+    if (v == null || v === '') return isNum(c) || c.type === 'date' ? '–' : '';
+    if (typeof v === 'string' && c.type !== 'date') return v;
+    if (c.type === 'date') return /^\d{4}-\d{2}-\d{2}$/.test(v) ? fmtDate(v) : String(v);
+    if (c.type === 'num') return fmt(v, c.d == null ? 1 : c.d);
+    if (c.type === 'int') return fmtI(v);
+    if (c.type === 'pct') return Math.round(v * 100) + '%';
+    return String(v);
+  }
+  function normW(cols) { const s = cols.reduce((a, c) => a + (c.w || 1), 0); cols.forEach((c) => { c.w = (c.w || 1) / s; }); return cols; }
+  const dlt = (v, d) => (v > 0.0001 ? '▲ ' : v < -0.0001 ? '▼ ' : '● ') + fmt(Math.abs(v), d == null ? 1 : d);
+
+  function kpiModel() {
+    const D = repDay();
+    const one = (label, fn, unit, periodFmt) => {
+      const v = fn(D), p = fn(addDays(D, -1)), a = avgBefore(fn, D, 7);
+      return { label, value: fmt(v), unit, lines: [dlt(v - p) + ' ' + t('k.vsPrev'), dlt(v - a) + ' ' + t('k.vsAvg')].concat(periodFmt ? [t('k.period', periodFmt(rangeSum(fn)))] : []),
+        raw: { v, dPrev: v - p, dAvg: v - a, period: periodFmt ? rangeSum(fn) : null } };
+    };
+    const k = [one(t('k.metres'), dayM, t('u.m'), mtr), one(t('k.samples'), dayS, t('u.pcs'), pcs), one(t('k.active'), dayActive, '', null)];
+    const hs = holesInRange(), by = {}; hs.forEach((h) => { by[h.status] = (by[h.status] || 0) + 1; });
+    k[2].lines.push(['drill', 'done', 'lab'].filter((s) => by[s]).map((s) => t('status.' + s) + ' ' + by[s]).join(' · '));
+    const ships = recsInRange().filter((r) => r.transport);
+    const rock = ships.reduce((a, r) => a + (r.rock || 0), 0), soil = ships.reduce((a, r) => a + (r.soil || 0), 0);
+    const last = ships.filter((r) => r.date <= D).slice(-1)[0];
+    k.push({ label: t('k.sent'), value: fmtI(rock + soil), unit: t('u.pcs'),
+      lines: [t('k.sentSplit', fmtI(rock), fmtI(soil)), last ? t('k.lastSent', fmtDate(last.date, 'short'), fmtI((last.rock || 0) + (last.soil || 0))) : t('k.noneSent'), t('k.rangeLbl', fmtDate(F.from, 'short') + ' – ' + fmtDate(F.to, 'short'))],
+      raw: { v: daySent(D), dPrev: null, dAvg: null, period: rock + soil } });
+    return k;
+  }
+  function notesTable() {
+    const D = repDay();
+    const rows = holesInRange().map((h) => { const r = [...h.recs].reverse().find((x) => x.note && x.date >= F.from && x.date <= D); return r ? [h.hole, t('status.' + h.status), r.date, r.note] : null; })
+      .filter(Boolean).sort((a, b) => b[2].localeCompare(a[2]) || a[0].localeCompare(b[0]));
+    return { cols: normW([{ t: t('col.hole'), w: 0.12 }, { t: t('col.status'), w: 0.14 }, { t: t('col.date'), type: 'date', w: 0.09 }, { t: t('col.note'), w: 0.65 }]), rows };
+  }
+  function backlogTable() {
+    const rows = holesInRange().filter((h) => h.tsamp > 0).map((h) => [h.hole, h.tsamp, h.sent, Math.max(0, h.tsamp - h.sent), h.tsamp ? Math.min(1, h.sent / h.tsamp) : null])
+      .sort((a, b) => b[3] - a[3] || a[0].localeCompare(b[0]));
+    return { title: t('c.backlog'), width: 0.55, cols: normW([{ t: t('col.hole'), w: 0.3 }, { t: t('col.taken'), type: 'int', w: 0.17 }, { t: t('col.sent'), type: 'int', w: 0.17 }, { t: t('col.left'), type: 'int', w: 0.18 }, { t: '%', type: 'pct', w: 0.18 }]), rows };
+  }
+  function shipmentsTable() {
+    const rows = recsInRange().filter((r) => r.transport).map((r) => [r.date, r.holes.join(', ') || r.other || '–', r.rock || 0, r.soil || 0, r.note]);
+    return { title: t('exp.shipments'), cols: normW([{ t: t('col.date'), type: 'date', w: 0.1 }, { t: t('col.hole'), w: 0.17 }, { t: t('rock'), type: 'int', w: 0.08 }, { t: t('soil'), type: 'int', w: 0.08 }, { t: t('col.note'), w: 0.57 }]), rows };
+  }
+  function holesTable() {
+    const rows = holesInRange().map((h) => [h.hole, t('status.' + h.status), h.firstDrill || h.first, h.last,
+      h.firstDrill ? diffDays(h.firstDrill, h.lastDrill || h.firstDrill) + 1 : null, h.depth, h.plan || null, h.plan ? h.pct : null,
+      h.activeDays ? h.depth / h.activeDays : null, h.tsamp, h.depth > 0 ? h.tsamp / h.depth * 10 : null, h.sent || null,
+      h.status === 'drill' ? (h.plan ? etaShort(h.eta) : t('noPlan')) : '–']);
+    return { cols: normW([{ t: t('col.hole'), w: 0.1 }, { t: t('col.status'), w: 0.12 }, { t: t('col.start'), type: 'date', w: 0.08 }, { t: t('col.last'), type: 'date', w: 0.08 },
+      { t: t('col.days'), type: 'int', w: 0.05 }, { t: t('col.depth'), type: 'num', w: 0.06 }, { t: t('col.plan'), type: 'num', d: 0, w: 0.07 }, { t: t('col.pct'), type: 'pct', w: 0.07 },
+      { t: t('col.rate'), type: 'num', w: 0.06 }, { t: t('col.samples'), type: 'int', w: 0.06 }, { t: t('col.per10'), type: 'num', w: 0.07 }, { t: t('col.sent'), type: 'int', w: 0.06 }, { t: t('col.eta'), w: 0.12 }]), rows };
+  }
+  function dailyTable() {
+    const days = dateRange(F.from, F.to).slice().reverse();
+    const parts = (d) => { const p = { day: 0, night: 0, unk: 0 }; dayRecs(d).forEach((r) => { const q = mParts(r); p.day += q.day; p.night += q.night; p.unk += q.unk; }); return p; };
+    const anyUnk = days.some((d) => parts(d).unk > 0);
+    const T = { day: 0, night: 0, unk: 0, s: 0, sent: 0 };
+    const rows = days.map((d) => {
+      const p = parts(d), s = dayS(d), sent = daySent(d);
+      T.day += p.day; T.night += p.night; T.unk += p.unk; T.s += s; T.sent += sent;
+      const r = [d, t('wd')[weekday(d)]];
+      if (F.day) r.push(p.day); if (F.night) r.push(p.night); if (anyUnk) r.push(p.unk);
+      r.push(p.day + p.night + p.unk, s, dayActive(d), sent);
+      return r;
+    });
+    const cols = [{ t: t('col.date'), type: 'date', w: 0.12 }, { t: t('exp.wd'), w: 0.1 }];
+    if (F.day) cols.push({ t: t('col.dayM'), type: 'num', w: 0.1 });
+    if (F.night) cols.push({ t: t('col.nightM'), type: 'num', w: 0.1 });
+    if (anyUnk) cols.push({ t: t('col.unkM'), type: 'num', w: 0.1 });
+    cols.push({ t: t('col.totM'), type: 'num', w: 0.1 }, { t: t('col.samples'), type: 'int', w: 0.1 }, { t: t('col.active'), type: 'int', w: 0.12 }, { t: t('col.sent'), type: 'int', w: 0.1 });
+    const tot = [t('total'), ''];
+    if (F.day) tot.push(T.day); if (F.night) tot.push(T.night); if (anyUnk) tot.push(T.unk);
+    tot.push(T.day + T.night + T.unk, T.s, null, T.sent);
+    rows.unshift(tot);
+    return { cols: normW(cols), rows, boldRows: [0] };
+  }
+  function prodModel() {
+    const rs = recsInRange(), drill = rs.filter((r) => r.drillRec);
+    const tot = drill.reduce((a, r) => a + mVal(r), 0), samples = drill.reduce((a, r) => a + sVal(r), 0);
+    const hd = new Map(); drill.forEach((r) => { if (r.hole) { const k = r.hole + '|' + r.date; hd.set(k, (hd.get(k) || 0) + mVal(r)); } });
+    const active = [...hd.values()].filter((v) => v > 0).length, idle = [...hd.values()].filter((v) => v === 0).length;
+    let best = null; dateRange(F.from, F.to).forEach((d) => { const v = dayM(d); if (!best || v > best.v) best = { d, v }; });
+    const stats = { width: 0.55, cols: normW([{ t: t('exp.kpi'), w: 0.55 }, { t: t('exp.value'), w: 0.45 }]), rows: [
+      [t('p.total'), mtr(tot)], [t('p.holeDays'), fmtI(active) + ' (' + t('p.idle', fmtI(idle)) + ')'],
+      [t('p.avg'), active ? mtr(tot / active) : '–'], [t('p.per10'), tot > 0 ? fmt(samples / tot * 10) : '–'],
+      [t('p.best'), best && best.v > 0 ? mtr(best.v) + ' · ' + fmtDateWd(best.d) : '–']] };
+    const P = { day: 0, night: 0 }, PS = { day: 0, night: 0 }, N = { day: 0, night: 0 };
+    drill.forEach((r) => { const q = mParts(r), s = sParts(r); P.day += q.day; P.night += q.night; PS.day += s.day; PS.night += s.night; if (r.hasSplit) { if ((r.mDay || 0) > 0) N.day++; if ((r.mNight || 0) > 0) N.night++; } });
+    const shiftRows = ['day', 'night'].filter((k) => (k === 'day' ? F.day : F.night)).map((k) => [t('shift.' + k), P[k], N[k], N[k] ? P[k] / N[k] : null, PS[k], P[k] > 0 ? PS[k] / P[k] * 10 : null]);
+    const shift = { title: t('p.shiftShare'), width: 0.75, cols: normW([{ t: t('col.shift'), w: 0.24 }, { t: t('col.m'), type: 'num', w: 0.15 }, { t: t('col.shifts'), type: 'int', w: 0.15 }, { t: t('col.avgShift'), type: 'num', w: 0.16 }, { t: t('col.samples'), type: 'int', w: 0.14 }, { t: t('col.per10'), type: 'num', w: 0.16 }]), rows: shiftRows };
+    const down = rs.filter((r) => r.note && DOWN_RE.test(r.note)).sort((a, b) => b.date.localeCompare(a.date)).map((r) => [r.date, r.hole || r.other || '–', r.mTot, r.note]);
+    const downT = { title: t('p.down'), cols: normW([{ t: t('col.date'), type: 'date', w: 0.1 }, { t: t('col.hole'), w: 0.13 }, { t: t('col.m'), type: 'num', w: 0.09 }, { t: t('col.note'), w: 0.68 }]), rows: down };
+    return { stats, shift, down: downT };
+  }
+  function dqTable() {
+    const rows = [];
+    runChecks().forEach((c) => c.rows.forEach(({ r, msg }) => rows.push([t('sev.' + c.sev), t('dq.' + c.key), r.date, r.hole || r.raw || r.other || '–', msg])));
+    return { cols: normW([{ t: t('col.sev'), w: 0.1 }, { t: t('col.check'), w: 0.24 }, { t: t('col.date'), type: 'date', w: 0.09 }, { t: t('col.hole'), w: 0.13 }, { t: t('col.issue'), w: 0.44 }]), rows };
+  }
+  function recordsTable() {
+    const c = t('csv.cols');
+    const cols = [{ t: c[0], type: 'date', w: 1 }, { t: c[1], w: 1.4 }, { t: c[2], type: 'num', w: 1 }, { t: c[3], type: 'num', w: 1 }, { t: c[4], type: 'num', w: 1 }, { t: c[5], type: 'int', w: 1 },
+      { t: c[6], type: 'int', w: 1 }, { t: c[7], type: 'int', w: 1 }, { t: c[8], type: 'num', w: 1 }, { t: c[9], type: 'int', w: 1 }, { t: c[10], type: 'int', w: 1 }, { t: c[11], type: 'int', w: 1 },
+      { t: c[12], w: 0.8 }, { t: c[13], w: 4 }, { t: t('csv.photos'), type: 'int', w: 0.6 }, { t: c[14], type: 'int', w: 0.7 }];
+    const rows = recsInRange().map((r) => [r.date, r.holes.join(', ') || r.other, r.mTot, r.mDay, r.mNight, r.sTot, r.sDay, r.sNight, r.depth, r.tsamp, r.rock, r.soil, r.transport ? t('yes') : '', r.note, photosOf(r).length, r.oid]);
+    return { cols: normW(cols), rows };
+  }
+  function sentSeries() {
+    const weeks = weeksOfRange(), ships = recsInRange().filter((r) => r.transport);
+    const inW = (w) => ships.filter((r) => r.date >= w && r.date < addDays(w, 7));
+    const rock = weeks.map((w) => inW(w).reduce((a, r) => a + (r.rock || 0), 0)), soil = weeks.map((w) => inW(w).reduce((a, r) => a + (r.soil || 0), 0));
+    const series = [{ key: 'rock', color: COLORS.rock, values: rock }], legendItems = [{ color: COLORS.rock, label: t('rock') }];
+    if (soil.some((v) => v > 0)) { series.push({ key: 'soil', color: COLORS.soil, values: soil }); legendItems.push({ color: COLORS.soil, label: t('soil') }); }
+    return { weeks, series, legend: legendItems };
+  }
+  function weeklySeries() {
+    const weeks = weeksOfRange();
+    return { weeks, values: weeks.map((w) => dateRange(w < F.from ? F.from : w, addDays(w, 6) > F.to ? F.to : addDays(w, 6)).reduce((a, d) => a + dayM(d), 0)) };
+  }
+  async function exportPhotos() {
+    const D = repDay();
+    let day = D, items = photoItems(dayRecs(D));
+    if (!items.length) { const prev = FREC.filter((r) => r.date <= D && r.date >= F.from && photosOf(r).length); if (prev.length) { day = prev[prev.length - 1].date; items = photoItems(dayRecs(day)); } }
+    const out = [];
+    for (const it of items.slice(0, 12)) {
+      try {
+        const im = await loadImage(await blobUrl(it.p.url));
+        const sc = Math.min(1, 1400 / Math.max(im.naturalWidth, im.naturalHeight));
+        const cv = document.createElement('canvas'); cv.width = Math.round(im.naturalWidth * sc); cv.height = Math.round(im.naturalHeight * sc);
+        cv.getContext('2d').drawImage(im, 0, 0, cv.width, cv.height);
+        const dataUrl = cv.toDataURL('image/jpeg', 0.82);
+        out.push({ dataUrl, data: dataUrlBytes(dataUrl), w: cv.width, h: cv.height, type: 'jpg', caption: photoCaption(it), note: it.r.note || '' });
+      } catch (e) { /* уншигдаагүй зургийг алгасна */ }
+    }
+    return { day, items: out };
+  }
+  async function buildModel(sel, lang) {
+    const prevLang = LANG; LANG = lang;
+    const host = el('div', { 'aria-hidden': 'true', style: 'position:fixed;left:-30000px;top:0;width:1000px;background:#fff' }, document.body);
+    try {
+      const D = repDay(), holes = holesInRange();
+      const filtered = F.exHoles.size || F.exTypes.size;
+      const nowUB = new Date(Date.now() + CONFIG.tzOffsetH * 3600e3).toISOString().slice(0, 16).replace('T', ' ');
+      const M = {
+        lang, title: t('title'), asof: t('asof', fmtDate(DATA_MAX)), logo: await loadLogo(),
+        info: [[t('f.range'), fmtDate(F.from) + ' – ' + fmtDate(F.to) + ' (' + dateRange(F.from, F.to).length + ' ' + t('u.days') + ')'], [t('f.repday'), fmtDateWd(D)],
+          [t('f.holes'), filtered ? holes.map((h) => h.hole).join(', ') : t('exp.holesAll', holes.length)],
+          [t('f.shift'), F.day && F.night ? t('exp.shiftBoth') : F.day ? t('shift.day') : t('shift.night')],
+          [t('exp.generated'), (USER ? USER + ' · ' : '') + nowUB]],
+        kpis: kpiModel(), sections: [], footer: 'RegaPro · ' + t('title'), file: 'ETT-Geotech_daily-report_' + D
+      };
+      const png = async (svg) => (svg ? svgPng(svg, 2) : null);
+      if (sel.summary) {
+        host.style.width = '1000px'; const a = await png(renderShiftChart(host, true));
+        host.style.width = '640px'; const b = await png(renderProgress(host, holes, { exp: true }));
+        M.sections.push({ key: 'summary', title: t('exp.s.summary'), blocks: [{ type: 'kpis' }, { type: 'charts2', items: [
+          { title: t('c.shift') + ' ' + t('c.days', dateRange(F.from, F.to).length), img: a, w: 0.6 }, { title: t('c.progress') + ' ' + t('c.progressSub'), img: b, w: 0.4 }].filter((x) => x.img) }] });
+      }
+      if (sel.notes) M.sections.push({ key: 'notes', title: t('exp.s.notes'), blocks: [Object.assign({ type: 'table' }, notesTable())] });
+      if (sel.samples) {
+        const ss = sentSeries(); host.style.width = '760px';
+        const img = await png(columnChart(host, ss.weeks, ss.series, { height: 250, legend: ss.legend, label: t('c.sent'), catLabel: (w) => fmtDate(w < F.from ? F.from : w, 'short') }));
+        const blocks = []; if (img) blocks.push({ type: 'chart', title: t('c.sent') + ' ' + t('c.byWeek'), img, w: 0.5 });
+        blocks.push(Object.assign({ type: 'table' }, backlogTable()), Object.assign({ type: 'table' }, shipmentsTable()));
+        M.sections.push({ key: 'samples', title: t('exp.s.samples'), blocks });
+      }
+      if (sel.holes) M.sections.push({ key: 'holes', title: t('exp.s.holes'), blocks: [Object.assign({ type: 'table' }, holesTable()), { type: 'text', text: t('h.etaNote') }] });
+      if (sel.daily) M.sections.push({ key: 'daily', title: t('exp.s.daily'), blocks: [Object.assign({ type: 'table' }, dailyTable())] });
+      if (sel.prod) {
+        const pm = prodModel(), ws = weeklySeries(); host.style.width = '760px';
+        const img = await png(columnChart(host, ws.weeks, [{ key: 'm', color: COLORS.total, values: ws.values }], { height: 250, label: t('p.weekly'), fmt: (v) => fmt(v, 0), catLabel: (w) => fmtDate(w < F.from ? F.from : w, 'short') }));
+        const blocks = [Object.assign({ type: 'table' }, pm.stats)];
+        if (img) blocks.push({ type: 'chart', title: t('p.weekly') + ' ' + t('p.weeklySub'), img, w: 0.5 });
+        blocks.push(Object.assign({ type: 'table' }, pm.shift), Object.assign({ type: 'table' }, pm.down));
+        M.sections.push({ key: 'prod', title: t('exp.s.prod'), blocks });
+      }
+      if (sel.dq) { const dq = dqTable(); M.sections.push({ key: 'dq', title: t('exp.s.dq'), blocks: dq.rows.length ? [Object.assign({ type: 'table' }, dq)] : [{ type: 'text', text: t('dq.ok') }] }); }
+      if (sel.photos) { const ph = await exportPhotos(); M.sections.push({ key: 'photos', title: t('exp.s.photos'), blocks: [{ type: 'photos', day: ph.day, items: ph.items }] }); }
+      M.records = recordsTable();
+      // Хэлний текстүүдийг энэ хэлээр нь хадгална (бүтээх үед LANG сэргээгдсэн байна)
+      M.tx = { page: (i, n) => t('exp.page', i, n), photoDay: (d) => t('exp.photoDay', fmtDateWd(d)), noPhotos: t('exp.noPhotos'), kpi: t('exp.kpi'), value: t('exp.value'), repVal: t('exp.repVal'),
+        vsPrev: t('k.vsPrev'), vsAvg: t('k.vsAvg'), periodVal: t('exp.periodVal'), summarySheet: t('exp.summarySheet'), records: t('exp.records'), charts: t('exp.charts') };
+      M.sections.forEach((s) => s.blocks.forEach((b) => { if (b.type === 'photos') b.dayTxt = t('exp.photoDay', fmtDateWd(b.day)); }));
+      return M;
+    } finally { host.remove(); LANG = prevLang; }
+  }
+
+  /* ---------- PDF ---------- */
+  async function buildPdf(M) {
+    await loadLib('jspdf'); await loadLib('autotable');
+    const doc = new window.jspdf.jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4', compress: true });
+    await pdfFonts(doc);
+    const PW = 297, PH = 210, MG = 12, CW = PW - 2 * MG, BOT = PH - 14;
+    const NAVY = [12, 40, 57], INK = [25, 25, 25], GRAY = [91, 102, 112], LINE = [227, 232, 237], GREEN = [46, 139, 51];
+    let y = MG;
+    const font = (style, size, color) => { doc.setFont('Inter', style); doc.setFontSize(size); doc.setTextColor.apply(doc, color); };
+    const ensure = (h) => { if (y + h > BOT) { doc.addPage(); y = MG + 2; } };
+    // Толгой
+    if (M.logo) doc.addImage(M.logo.dataUrl, 'PNG', MG, y, 40, 40 * M.logo.h / M.logo.w);
+    font('normal', 8.5, GRAY); doc.text(M.asof, PW - MG, y + 4, { align: 'right' });
+    y += 15; font('bold', 17, NAVY); doc.text(M.title, MG, y);
+    y += 5.5; font('normal', 8.8, GRAY);
+    const infoLines = doc.splitTextToSize(M.info.map((p) => p[0] + ': ' + p[1]).join('     '), CW);
+    doc.text(infoLines, MG, y + 3); y += infoLines.length * 4.1 + 2.5;
+    doc.setDrawColor.apply(doc, GREEN); doc.setLineWidth(0.6); doc.line(MG, y, PW - MG, y); y += 6;
+    const heading = (txt) => { ensure(22); font('bold', 12.5, NAVY); doc.text(txt, MG, y + 3); doc.setDrawColor.apply(doc, LINE); doc.setLineWidth(0.3); doc.line(MG, y + 5.2, PW - MG, y + 5.2); y += 10; };
+    const subTitle = (txt) => { font('bold', 9.5, INK); doc.text(txt, MG, y + 3); y += 5.5; };
+    const table = (tb) => {
+      if (tb.title) { ensure(20); subTitle(tb.title); }
+      if (!tb.rows.length) { font('normal', 8.5, GRAY); doc.text('–', MG, y + 3); y += 7; return; }
+      doc.autoTable({
+        startY: y, head: [tb.cols.map((c) => c.t)], body: tb.rows.map((r) => r.map((v, i) => cellText(v, tb.cols[i]))),
+        margin: { left: MG, right: MG, top: MG + 2, bottom: 16 }, theme: 'grid',
+        styles: { font: 'Inter', fontStyle: 'normal', fontSize: 7.9, cellPadding: 1.4, textColor: INK, lineColor: LINE, lineWidth: 0.15, overflow: 'linebreak', valign: 'top' },
+        headStyles: { font: 'Inter', fontStyle: 'bold', fillColor: NAVY, textColor: 255, fontSize: 7.6, valign: 'bottom' },
+        alternateRowStyles: { fillColor: [248, 250, 251] },
+        tableWidth: CW * (tb.width || 1),
+        columnStyles: Object.fromEntries(tb.cols.map((c, i) => [i, { cellWidth: c.w * CW * (tb.width || 1), halign: isNum(c) ? 'right' : 'left' }])),
+        didParseCell: (d) => {
+          if (d.section === 'head' && isNum(tb.cols[d.column.index])) d.cell.styles.halign = 'right';
+          if (d.section === 'body' && tb.boldRows && tb.boldRows.includes(d.row.index)) { d.cell.styles.fontStyle = 'bold'; d.cell.styles.fillColor = [234, 241, 236]; }
+        }
+      });
+      y = doc.lastAutoTable.finalY + 6;
+    };
+    const kpis = () => {
+      const n = M.kpis.length, gap = 4, bw = (CW - gap * (n - 1)) / n, bh = 29;
+      ensure(bh + 4);
+      M.kpis.forEach((k, i) => {
+        const x = MG + i * (bw + gap);
+        doc.setDrawColor.apply(doc, LINE); doc.setLineWidth(0.3); doc.roundedRect(x, y, bw, bh, 2, 2, 'S');
+        font('bold', 7.4, GRAY); doc.text(k.label.toUpperCase(), x + 3.5, y + 5.2);
+        font('bold', 19, INK); doc.text(k.value, x + 3.5, y + 13.4);
+        if (k.unit) { const vw = doc.getTextWidth(k.value); font('bold', 9, GRAY); doc.text(k.unit, x + 4.5 + vw, y + 13.4); }
+        font('normal', 7.2, GRAY);
+        k.lines.forEach((ln, j) => { if (ln) doc.text(doc.splitTextToSize(ln, bw - 7)[0], x + 3.5, y + 18 + j * 3.4); });
+      });
+      y += bh + 6;
+    };
+    const chartsRow = (items) => {
+      const gap = 6, tw = items.reduce((a, it) => a + it.w, 0);
+      const dims = items.map((it) => { const w = items.length === 1 ? CW * Math.min(1, it.w) : (CW - gap * (items.length - 1)) * it.w / tw; return { w, h: w * it.img.h / it.img.w }; });
+      const hmax = Math.max(...dims.map((d) => d.h));
+      ensure(hmax + 7);
+      let x = MG;
+      items.forEach((it, i) => {
+        font('bold', 9.5, INK); doc.text(doc.splitTextToSize(it.title, dims[i].w)[0], x, y + 3);
+        doc.addImage(it.img.dataUrl, 'PNG', x, y + 5, dims[i].w, dims[i].h, undefined, 'FAST');
+        x += dims[i].w + gap;
+      });
+      y += hmax + 10;
+    };
+    const photos = (b) => {
+      font('normal', 8.5, GRAY); ensure(10); doc.text(b.items.length ? b.dayTxt : M.tx.noPhotos, MG, y + 3); y += 6;
+      const cols = 3, gap = 6, cw = (CW - gap * (cols - 1)) / cols, ch = 64;
+      for (let i = 0; i < b.items.length; i += cols) {
+        ensure(ch + 12);
+        b.items.slice(i, i + cols).forEach((p, j) => {
+          const x = MG + j * (cw + gap), sc = Math.min(cw / p.w, ch / p.h), w = p.w * sc, h = p.h * sc;
+          doc.setFillColor(243, 246, 248); doc.rect(x, y, cw, ch, 'F');
+          doc.addImage(p.dataUrl, 'JPEG', x + (cw - w) / 2, y + (ch - h) / 2, w, h, undefined, 'FAST');
+          font('bold', 8, INK); doc.text(doc.splitTextToSize(p.caption, cw)[0], x, y + ch + 4);
+        });
+        y += ch + 9;
+      }
+    };
+    M.sections.forEach((s, si) => {
+      if (si > 0) ensure(70);
+      heading(s.title);
+      s.blocks.forEach((b) => {
+        if (b.type === 'kpis') kpis();
+        else if (b.type === 'charts2') chartsRow(b.items);
+        else if (b.type === 'chart') chartsRow([{ title: b.title, img: b.img, w: b.w || 0.6 }]);
+        else if (b.type === 'table') table(b);
+        else if (b.type === 'text') { font('normal', 8.3, GRAY); const l = doc.splitTextToSize(b.text, CW); ensure(l.length * 4 + 3); doc.text(l, MG, y + 3); y += l.length * 4 + 4; }
+        else if (b.type === 'photos') photos(b);
+      });
+    });
+    // Хөл
+    const n = doc.getNumberOfPages();
+    for (let i = 1; i <= n; i++) {
+      doc.setPage(i);
+      doc.setDrawColor.apply(doc, LINE); doc.setLineWidth(0.3); doc.line(MG, PH - 10, PW - MG, PH - 10);
+      font('normal', 7.4, GRAY);
+      doc.text(M.footer, MG, PH - 6);
+      doc.text(M.info[M.info.length - 1][1], PW / 2, PH - 6, { align: 'center' });
+      doc.text(M.tx.page(i, n), PW - MG, PH - 6, { align: 'right' });
+    }
+    saveBlob(doc.output('blob'), M.file + '.pdf');
+  }
+
+  /* ---------- Word (.docx) ---------- */
+  async function buildDocx(M) {
+    await loadLib('docx');
+    const X = window.docx;
+    const { Document, Packer, Paragraph, TextRun, ImageRun, Table, TableRow, TableCell, WidthType, AlignmentType, PageOrientation, ShadingType, Footer, PageNumber, VerticalAlign, TableLayoutType, BorderStyle } = X;
+    const FONT = 'Arial', tw = (mm) => Math.round(mm * 56.6929), CWmm = 297 - 30, CW = tw(CWmm), PX = (mm) => Math.round(mm * 96 / 25.4);
+    const run = (text, o) => { o = o || {}; return new TextRun({ text: String(text == null ? '' : text), bold: o.b, size: o.size || 18, color: o.color, font: FONT }); };
+    const para = (children, o) => { o = o || {}; return new Paragraph({ children, alignment: o.align, spacing: o.spacing || { after: 60 }, keepNext: o.keepNext }); };
+    const none = { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' };
+    const thin = { style: BorderStyle.SINGLE, size: 4, color: 'D5DCE3' };
+    const cell = (kids, o) => new TableCell({
+      verticalAlign: VerticalAlign.TOP, width: o.w ? { size: o.w, type: WidthType.DXA } : undefined,
+      shading: o.fill ? { type: ShadingType.CLEAR, color: 'auto', fill: o.fill } : undefined,
+      margins: { top: 50, bottom: 50, left: 80, right: 80 }, borders: o.noBorder ? { top: none, bottom: none, left: none, right: none } : { top: thin, bottom: thin, left: thin, right: thin },
+      children: kids
+    });
+    const txtCell = (txt, o) => cell([new Paragraph({ alignment: o.right ? AlignmentType.RIGHT : AlignmentType.LEFT, children: [run(txt, { b: o.b, size: o.size || 16, color: o.color })] })], o);
+    const table = (tb) => {
+      const TW = Math.round(CW * (tb.width || 1)), ws = tb.cols.map((c) => Math.round(c.w * TW));
+      return new Table({
+        width: { size: TW, type: WidthType.DXA }, columnWidths: ws, layout: TableLayoutType.FIXED,
+        rows: [new TableRow({ tableHeader: true, children: tb.cols.map((c, i) => txtCell(c.t, { b: true, fill: '0C2839', color: 'FFFFFF', w: ws[i], right: isNum(c), size: 15 })) })]
+          .concat(tb.rows.map((r, ri) => new TableRow({ cantSplit: true, children: r.map((v, i) => txtCell(cellText(v, tb.cols[i]), { w: ws[i], right: isNum(tb.cols[i]), b: tb.boldRows && tb.boldRows.includes(ri), fill: tb.boldRows && tb.boldRows.includes(ri) ? 'EAF1EC' : (ri % 2 ? 'F8FAFB' : undefined) })) })))
+      });
+    };
+    const image = (img, wmm) => new ImageRun({ type: img.type || 'png', data: img.data, transformation: { width: PX(wmm), height: Math.round(PX(wmm) * img.h / img.w) } });
+    const H = (txt) => para([run(txt, { b: true, size: 28, color: '0C2839' })], { spacing: { before: 280, after: 120 }, keepNext: true });
+    const H3 = (txt) => para([run(txt, { b: true, size: 20, color: '191919' })], { spacing: { before: 160, after: 80 }, keepNext: true });
+    const kids = [];
+    if (M.logo) kids.push(para([image(M.logo, 42)], { spacing: { after: 120 } }));
+    kids.push(para([run(M.title, { b: true, size: 34, color: '0C2839' })], { spacing: { after: 60 } }));
+    kids.push(para([run(M.asof, { size: 17, color: '5B6670' })], { spacing: { after: 100 } }));
+    const iw = [Math.round(CW * 0.22), Math.round(CW * 0.78)];
+    kids.push(new Table({ width: { size: CW, type: WidthType.DXA }, columnWidths: iw, layout: TableLayoutType.FIXED,
+      rows: M.info.map((p) => new TableRow({ children: [txtCell(p[0], { b: true, w: iw[0], fill: 'F3F6F8' }), txtCell(p[1], { w: iw[1] })] })) }));
+    M.sections.forEach((s) => {
+      kids.push(H(s.title));
+      s.blocks.forEach((b) => {
+        if (b.type === 'kpis') {
+          const w = Math.round(CW / M.kpis.length);
+          kids.push(new Table({ width: { size: CW, type: WidthType.DXA }, columnWidths: M.kpis.map(() => w), layout: TableLayoutType.FIXED, rows: [new TableRow({ children: M.kpis.map((k) => cell(
+            [para([run(k.label.toUpperCase(), { b: true, size: 14, color: '5B6670' })]), para([run(k.value, { b: true, size: 40 }), run(k.unit ? ' ' + k.unit : '', { b: true, size: 18, color: '5B6670' })])]
+              .concat(k.lines.filter(Boolean).map((l) => para([run(l, { size: 14, color: '5B6670' })], { spacing: { after: 20 } }))), { w })) })] }));
+        } else if (b.type === 'charts2' || b.type === 'chart') {
+          const items = b.type === 'chart' ? [{ title: b.title, img: b.img }] : b.items;
+          items.forEach((it) => {
+            kids.push(H3(it.title));
+            const wmm = Math.min(CWmm, it.img.w * 0.2);
+            kids.push(para([image(it.img, wmm)], { spacing: { after: 120 } }));
+          });
+        } else if (b.type === 'table') {
+          if (b.title) kids.push(H3(b.title));
+          kids.push(b.rows.length ? table(b) : para([run('–', { color: '5B6670' })]));
+          kids.push(para([run('')], { spacing: { after: 80 } }));
+        } else if (b.type === 'text') kids.push(para([run(b.text, { size: 16, color: '5B6670' })], { spacing: { before: 60, after: 120 } }));
+        else if (b.type === 'photos') {
+          kids.push(para([run(b.items.length ? b.dayTxt : M.tx.noPhotos, { size: 17, color: '5B6670' })]));
+          b.items.forEach((p) => {
+            const wmm = p.w >= p.h ? 150 : 95;
+            kids.push(para([image(p, wmm)], { spacing: { before: 120, after: 40 } }));
+            kids.push(para([run(p.caption, { b: true, size: 17 })], { spacing: { after: 20 } }));
+            if (p.note) kids.push(para([run(p.note, { size: 16, color: '5B6670' })], { spacing: { after: 160 } }));
+          });
+        }
+      });
+    });
+    const footer = new Footer({ children: [new Paragraph({ alignment: AlignmentType.RIGHT, children: [
+      run(M.footer + ' · ', { size: 15, color: '5B6670' }), new TextRun({ children: [PageNumber.CURRENT, ' / ', PageNumber.TOTAL_PAGES], size: 15, color: '5B6670', font: FONT })] })] });
+    const doc = new Document({
+      creator: 'RegaPro', title: M.title,
+      styles: { default: { document: { run: { font: FONT, size: 18 } } } },
+      sections: [{ properties: { page: { size: { width: tw(210), height: tw(297), orientation: PageOrientation.LANDSCAPE }, margin: { top: tw(14), bottom: tw(14), left: tw(15), right: tw(15) } } }, footers: { default: footer }, children: kids }]
+    });
+    saveBlob(await Packer.toBlob(doc), M.file + '.docx');
+  }
+
+  /* ---------- Excel (.xlsx) ---------- */
+  async function buildXlsx(M) {
+    await loadLib('exceljs');
+    const wb = new window.ExcelJS.Workbook(); wb.creator = 'RegaPro'; wb.created = new Date();
+    const NAVY = 'FF0C2839', used = new Set();
+    const sheetName = (s) => { let n = String(s).replace(/[\[\]:*?/\\]/g, ' ').slice(0, 31).trim() || 'Sheet'; let k = 2; const base = n; while (used.has(n.toLowerCase())) n = (base.slice(0, 28) + ' ' + k++); used.add(n.toLowerCase()); return n; };
+    const fmtFor = (c) => c.type === 'int' ? '#,##0' : c.type === 'pct' ? '0%' : c.type === 'num' ? (c.d === 0 ? '#,##0' : '#,##0.0') : c.type === 'date' ? 'yyyy-mm-dd' : undefined;
+    const toCell = (v, c) => {
+      if (v == null || v === '') return null;
+      if (c.type === 'date' && /^\d{4}-\d{2}-\d{2}$/.test(v)) return new Date(toMs(v));
+      return v;
+    };
+    const writeTable = (ws, tb, r0, title) => {
+      let r = r0;
+      if (title) { const tc = ws.getCell(r, 1); tc.value = title; tc.font = { bold: true, size: 12, color: { argb: NAVY } }; r++; }
+      const hr = ws.getRow(r);
+      tb.cols.forEach((c, i) => { const cl = hr.getCell(i + 1); cl.value = c.t; cl.font = { bold: true, color: { argb: 'FFFFFFFF' } }; cl.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: NAVY } }; cl.alignment = { vertical: 'middle', wrapText: true, horizontal: isNum(c) ? 'right' : 'left' }; });
+      hr.height = 30;
+      const headRow = r;
+      tb.rows.forEach((row, ri) => {
+        r++;
+        const xr = ws.getRow(r);
+        row.forEach((v, i) => {
+          const c = tb.cols[i], cl = xr.getCell(i + 1);
+          cl.value = toCell(v, c);
+          const nf = fmtFor(c); if (nf && typeof cl.value !== 'string') cl.numFmt = nf;
+          cl.alignment = { vertical: 'top', wrapText: !isNum(c) && c.w > 0.2 };
+          if (tb.boldRows && tb.boldRows.includes(ri)) { cl.font = { bold: true }; cl.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFEAF1EC' } }; }
+        });
+      });
+      return { next: r + 2, headRow, lastRow: r };
+    };
+    const widths = (ws, tb, base) => tb.cols.forEach((c, i) => { const col = ws.getColumn(i + 1); const w = Math.max(10, Math.min(70, Math.round(c.w * (base || 160)))); col.width = Math.max(col.width || 0, w); });
+    const tableSheet = (name, tb) => {
+      const ws = wb.addWorksheet(sheetName(name), { views: [{ state: 'frozen', ySplit: 1 }] });
+      widths(ws, tb);
+      const res = writeTable(ws, tb, 1);
+      if (tb.rows.length) ws.autoFilter = { from: { row: 1, column: 1 }, to: { row: res.lastRow, column: tb.cols.length } };
+      return ws;
+    };
+    // Хураангуй
+    const sum = wb.addWorksheet(sheetName(M.tx.summarySheet));
+    sum.getColumn(1).width = 30; sum.getColumn(2).width = 22; sum.getColumn(3).width = 18; sum.getColumn(4).width = 22; sum.getColumn(5).width = 22;
+    sum.getCell('A1').value = M.title; sum.getCell('A1').font = { bold: true, size: 16, color: { argb: NAVY } };
+    sum.getCell('A2').value = M.asof; sum.getCell('A2').font = { color: { argb: 'FF5B6670' } };
+    let r = 4;
+    M.info.forEach((p) => { sum.getCell(r, 1).value = p[0]; sum.getCell(r, 1).font = { bold: true }; sum.getCell(r, 2).value = p[1]; r++; });
+    r++;
+    const kt = { cols: [{ t: M.tx.kpi, w: 0.3 }, { t: M.tx.repVal, type: 'num', w: 0.18 }, { t: M.tx.vsPrev, type: 'num', w: 0.17 }, { t: M.tx.vsAvg, type: 'num', w: 0.17 }, { t: M.tx.periodVal, type: 'num', w: 0.18 }],
+      rows: M.kpis.map((k) => [k.label + (k.unit ? ', ' + k.unit : ''), k.raw.v, k.raw.dPrev, k.raw.dAvg, k.raw.period]) };
+    writeTable(sum, kt, r);
+    // Хэсгүүд
+    const imgs = [];
+    M.sections.forEach((s) => {
+      const tables = s.blocks.filter((b) => b.type === 'table');
+      s.blocks.forEach((b) => { if (b.type === 'charts2') b.items.forEach((it) => imgs.push(it)); if (b.type === 'chart') imgs.push({ title: b.title, img: b.img }); });
+      if (s.key === 'photos') {
+        const b = s.blocks[0], ws = wb.addWorksheet(sheetName(s.title));
+        ws.getColumn(1).width = 90; ws.getCell('A1').value = b.items.length ? b.dayTxt : M.tx.noPhotos; ws.getCell('A1').font = { bold: true };
+        let row = 3;
+        b.items.forEach((p) => {
+          const w = 520, h = Math.round(w * p.h / p.w);
+          ws.getCell(row, 1).value = p.caption + (p.note ? ' — ' + p.note : ''); ws.getCell(row, 1).font = { bold: true };
+          const id = wb.addImage({ base64: p.dataUrl, extension: 'jpeg' });
+          ws.addImage(id, { tl: { col: 0, row }, ext: { width: w, height: h } });
+          row += Math.ceil(h / 20) + 3;
+        });
+        return;
+      }
+      if (!tables.length) return;
+      if (tables.length === 1 && !tables[0].title) { tableSheet(s.title, tables[0]); return; }
+      const ws = wb.addWorksheet(sheetName(s.title));
+      let rr = 1;
+      tables.forEach((tb) => { widths(ws, tb); rr = writeTable(ws, tb, rr, tb.title).next; });
+    });
+    // Бүх бичлэг
+    tableSheet(M.tx.records, M.records);
+    // Графикууд
+    if (imgs.length) {
+      const ws = wb.addWorksheet(sheetName(M.tx.charts));
+      ws.getColumn(1).width = 110;
+      let row = 1;
+      imgs.forEach((it) => {
+        ws.getCell(row, 1).value = it.title; ws.getCell(row, 1).font = { bold: true, size: 12, color: { argb: NAVY } };
+        const w = Math.min(900, it.img.w), h = Math.round(w * it.img.h / it.img.w);
+        const id = wb.addImage({ base64: it.img.dataUrl, extension: 'png' });
+        ws.addImage(id, { tl: { col: 0, row }, ext: { width: w, height: h } });
+        row += Math.ceil(h / 20) + 3;
+      });
+    }
+    const buf = await wb.xlsx.writeBuffer();
+    saveBlob(new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }), M.file + '.xlsx');
+  }
+
+  /* ---------- Цонх ---------- */
+  const EXP_SECS = ['summary', 'notes', 'samples', 'holes', 'daily', 'prod', 'dq', 'photos'];
+  function openExport() {
+    if (!RECS.length) return;
+    const saved = store.get('exp_secs', null);
+    const box = $('expSecs'); box.innerHTML = '';
+    EXP_SECS.forEach((k) => {
+      const lab = el('label', { class: 'chk' }, box);
+      const cb = el('input', { type: 'checkbox', value: k }, lab);
+      cb.checked = saved ? saved.includes(k) : k !== 'photos';
+      el('span', null, lab, t('exp.s.' + k));
+    });
+    const fmtSaved = store.get('exp_fmt', 'pdf');
+    document.querySelectorAll('input[name=expFmt]').forEach((r) => { r.checked = r.value === fmtSaved; });
+    $('expLang').value = LANG;
+    syncExpFmt();
+    const holes = holesInRange();
+    $('expScope').textContent = t('exp.scope', fmtDate(F.from) + ' – ' + fmtDate(F.to), fmtDate(repDay()), (F.exHoles.size || F.exTypes.size) ? holes.map((h) => h.hole).join(', ') : t('exp.holesAll', holes.length));
+    setExpStatus('');
+    const dlg = $('expDlg');
+    if (dlg.showModal) { if (!dlg.open) dlg.showModal(); } else dlg.setAttribute('open', '');
+  }
+  function syncExpFmt() {
+    const f = (document.querySelector('input[name=expFmt]:checked') || {}).value || 'pdf';
+    $('expSecs').classList.toggle('off', f === 'csv');
+  }
+  function setExpStatus(msg, kind) {
+    const s = $('expStatus'); s.innerHTML = ''; s.className = kind === 'err' ? 'err' : '';
+    if (kind === 'busy') el('span', { class: 'spin' }, s);
+    if (msg) s.appendChild(document.createTextNode(msg));
+  }
+  async function runExport() {
+    const f = (document.querySelector('input[name=expFmt]:checked') || {}).value || 'pdf';
+    const lang = $('expLang').value === 'en' ? 'en' : 'mn';
+    store.set('exp_fmt', f);
+    if (f === 'csv') { const pl = LANG; LANG = lang; try { exportCsv(); } finally { LANG = pl; } $('expDlg').close(); return; }
+    const sel = {}; const picked = [];
+    document.querySelectorAll('#expSecs input').forEach((cb) => { sel[cb.value] = cb.checked; if (cb.checked) picked.push(cb.value); });
+    store.set('exp_secs', picked);
+    if (!picked.length) { setExpStatus(t('exp.pick'), 'err'); return; }
+    const go = $('expGo'); go.disabled = true;
+    setExpStatus(t('exp.working'), 'busy');
+    const uiLang = LANG;
+    try {
+      if (sel.photos && !ATT_READY) await loadAttachments();
+      LANG = lang;                              // тайланг сонгосон хэлээр бүтээнэ
+      const M = await buildModel(sel, lang);
+      LANG = lang;
+      if (f === 'pdf') await buildPdf(M);
+      else if (f === 'docx') await buildDocx(M);
+      else await buildXlsx(M);
+      LANG = uiLang;
+      setExpStatus(t('exp.done'));
+      setTimeout(() => { if ($('expDlg').open) $('expDlg').close(); }, 900);
+    } catch (e) {
+      LANG = uiLang;
+      console.error(e);
+      setExpStatus(t('exp.err', (e && e.message) || e), 'err');
+    } finally { LANG = uiLang; go.disabled = false; }
+  }
+
+  /* ---------------------------------------------------------------
      Экспорт, хэвлэх
      --------------------------------------------------------------- */
   function exportCsv() {
@@ -1296,7 +1924,7 @@
     tipHide();
     if (!RECS.length) return;
     if (TAB === 'overview') {
-      renderKpis(); renderShiftChart(); renderProgress($('progressChart'), holesInRange()); renderGallery(); renderNotes(); renderSent();
+      renderKpis(); renderShiftChart(); renderProgress($('progressChart'), holesInRange()); renderNotes(); renderSent();
     } else if (TAB === 'holes') renderHoles();
     else if (TAB === 'prod') renderProd();
     else if (TAB === 'dq') renderDQ();
@@ -1410,7 +2038,10 @@
     $('shDay').addEventListener('change', (e) => { F.day = e.target.checked; if (!F.day && !F.night) { F.night = true; } update(); });
     $('shNight').addEventListener('change', (e) => { F.night = e.target.checked; if (!F.day && !F.night) { F.day = true; } update(); });
     $('clearAll').addEventListener('click', () => { F.exHoles.clear(); F.exTypes.clear(); F.day = F.night = true; setPreset(String(CONFIG.defaultDays)); update(); });
-    $('csvBtn').addEventListener('click', exportCsv);
+    $('expBtn').addEventListener('click', openExport); $('expBtnTop').addEventListener('click', openExport);
+    $('expClose').addEventListener('click', () => $('expDlg').close()); $('expCancel').addEventListener('click', () => $('expDlg').close());
+    $('expGo').addEventListener('click', runExport);
+    document.querySelectorAll('input[name=expFmt]').forEach((r) => r.addEventListener('change', syncExpFmt));
     $('printBtn').addEventListener('click', () => window.print());
     $('planBtn').addEventListener('click', openPlans); $('planBtn2').addEventListener('click', openPlans);
     $('planClose').addEventListener('click', () => $('planDlg').close()); $('planCancel').addEventListener('click', () => $('planDlg').close());

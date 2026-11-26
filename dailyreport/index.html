@@ -194,18 +194,10 @@ dialog#planDlg::backdrop{background:rgba(8,28,41,.5)}
 
 
 /* ---------- Зураг ---------- */
-.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(176px,1fr));gap:10px}
-.ph{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;padding:0;text-align:left;cursor:zoom-in}
-.ph:hover{border-color:#b9c7d3;box-shadow:0 4px 14px rgba(12,40,57,.10)}
-.ph .im{position:relative;aspect-ratio:4/3;background:#e9edf1;overflow:hidden}
-.ph img,.thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.ph .cap{padding:7px 9px;font-size:12.5px;line-height:1.35}
-.ph .cap b{display:block;font-size:13px}
-.ph .cap span{color:var(--ink-2)}
-.ph .ph-ph,.thumb .ph-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#8a949d;font-size:12px;text-align:center;padding:6px}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb .ph-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#8a949d;font-size:12px;text-align:center;padding:6px}
 .thumb{position:relative;display:inline-block;width:58px;height:44px;border-radius:6px;overflow:hidden;background:#e9edf1;border:1px solid var(--line);padding:0;cursor:zoom-in;vertical-align:top}
 .thumb .n{position:absolute;right:3px;bottom:3px;background:rgba(8,28,41,.8);color:#fff;font-size:10.5px;font-weight:700;border-radius:4px;padding:0 4px;line-height:15px}
-#photoHint{font-size:12px;color:var(--ink-3)}
 dialog#photoDlg{border:0;border-radius:14px;padding:0;width:min(1100px,96vw);max-height:94vh;background:#0b1620;color:#fff;box-shadow:0 20px 60px rgba(0,0,0,.5)}
 dialog#photoDlg::backdrop{background:rgba(4,12,18,.8)}
 .pdlg{display:flex;flex-direction:column;max-height:94vh}
@@ -223,6 +215,30 @@ dialog#photoDlg::backdrop{background:rgba(4,12,18,.8)}
 .pdlg footer{display:flex;gap:16px;align-items:flex-start;justify-content:space-between;padding:10px 16px 14px;font-size:13px;color:#c9d6e0}
 .pdlg footer p{margin:0;flex:1}
 .pdlg footer a{color:#9bd59d;white-space:nowrap;font-weight:600}
+
+/* ---------- Тайлан татах ---------- */
+.tbtn.dl{background:var(--green-700);border-color:var(--green-700)}
+.tbtn.dl:hover{background:#25742a}
+dialog#expDlg{border:0;border-radius:14px;padding:0;width:min(620px,96vw);max-height:92vh;box-shadow:0 20px 60px rgba(8,28,41,.35)}
+dialog#expDlg::backdrop{background:rgba(8,28,41,.5)}
+.dlg fieldset{border:0;margin:0 0 14px;padding:0}
+.dlg legend{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);font-weight:700;margin-bottom:8px;padding:0}
+.fmts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.fmt{position:relative;display:flex;flex-direction:column;gap:2px;border:1.5px solid #d5dce3;border-radius:10px;padding:10px 10px 9px;cursor:pointer;min-height:74px}
+.fmt input{position:absolute;opacity:0;pointer-events:none}
+.fmt b{font-size:15px;color:var(--navy-800)}
+.fmt span{font-size:11.5px;color:var(--ink-2);line-height:1.3}
+.fmt i{width:22px;height:4px;border-radius:2px;margin-bottom:4px}
+.fmt:has(input:checked){border-color:var(--green-700);background:#f1f8f1;box-shadow:0 0 0 1px var(--green-700) inset}
+.fmt:has(input:focus-visible){outline:3px solid var(--green-500);outline-offset:2px}
+.secs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 12px}
+.secs.off{opacity:.45;pointer-events:none}
+.exprow{display:flex;gap:14px;align-items:center;flex-wrap:wrap;font-size:13px}
+.exprow select{min-height:34px;border:1px solid #cfd8e0;border-radius:8px;padding:4px 8px}
+.scope{margin:10px 0 0;padding:8px 10px;background:#f3f6f8;border-radius:8px;font-size:12.5px;color:var(--ink-2)}
+#expStatus{margin-right:auto;font-size:12.5px;color:var(--ink-2);display:flex;align-items:center;gap:8px}
+#expStatus.err{color:#8c1d18}
+@media (max-width:560px){.fmts{grid-template-columns:repeat(2,minmax(0,1fr))}.secs{grid-template-columns:1fr}}
 
 /* ---------- Дасан зохицох ---------- */
 @media (max-width:1180px){
@@ -267,8 +283,7 @@ dialog#photoDlg::backdrop{background:rgba(4,12,18,.8)}
   .tblwrap{max-height:none;overflow:visible}
   .row-a,.row-b{grid-template-columns:1.65fr 1fr}
   .kpi .spark{display:block}
-  .gallery{grid-template-columns:repeat(6,1fr)}
-}
+  }
 </style>
 </head>
 <body>
@@ -281,6 +296,7 @@ dialog#photoDlg::backdrop{background:rgba(4,12,18,.8)}
   </div>
   <div class="acts">
     <span id="updated" aria-live="polite"></span>
+    <button class="tbtn dl" id="expBtnTop" type="button"><span aria-hidden="true">⤓</span> <span data-i18n="exp.btn">Тайлан татах</span></button>
     <button class="tbtn" id="refreshBtn" type="button"><span aria-hidden="true">↻</span> <span data-i18n="refresh">Шинэчлэх</span></button>
     <div class="lang" role="group" aria-label="Хэл / Language">
       <button type="button" data-lang="mn" aria-pressed="true">MN</button>
@@ -331,8 +347,8 @@ dialog#photoDlg::backdrop{background:rgba(4,12,18,.8)}
     </div>
     <div class="fsec fbtns">
       <button class="btn" type="button" id="planBtn" data-i18n="plan.edit">Төлөвлөсөн гүн</button>
-      <button class="btn" type="button" id="csvBtn" data-i18n="exportCsv">CSV татах</button>
-      <button class="btn primary" type="button" id="printBtn" data-i18n="print">Хэвлэх / PDF</button>
+      <button class="btn primary" type="button" id="expBtn"><span aria-hidden="true">⤓</span> <span data-i18n="exp.btn">Тайлан татах</span></button>
+      <button class="btn" type="button" id="printBtn" data-i18n="printOnly">Хэвлэх</button>
     </div>
     <p class="note" style="font-size:11.5px;color:var(--ink-3);margin:6px 0 0" data-i18n="f.kpiNote">KPI картууд сонгосон хугацааны сүүлийн өдрийг (эсвэл графикаас сонгосон өдрийг) харуулна.</p>
   </aside>
@@ -356,10 +372,6 @@ dialog#photoDlg::backdrop{background:rgba(4,12,18,.8)}
             <div class="legend" id="statusLegend"></div></div>
           <div class="chart" id="progressChart"></div>
         </div>
-      </div>
-      <div class="card mt" id="photoCard">
-        <div class="hd"><h2><span data-i18n="ph.title">Өдрийн зураг</span> <small id="photoSub"></small></h2><span id="photoHint" data-i18n="ph.hint">Графикаас өдөр сонгоход солигдоно</span></div>
-        <div class="gallery" id="gallery"></div>
       </div>
       <div class="grid row-b">
         <div class="card">
@@ -429,6 +441,30 @@ dialog#photoDlg::backdrop{background:rgba(4,12,18,.8)}
 
 <div id="tip" role="tooltip"></div>
 
+<dialog id="expDlg" aria-labelledby="expTtl">
+  <div class="dlg">
+    <header><h2 id="expTtl" data-i18n="exp.title">Тайлан татах</h2><button type="button" id="expClose" aria-label="Хаах">×</button></header>
+    <div class="body">
+      <fieldset>
+        <legend data-i18n="exp.format">Формат</legend>
+        <div class="fmts" id="expFmts">
+          <label class="fmt"><input type="radio" name="expFmt" value="pdf" checked><i style="background:#c62828"></i><b>PDF</b><span data-i18n="exp.pdf">Хэвлэх, илгээхэд</span></label>
+          <label class="fmt"><input type="radio" name="expFmt" value="docx"><i style="background:#1f5fbf"></i><b>Word</b><span data-i18n="exp.docx">Засварлаж болно (.docx)</span></label>
+          <label class="fmt"><input type="radio" name="expFmt" value="xlsx"><i style="background:#1d7a3e"></i><b>Excel</b><span data-i18n="exp.xlsx">Хүснэгт, тооцоолол (.xlsx)</span></label>
+          <label class="fmt"><input type="radio" name="expFmt" value="csv"><i style="background:#8a949d"></i><b>CSV</b><span data-i18n="exp.csv">Бичлэгүүд л (.csv)</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend data-i18n="exp.sections">Хэсгүүд</legend>
+        <div class="secs" id="expSecs"></div>
+      </fieldset>
+      <div class="exprow"><label><span data-i18n="exp.lang">Тайлангийн хэл</span> <select id="expLang"><option value="mn">Монгол</option><option value="en">English</option></select></label></div>
+      <p class="scope" id="expScope"></p>
+    </div>
+    <footer><span id="expStatus" role="status" aria-live="polite"></span><button class="btn" type="button" id="expCancel" data-i18n="cancel">Болих</button><button class="btn primary" type="button" id="expGo" data-i18n="exp.go">Татах</button></footer>
+  </div>
+</dialog>
+
 <dialog id="photoDlg" aria-labelledby="photoTtl">
   <div class="pdlg">
     <header><h2 id="photoTtl"></h2><span id="photoCount"></span><button type="button" id="photoClose" aria-label="Хаах">×</button></header>
@@ -457,7 +493,7 @@ dialog#photoDlg::backdrop{background:rgba(4,12,18,.8)}
   </div>
 </dialog>
 
-<script src="app.js?v=20261126c"></script>
+<script src="app.js?v=20261126d"></script>
 <script src="https://js.arcgis.com/4.32/"></script>
 <script>DR.boot();</script>
 </body>
