@@ -91,6 +91,42 @@
     return m >= 1000 ? fmt(m / 1000, m >= 10000 ? 1 : 2) + " " + tr(lang, "unit.km") : fmt(m, 0) + " " + tr(lang, "unit.m");
   };
 
+  /* ---------------- Геологийн тайлбарын давхарга ----------------
+     Цэгүүдийг дэлгэцийн px биш, зүсэлтийн дагуух зай (d) ба абсолют
+     өндөр (z)-өөр хадгална. Ингэснээр дэлгэц/тайлангийн масштаб солигдоход
+     хэрэглэгчийн зурсан шугам геологийн байрлалаа хадгална. */
+  const ANNO_STYLE = {
+    horizon: { stroke: "#006d77", width: 2.6, dash: "", dxfLayer: "ZUSELT_ANNO_HORIZON", dxfColor: 4 },
+    contact: { stroke: "#b54900", width: 2.3, dash: "7 4", dxfLayer: "ZUSELT_ANNO_CONTACT", dxfColor: 30 },
+    fault:   { stroke: "#b3261e", width: 3.0, dash: "", dxfLayer: "ZUSELT_ANNO_FAULT", dxfColor: 1 },
+    water:   { stroke: "#1261a0", width: 2.4, dash: "9 4", dxfLayer: "ZUSELT_ANNO_WATER", dxfColor: 5 },
+    line:    { stroke: "#5b6673", width: 2.1, dash: "", dxfLayer: "ZUSELT_ANNO_LINE", dxfColor: 8 },
+    text:    { stroke: "#1f2d3d", width: 0, dash: "", dxfLayer: "ZUSELT_ANNO_TEXT", dxfColor: 7 }
+  };
+  const annotationStyle = (type) => ANNO_STYLE[type] || ANNO_STYLE.line;
+  const annotationPoints = (a) => Array.isArray(a && a.points) ? a.points.filter((p) => p && isFinite(p.d) && isFinite(p.z)) : [];
+  function annotationSvg(annotations, xOf, yOf) {
+    if (!Array.isArray(annotations) || !annotations.length) return { lines: "", labels: "" };
+    const lines = [], labels = [];
+    annotations.forEach((a) => {
+      const st = annotationStyle(a && a.type), pts = annotationPoints(a);
+      const label = String((a && (a.label || a.text)) || "").trim();
+      if ((a && a.type) === "text") {
+        const p = pts[0];
+        if (p && label) labels.push(`<text class="geo-annotation-text" x="${xOf(p.d).toFixed(1)}" y="${yOf(p.z).toFixed(1)}" font-size="14" font-weight="700" fill="${st.stroke}" stroke="#ffffff" stroke-width="4" paint-order="stroke" dominant-baseline="middle">${esc(label)}</text>`);
+        return;
+      }
+      if (pts.length < 2) return;
+      const path = pts.map((p) => `${xOf(p.d).toFixed(1)},${yOf(p.z).toFixed(1)}`).join(" ");
+      lines.push(`<polyline class="geo-annotation geo-annotation-${esc(a.type || "line")}" points="${path}" fill="none" stroke="${st.stroke}" stroke-width="${st.width}"${st.dash ? ` stroke-dasharray="${st.dash}"` : ""} stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>`);
+      if (label) {
+        const p = pts[Math.floor((pts.length - 1) / 2)];
+        labels.push(`<text class="geo-annotation-label" x="${xOf(p.d).toFixed(1)}" y="${(yOf(p.z) - 8).toFixed(1)}" font-size="12.5" font-weight="700" fill="${st.stroke}" stroke="#ffffff" stroke-width="3.5" paint-order="stroke" text-anchor="middle">${esc(label)}</text>`);
+      }
+    });
+    return { lines: lines.join(""), labels: labels.join("") };
+  }
+
   /* ---------------- Геометр ---------------- */
   const wmToLat = (y) => (Math.atan(Math.sinh(y / R_EARTH)) * 180) / Math.PI;
   const wmToLon = (x) => (x / R_EARTH) * 180 / Math.PI;
@@ -219,6 +255,7 @@
     const legendRows = Math.ceil(used.length / legendCols);
     const legendTop = bottom + 58;
     const H = showLegend && used.length ? legendTop + 24 + legendRows * 24 + 16 : bottom + axisB;
+    const annotations = annotationSvg(sec.annotations, xOf, yOf);
 
     const s = [];
     s.push(`<rect x="0" y="0" width="${W.toFixed(1)}" height="${H.toFixed(1)}" fill="#ffffff"/>`);
@@ -247,6 +284,8 @@
       s.push(`<polygon points="${gp.join(" ")} ${xOf(sec.lengthM).toFixed(1)},${bottom.toFixed(1)} ${left},${bottom.toFixed(1)}" fill="#f4e7dc" fill-opacity="0.85"/>`);
       s.push(`<polyline points="${gp.join(" ")}" fill="none" stroke="#b54900" stroke-width="2.2"/>`);
     }
+    // Хэрэглэгчийн зурсан шугамыг цооногийн баганын ард байрлуулна.
+    s.push(annotations.lines);
     s.push(`<rect x="${left}" y="${top}" width="${plotW.toFixed(1)}" height="${plotH.toFixed(1)}" fill="none" stroke="#6b7785" stroke-width="0.9"/>`);
     s.push(`<text x="${left}" y="${top - 6}" font-size="15" font-weight="700" fill="#08536a" text-anchor="middle">A</text>`);
     s.push(`<text x="${(left + plotW).toFixed(1)}" y="${top - 6}" font-size="15" font-weight="700" fill="#08536a" text-anchor="middle">A′</text>`);
@@ -271,6 +310,8 @@
       s.push(`<text x="${x.toFixed(1)}" y="${ly + 15.5}" font-size="12.5" font-weight="700" fill="#ffffff" text-anchor="middle">${esc(h.id)}</text>`);
       s.push(`<text x="${x.toFixed(1)}" y="${(yBot + 15).toFixed(1)}" font-size="11.5" fill="#3d4b5c" text-anchor="middle">${fmt(td, 1)} ${tr(lang, "unit.m")}</text>`);
     });
+    // Тэмдэглэлийн бичвэр нь цооногийн баганын өмнө харагдана.
+    s.push(annotations.labels);
 
     if (showLegend && used.length) {
       s.push(`<text x="${left}" y="${legendTop}" font-size="12" font-weight="700" fill="#556373"${lang === "zh" ? "" : ` letter-spacing="0.06em"`}>${esc(tr(lang, "cap.lith"))}</text>`);
@@ -283,7 +324,8 @@
     }
     const body = `<g font-family="${fontFamily(lang)}">${s.join("")}</g>`;
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W.toFixed(1)} ${H.toFixed(1)}" width="${W.toFixed(1)}" height="${H.toFixed(1)}" role="img" aria-label="${esc(sec.title)}">${body}</svg>`;
-    return { svg, body, W, H, Nh, Nv, ve, zMin, zMax, yStep, used, fallback };
+    return { svg, body, W, H, Nh, Nv, ve, zMin, zMax, yStep, used, fallback,
+      plot: { left, top, width: plotW, height: plotH, bottom, zMin, zMax } };
   }
   const renderSectionSVG = (sec, widthPx, plotHpx) => renderSection(sec, { width: widthPx, plotH: plotHpx }).svg;
 
@@ -850,7 +892,9 @@
     const zMin = r.zMin, zMax = r.zMax, L = sec.lengthM, th = Math.max(0.8, L / 220), cw = Math.max(1, L / 160);
     const holes = sec.holes.slice().sort((a, b) => a.along - b.along);
     const used = r.used;
-    const layers = [["0", 7], ["ZUSELT_GROUND", 30], ["ZUSELT_HOLES", 250], ["ZUSELT_TEXT", 7], ["ZUSELT_GRID", 8], ...used.map((c) => ["LITH_" + c.replace(/[^A-Za-z0-9_]/g, "_"), nearestAci(lithInfo(c)[0])])];
+    const layers = [["0", 7], ["ZUSELT_GROUND", 30], ["ZUSELT_HOLES", 250], ["ZUSELT_TEXT", 7], ["ZUSELT_GRID", 8],
+      ...Object.values(ANNO_STYLE).map((s) => [s.dxfLayer, s.dxfColor]),
+      ...used.map((c) => ["LITH_" + c.replace(/[^A-Za-z0-9_]/g, "_"), nearestAci(lithInfo(c)[0])])];
     p(0, "SECTION"); p(2, "HEADER"); p(9, "$ACADVER"); p(1, "AC1009"); p(9, "$INSUNITS"); p(70, 6);
     p(9, "$EXTMIN"); p(10, -L * 0.08); p(20, zMin); p(30, 0); p(9, "$EXTMAX"); p(10, L * 1.02); p(20, zMax + th * 12); p(30, 0); p(0, "ENDSEC");
     p(0, "SECTION"); p(2, "TABLES");
@@ -878,6 +922,19 @@
     for (let d = 0; d <= L + 1e-6; d += xs) text("ZUSELT_GRID", d, zMin - th * 1.8, th, L >= 2000 ? fmt(d / 1000, 2) + " " + tr(lang, "unit.km") : fmt(d, 0) + " " + tr(lang, "unit.m"), 1);
     // Газрын гадарга
     poly("ZUSELT_GROUND", sec.ground.filter((g) => g.z != null && isFinite(g.z)).map((g) => [g.d, g.z]), false);
+    // Хэрэглэгчийн зурсан геологийн шугам, тэмдэглэл (бодит м координатаар).
+    (Array.isArray(sec.annotations) ? sec.annotations : []).forEach((a) => {
+      const st = annotationStyle(a && a.type), pts = annotationPoints(a), label = String((a && (a.label || a.text)) || "").trim();
+      if (a && a.type === "text") {
+        if (pts[0] && label) text(st.dxfLayer, pts[0].d, pts[0].z, th, label);
+        return;
+      }
+      if (pts.length > 1) poly(st.dxfLayer, pts.map((p) => [p.d, p.z]), false, st.dxfColor);
+      if (pts.length && label) {
+        const p0 = pts[Math.floor((pts.length - 1) / 2)];
+        text(st.dxfLayer, p0.d, p0.z + th * 0.8, th * 0.9, label, 1);
+      }
+    });
     // Цооногууд
     holes.forEach((h) => {
       const x0 = h.along - cw / 2, x1 = h.along + cw / 2;
@@ -975,6 +1032,7 @@
         push(h.id);
         (h.intervals || []).forEach((iv) => { push(iv.lith); push(iv.comment); });
       });
+      (sec.annotations || []).forEach((a) => push(a && (a.label || a.text)));
     }
     return bits.join("\n");
   }
@@ -1004,7 +1062,7 @@
 
   root.ZCORE = {
     LANGS: I18N.LANGS, LITH, LITH_DEFAULT, lithInfo, lithName, lithNameMn, MM, PAPERS, STD_SCALES,
-    esc, fmt, fmtSp, niceStep, cumLengths, samplePoints, projectOnLine, wmToLat, wmToLon, toUTM, utmZone, azimuthDeg, compass8, distTxt, holeDepth,
+    esc, fmt, fmtSp, niceStep, cumLengths, samplePoints, projectOnLine, wmToLat, wmToLon, toUTM, utmZone, azimuthDeg, compass8, distTxt, holeDepth, annotationStyle,
     renderSection, renderSectionSVG, lithSummary, reportTables, buildReportPages, sheetPage, mapBoxMm, mapFigureSVG, buildDocx, buildXlsx, buildDXF, buildCSV, nearestAci,
     loadCjkFontCss, reportSampleText, fontFamily
   };

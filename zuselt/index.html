@@ -7,7 +7,7 @@
 <title>Цооногийн зүсэлт · RegaPro</title>
 <link rel="stylesheet" href="https://js.arcgis.com/4.32/esri/themes/light/main.css">
 <script src="i18n-report.js?v=20261123a"></script>
-<script src="core.js?v=20261123a"></script>
+<script src="core.js?v=20261124a"></script>
 <script src="https://js.arcgis.com/4.32/"></script>
 <style>
   :root{--navy:#0f2236;--green:#2e7d32;--teal:#0b8fb0;--teal-d:#08536a;--ink:#1f2d3d;--muted:#556373;--line:#dde3ea;--bg:#f3f5f8}
@@ -46,6 +46,15 @@
   .secbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
   #secWrap{position:relative;width:100%;overflow-x:auto}
   #secWrap svg{display:block;width:100%;height:auto}
+  #annotTools{display:none;align-items:center;gap:7px;flex-wrap:wrap;padding:10px 12px;border:1px solid #bdd5df;border-radius:10px;background:#f3fafc}
+  #annotTools.open{display:flex}
+  .annot-label{display:flex;align-items:center;gap:6px;font-size:13px;color:#3d4b5c}
+  .annot-label input{width:min(220px,44vw);min-height:34px;padding:5px 8px;border:1px solid #b9c9d5;border-radius:7px;font:14px inherit;color:var(--ink)}
+  .annot-tool,.annot-action{min-height:34px;padding:6px 10px;border:1px solid #b9c9d5;border-radius:7px;background:#fff;color:#314456;font:600 13px inherit;cursor:pointer}
+  .annot-tool[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+  .annot-action.danger{color:#9f1e18;border-color:#e7b7b2}
+  #annotHint{flex:1 1 240px;font-size:12.5px;color:var(--muted)}
+  .geo-draft{pointer-events:none}
   .empty{padding:40px 10px;text-align:center;color:var(--muted);font-size:15px}
   #tip{position:fixed;pointer-events:none;z-index:50;background:#fff;border:1px solid #cfd6de;border-radius:8px;padding:8px 10px;font-size:13px;line-height:1.45;box-shadow:0 4px 14px rgba(15,34,54,.15);display:none;max-width:320px}
   #tip b{font-size:14px}
@@ -128,9 +137,24 @@
   <section id="secCard" class="card" aria-label="Зүсэлт">
     <div class="secbar">
       <h2 id="secTitle">Зүсэлт</h2>
-      <button id="expBtn" class="btn btn-green" type="button" disabled>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 20h16"/></svg>
-        Тайлан татах</button>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button id="editBtn" class="btn btn-teal" type="button" disabled aria-pressed="false">✎ Геологийн тэмдэглэгээ</button>
+        <button id="expBtn" class="btn btn-green" type="button" disabled>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 20h16"/></svg>
+          Тайлан татах</button>
+      </div>
+    </div>
+    <div id="annotTools" aria-label="Геологийн тэмдэглэгээний хэрэгслүүд">
+      <button class="annot-tool" type="button" data-annot-tool="horizon" aria-pressed="true">Давхарга холбох</button>
+      <button class="annot-tool" type="button" data-annot-tool="contact" aria-pressed="false">Литологийн зааг</button>
+      <button class="annot-tool" type="button" data-annot-tool="fault" aria-pressed="false">Хагарал</button>
+      <button class="annot-tool" type="button" data-annot-tool="water" aria-pressed="false">Усны түвшин</button>
+      <button class="annot-tool" type="button" data-annot-tool="line" aria-pressed="false">Зураас</button>
+      <button class="annot-tool" type="button" data-annot-tool="text" aria-pressed="false">Текст</button>
+      <label class="annot-label">Нэр / тайлбар <input id="annotLabel" type="text" maxlength="80" placeholder="Жишээ: C3 нүүрсний үе"></label>
+      <button id="annotUndo" class="annot-action" type="button">↶ Сүүлийнхийг буцаах</button>
+      <button id="annotClear" class="annot-action danger" type="button">Тэмдэглэгээ цэвэрлэх</button>
+      <span id="annotHint">Давхарга холбох: зүсэлт дээр цэгүүд тавиад, сүүлийн цэг дээр давхар дарж дуусгана.</span>
     </div>
     <div id="secWrap"><div class="empty">Газрын зураг дээр шугам татахад зүсэлт энд гарна.</div></div>
   </section>
@@ -248,6 +272,36 @@ const store = {
 let currentSection = null;
 let lastLine = null;
 let userFullName = "";
+let annotationEditing = false;
+let annotationTool = "horizon";
+let annotationDraft = null;
+const ANNOTATION_TYPES = new Set(["horizon", "contact", "fault", "water", "line", "text"]);
+const ANNOTATION_NAMES = {
+  horizon: "Давхарга холбох", contact: "Литологийн зааг", fault: "Хагарал",
+  water: "Усны түвшин", line: "Зураас", text: "Текст"
+};
+
+function annotationKey(sec) {
+  const line = (sec.linePts || []).map((p) => `${Number(p[0]).toFixed(1)},${Number(p[1]).toFixed(1)}`).join(";");
+  return `annotations_v1_${sec.projectId}_${line}`;
+}
+function cleanAnnotations(items) {
+  if (!Array.isArray(items)) return [];
+  return items.map((a) => {
+    const type = ANNOTATION_TYPES.has(a && a.type) ? a.type : "line";
+    const points = Array.isArray(a && a.points) ? a.points.filter((p) => p && Number.isFinite(Number(p.d)) && Number.isFinite(Number(p.z)))
+      .map((p) => ({ d: Number(p.d), z: Number(p.z) })) : [];
+    const label = String((a && (a.label || a.text)) || "").slice(0, 80);
+    return { id: String((a && a.id) || ""), type, label, points };
+  }).filter((a) => a.type === "text" ? (a.points.length === 1 && a.label) : a.points.length >= 2);
+}
+function loadAnnotations(sec) {
+  sec.annotationKey = annotationKey(sec);
+  sec.annotations = cleanAnnotations(store.get(sec.annotationKey, []));
+}
+function saveAnnotations() {
+  if (currentSection && currentSection.annotationKey) store.set(currentSection.annotationKey, cleanAnnotations(currentSection.annotations));
+}
 
 const REPORT_LANGS = ["mn", "en", "ru", "zh"];
 function reportLangValue(v) { return REPORT_LANGS.includes(v) ? v : "mn"; }
@@ -385,10 +439,13 @@ window.require([
 
     function clearAll() {
       drawLayer.removeAll(); lastLine = null; currentSection = null;
+      annotationDraft = null; annotationEditing = false;
       $("holeList").innerHTML = ""; $("lineInfo").textContent = "Шугам татаагүй байна.";
       $("secTitle").textContent = "Зүсэлт";
       $("secWrap").innerHTML = '<div class="empty">Газрын зураг дээр шугам татахад зүсэлт энд гарна.</div>';
       $("expBtn").disabled = true;
+      $("editBtn").disabled = true; $("editBtn").setAttribute("aria-pressed", "false");
+      $("annotTools").classList.remove("open");
     }
 
     async function runProfile(line) {
@@ -456,11 +513,14 @@ window.require([
           title: `Зүсэлт A–A′ · ${currentProject().label}`,
           subtitle: `Урт ${lenTxt} · буфер ${bufM} м · ${holes.length} цооног · ${new Date().toISOString().slice(0, 10)}`
         };
+        annotationDraft = null;
+        loadAnnotations(currentSection);
         drawSection();
         listHoles();
         $("lineInfo").textContent = `A–A′ · урт ${lenTxt} · азимут ${fmt(currentSection.azimuth, 0)}° · буфер ${bufM} м · ${holes.length} цооног`;
         $("secTitle").textContent = `Зүсэлт A–A′ · ${lenTxt}`;
         $("expBtn").disabled = false;
+        $("editBtn").disabled = false;
         setStatus(holes.length ? "" : "Буфер дотор цооног олдсонгүй — шугамыг цооногийн ойгуур татах эсвэл буферийг томруулна уу.");
       } catch (err) {
         console.error(err);
@@ -506,11 +566,119 @@ window.require([
   }
 
   /* ---------- Зүсэлт зурах, tooltip ---------- */
+  const SVG_NS = "http://www.w3.org/2000/svg";
+  function updateAnnotationUi() {
+    const open = annotationEditing && !!currentSection;
+    $("annotTools").classList.toggle("open", open);
+    $("editBtn").setAttribute("aria-pressed", String(open));
+    document.querySelectorAll("[data-annot-tool]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.annotTool === annotationTool)));
+    const tool = ANNOTATION_NAMES[annotationTool] || "Зураас";
+    let hint;
+    if (annotationTool === "text") hint = "Текст: эхлээд нэр / тайлбар бичээд, зүсэлт дээр нэг удаа товшино.";
+    else if (annotationDraft) hint = `${tool}: цэг нэмэх эсвэл сүүлийн цэг дээр давхар дарж дуусгана. Esc дарвал цуцална.`;
+    else hint = `${tool}: зүсэлт дээр цэгүүд тавиад, сүүлийн цэг дээр давхар дарж дуусгана. Тэмдэглэгээ автоматаар хадгалагдаж, тайланд орно.`;
+    $("annotHint").textContent = hint;
+  }
+  function setAnnotationTool(tool) {
+    if (!ANNOTATION_TYPES.has(tool)) return;
+    annotationTool = tool; annotationDraft = null;
+    updateAnnotationUi(); drawSection();
+  }
+  function setAnnotationEditing(enabled) {
+    if (enabled && !currentSection) return;
+    annotationEditing = !!enabled; annotationDraft = null;
+    updateAnnotationUi(); drawSection();
+  }
+  function eventToSectionPoint(e, svg, rendered) {
+    const box = svg.getBoundingClientRect();
+    if (!box.width || !box.height) return null;
+    const x = (e.clientX - box.left) * rendered.W / box.width;
+    const y = (e.clientY - box.top) * rendered.H / box.height;
+    const p = rendered.plot;
+    if (x < p.left || x > p.left + p.width || y < p.top || y > p.bottom) return null;
+    return {
+      d: Math.max(0, Math.min(currentSection.lengthM, ((x - p.left) / p.width) * currentSection.lengthM)),
+      z: p.zMax - ((y - p.top) / p.height) * (p.zMax - p.zMin)
+    };
+  }
+  function drawDraft(svg, rendered, preview, pointer) {
+    preview.replaceChildren();
+    if (!annotationDraft || !annotationDraft.points.length) return;
+    const style = Z.annotationStyle ? Z.annotationStyle(annotationTool) : null;
+    const colors = { horizon: "#006d77", contact: "#b54900", fault: "#b3261e", water: "#1261a0", line: "#5b6673" };
+    const stroke = style && style.stroke || colors[annotationTool] || "#5b6673";
+    const all = annotationDraft.points.concat(pointer ? [pointer] : []);
+    const toPx = (p) => ({ x: rendered.plot.left + (p.d / currentSection.lengthM) * rendered.plot.width,
+      y: rendered.plot.top + ((rendered.plot.zMax - p.z) / (rendered.plot.zMax - rendered.plot.zMin)) * rendered.plot.height });
+    if (all.length > 1) {
+      const line = document.createElementNS(SVG_NS, "polyline");
+      line.setAttribute("points", all.map((p) => { const q = toPx(p); return `${q.x.toFixed(1)},${q.y.toFixed(1)}`; }).join(" "));
+      line.setAttribute("fill", "none"); line.setAttribute("stroke", stroke); line.setAttribute("stroke-width", "2.4");
+      line.setAttribute("stroke-dasharray", "5 4"); line.setAttribute("class", "geo-draft"); preview.appendChild(line);
+    }
+    annotationDraft.points.forEach((p) => {
+      const q = toPx(p), dot = document.createElementNS(SVG_NS, "circle");
+      dot.setAttribute("cx", q.x.toFixed(1)); dot.setAttribute("cy", q.y.toFixed(1)); dot.setAttribute("r", "4");
+      dot.setAttribute("fill", "#ffffff"); dot.setAttribute("stroke", stroke); dot.setAttribute("stroke-width", "2"); dot.setAttribute("class", "geo-draft"); preview.appendChild(dot);
+    });
+  }
+  function commitAnnotation() {
+    if (!currentSection || !annotationDraft || annotationDraft.points.length < 2) return;
+    currentSection.annotations.push({ id: `a_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+      type: annotationTool, label: $("annotLabel").value.trim().slice(0, 80), points: annotationDraft.points });
+    annotationDraft = null; saveAnnotations(); updateAnnotationUi(); drawSection();
+  }
+  function attachAnnotationEditor(svg, rendered) {
+    if (!annotationEditing || !currentSection) return;
+    const p = rendered.plot, preview = document.createElementNS(SVG_NS, "g"), hit = document.createElementNS(SVG_NS, "rect");
+    preview.setAttribute("class", "geo-draft"); svg.appendChild(preview);
+    hit.setAttribute("x", p.left); hit.setAttribute("y", p.top); hit.setAttribute("width", p.width); hit.setAttribute("height", p.height);
+    hit.setAttribute("fill", "transparent"); hit.setAttribute("aria-label", "Зүсэлтийн тэмдэглэгээний талбар");
+    hit.style.cursor = annotationTool === "text" ? "text" : "crosshair";
+    svg.appendChild(hit);
+    hit.addEventListener("pointermove", (e) => drawDraft(svg, rendered, preview, eventToSectionPoint(e, svg, rendered)));
+    hit.addEventListener("pointerleave", () => drawDraft(svg, rendered, preview, null));
+    hit.addEventListener("pointerdown", (e) => {
+      if (e.button !== 0) return;
+      const point = eventToSectionPoint(e, svg, rendered); if (!point) return;
+      e.preventDefault();
+      if (annotationTool === "text") {
+        const label = $("annotLabel").value.trim().slice(0, 80);
+        if (!label) { $("annotHint").textContent = "Текстийн нэр / тайлбарыг бичээд зүсэлт дээр дахин товшино уу."; return; }
+        currentSection.annotations.push({ id: `a_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`, type: "text", label, points: [point] });
+        saveAnnotations(); drawSection(); return;
+      }
+      if (!annotationDraft) annotationDraft = { type: annotationTool, points: [point] };
+      else {
+        const previous = annotationDraft.points[annotationDraft.points.length - 1];
+        if (Math.hypot(previous.d - point.d, previous.z - point.z) > 0.01) annotationDraft.points.push(point);
+      }
+      updateAnnotationUi(); drawDraft(svg, rendered, preview, point);
+    });
+    hit.addEventListener("dblclick", (e) => { e.preventDefault(); commitAnnotation(); });
+    drawDraft(svg, rendered, preview, null);
+  }
   function drawSection() {
     if (!currentSection) return;
     const wrap = $("secWrap");
-    wrap.innerHTML = Z.renderSectionSVG(currentSection, wrap.clientWidth);
+    const rendered = Z.renderSection(currentSection, { width: wrap.clientWidth });
+    wrap.innerHTML = rendered.svg;
+    attachAnnotationEditor(wrap.querySelector("svg"), rendered);
   }
+  $("editBtn").onclick = () => setAnnotationEditing(!annotationEditing);
+  document.querySelectorAll("[data-annot-tool]").forEach((b) => b.onclick = () => setAnnotationTool(b.dataset.annotTool));
+  $("annotUndo").onclick = () => {
+    if (!currentSection || !currentSection.annotations.length) return;
+    currentSection.annotations.pop(); saveAnnotations(); drawSection();
+  };
+  $("annotClear").onclick = () => {
+    if (!currentSection || !currentSection.annotations.length) return;
+    if (!window.confirm("Энэ зүсэлтийн бүх тэмдэглэгээг цэвэрлэх үү?")) return;
+    currentSection.annotations = []; annotationDraft = null; saveAnnotations(); updateAnnotationUi(); drawSection();
+  };
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && annotationDraft) { annotationDraft = null; updateAnnotationUi(); drawSection(); }
+  });
   window.addEventListener("resize", () => { clearTimeout(window.__rs); window.__rs = setTimeout(drawSection, 200); });
   const tip = $("tip");
   $("secWrap").addEventListener("mousemove", (e) => {
