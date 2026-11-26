@@ -216,6 +216,28 @@ dialog#photoDlg::backdrop{background:rgba(4,12,18,.8)}
 .pdlg footer p{margin:0;flex:1}
 .pdlg footer a{color:#9bd59d;white-space:nowrap;font-weight:600}
 
+/* ---------- Өдөр тутмын мэдээ ---------- */
+.rtools{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.rtools input[type=search]{min-height:34px;width:min(280px,70vw);border:1px solid #cfd8e0;border-radius:8px;padding:4px 10px;font-size:13px}
+.rwrap{max-height:72vh}
+.rtbl td .sub{display:block;font-size:11px;color:var(--ink-3);font-weight:400;white-space:nowrap}
+.rtbl td.num{font-weight:600}
+.rtbl td.miss{color:#b3261e}
+.rtbl tr.ship td{background:#f3fbf8}
+.rtbl tr.totrow td{background:#eef4ef;font-weight:700;border-bottom:2px solid #cfe5cf}
+.rtbl .clamp{max-width:420px}
+.sortb{border:0;background:none;font:inherit;color:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;padding:0;white-space:normal;text-align:inherit;line-height:1.25}
+.rtbl th.num .sortb{text-align:right}
+.rtbl th{min-width:64px}
+.rtbl td.notecell{min-width:240px}
+.sortb:hover{color:var(--navy-800)}
+th[aria-sort=ascending] .sortb,th[aria-sort=descending] .sortb{color:var(--navy-800)}
+.badge{display:inline-block;margin-left:6px;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:999px;background:#d9f2ea;color:#00654f;vertical-align:1px}
+.issue{display:inline-flex;vertical-align:middle;margin-right:8px;cursor:help}
+.issue svg{width:16px;height:16px}
+.editl{font-size:12.5px}
+#tip .tr svg{width:14px;height:14px;flex:none}
+
 /* ---------- Тайлан татах ---------- */
 .tbtn.dl{background:var(--green-700);border-color:var(--green-700)}
 .tbtn.dl:hover{background:#25742a}
@@ -308,6 +330,7 @@ dialog#expDlg::backdrop{background:rgba(8,28,41,.5)}
 
 <nav class="tabs" role="tablist" aria-label="Тайлангийн хэсгүүд">
   <button role="tab" id="t-overview" aria-controls="p-overview" aria-selected="true" data-i18n="tab.overview">Өдрийн тойм</button>
+  <button role="tab" id="t-recs" aria-controls="p-recs" aria-selected="false" data-i18n="tab.recs">Өдөр тутмын мэдээ</button>
   <button role="tab" id="t-holes" aria-controls="p-holes" aria-selected="false" data-i18n="tab.holes">Цооногийн явц</button>
   <button role="tab" id="t-prod" aria-controls="p-prod" aria-selected="false" data-i18n="tab.prod">Бүтээмж</button>
   <button role="tab" id="t-dq" aria-controls="p-dq" aria-selected="false" data-i18n="tab.dq">Өгөгдлийн чанар</button>
@@ -385,6 +408,19 @@ dialog#expDlg::backdrop{background:rgba(8,28,41,.5)}
           <h2 class="mt" style="font-size:13.5px" data-i18n="c.backlog">Авсан ба илгээсэн дээж (цооногоор)</h2>
           <div class="tblwrap" id="backlogTbl" style="max-height:260px"></div>
         </div>
+      </div>
+    </section>
+
+    <!-- 1б. Өдөр тутмын мэдээ -->
+    <section class="panel" id="p-recs" role="tabpanel" aria-labelledby="t-recs">
+      <div class="card">
+        <div class="hd"><h2><span data-i18n="r.title">Өдөр тутмын мэдээ</span> <small id="recSub"></small></h2>
+          <div class="rtools noprint">
+            <input type="search" id="recSearch" data-i18n-ph="r.search" placeholder="Цооног эсвэл тэмдэглэлээр хайх" aria-label="Хайх">
+            <label class="chk"><input type="checkbox" id="recShip" checked><span data-i18n="r.ships">Тээврийн мэдээг харуулах</span></label>
+          </div></div>
+        <div class="tblwrap rwrap" id="recTbl"></div>
+        <div class="note" data-i18n="r.hint">Баганын нэр дээр дарж эрэмбэлнэ. Ө — өдрийн ээлж, Ш — шөнийн ээлж.</div>
       </div>
     </section>
 
@@ -493,7 +529,7 @@ dialog#expDlg::backdrop{background:rgba(8,28,41,.5)}
   </div>
 </dialog>
 
-<script src="app.js?v=20261126d"></script>
+<script src="app.js?v=20261126e"></script>
 <script src="https://js.arcgis.com/4.32/"></script>
 <script>DR.boot();</script>
 </body>

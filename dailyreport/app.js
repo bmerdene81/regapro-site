@@ -48,7 +48,11 @@
       'shift.day': 'Өдрийн ээлж', 'shift.night': 'Шөнийн ээлж', 'shift.unk': 'Ээлж бүртгээгүй',
       other: 'Бусад (дугааргүй)', 'plan.edit': 'Төлөвлөсөн гүн', exportCsv: 'CSV татах', print: 'Хэвлэх / PDF',
       loading: 'Өгөгдөл ачаалж байна…',
-      'c.shift': 'Ээлжээр өрөмдсөн метр', 'c.days': '· {0} хоног', 'c.shiftNote': 'Багана дээр дарж (эсвэл ← → товчоор) тухайн өдрийг тайлангийн өдөр болгоно.',
+      'c.shift': 'Өдөр тутмын өрөмдлөг, дээжлэлт', 'c.panelM': 'Өдөрт өрөмдсөн (м)', 'c.panelS': 'Өдөрт авсан дээж (ш)',
+      'tab.recs': 'Өдөр тутмын мэдээ', 'r.title': 'Өдөр тутмын мэдээ', 'r.search': 'Цооног эсвэл тэмдэглэлээр хайх', 'r.ships': 'Тээврийн мэдээг харуулах',
+      'r.sub': '· {0} бичлэг', 'r.depth': 'Нийт гүн, м', 'r.m': 'Өдөрт өрөмдсөн, м', 'r.s': 'Өдөрт авсан дээж, ш', 'r.sent': 'Лаб илгээсэн, ш',
+      'r.tsamp': 'Нийт дээж, ш', 'r.ship': 'Тээвэр', 'r.dayAb': 'Ө', 'r.nightAb': 'Ш', 'r.total': 'Нийт ({0} бичлэг)', 'r.issues': 'Өгөгдлийн чанарын асуудал',
+      'r.hint': 'Баганын нэр дээр дарж эрэмбэлнэ. Ө — өдрийн ээлж, Ш — шөнийн ээлж.', 'col.soilTag': 'хөрс', 'exp.s.records': 'Өдөр тутмын мэдээ (цооногоор)', 'c.days': '· {0} хоног', 'c.shiftNote': 'Багана дээр дарж (эсвэл ← → товчоор) тухайн өдрийг тайлангийн өдөр болгоно.',
       avg7: '7 хоногийн дундаж', 'c.progress': 'Цооногийн явц', 'c.progressSub': '· одоогийн ба төлөвлөсөн гүн',
       'c.notes': 'Цооног бүрийн сүүлийн тэмдэглэл', 'c.sent': 'Лаборатори руу илгээсэн дээж', 'c.byWeek': '· долоо хоногоор',
       'c.backlog': 'Авсан ба илгээсэн дээж (цооногоор)', rock: 'Чулуулаг', soil: 'Хөрс', plan: 'Төлөвлөгөө',
@@ -134,7 +138,11 @@
       'shift.day': 'Day shift', 'shift.night': 'Night shift', 'shift.unk': 'Shift not recorded',
       other: 'Other (no hole ID)', 'plan.edit': 'Planned depths', exportCsv: 'Download CSV', print: 'Print / PDF',
       loading: 'Loading data…',
-      'c.shift': 'Metres drilled by shift', 'c.days': '· {0} days', 'c.shiftNote': 'Click a column (or use ← →) to make that day the report day.',
+      'c.shift': 'Daily drilling and sampling', 'c.panelM': 'Metres drilled per day', 'c.panelS': 'Samples taken per day',
+      'tab.recs': 'Daily reports', 'r.title': 'Daily reports', 'r.search': 'Search hole or note', 'r.ships': 'Show shipment reports',
+      'r.sub': '· {0} records', 'r.depth': 'Total depth, m', 'r.m': 'Drilled that day, m', 'r.s': 'Samples that day', 'r.sent': 'Sent to lab',
+      'r.tsamp': 'Total samples', 'r.ship': 'Shipment', 'r.dayAb': 'D', 'r.nightAb': 'N', 'r.total': 'Total ({0} records)', 'r.issues': 'Data quality issues',
+      'r.hint': 'Click a column name to sort. D — day shift, N — night shift.', 'col.soilTag': 'soil', 'exp.s.records': 'Daily reports (by hole)', 'c.days': '· {0} days', 'c.shiftNote': 'Click a column (or use ← →) to make that day the report day.',
       avg7: '7-day average', 'c.progress': 'Hole progress', 'c.progressSub': '· current vs planned depth',
       'c.notes': 'Latest note per hole', 'c.sent': 'Samples sent to lab', 'c.byWeek': '· by week',
       'c.backlog': 'Samples taken vs sent (by hole)', rock: 'Rock', soil: 'Soil', plan: 'Plan',
@@ -692,6 +700,8 @@
       cx += off + w + 16;
     });
   }
+  // Өдөр тутмын өрөмдлөг (дээд самбар, м) ба дээжлэлт (доод самбар, ш) — нэг X тэнхлэг, хоёр тусдаа Y тэнхлэг биш хоёр самбар
+  function rollingS(d, n) { let s = 0; for (let i = 0; i < n; i++) s += dayS(addDays(d, -i)); return s / n; }
   function renderShiftChart(hostArg, exp) {
     const host = hostArg || $('shiftChart'); host.innerHTML = '';
     const days = dateRange(F.from, F.to);
@@ -699,84 +709,104 @@
     const leg = [];
     if (F.day) leg.push({ color: COLORS.day, label: t('shift.day') });
     if (F.night) leg.push({ color: COLORS.night, label: t('shift.night') });
-    const anyUnk = F.day && F.night && days.some((d) => dayRecs(d).some((r) => mParts(r).unk > 0));
+    const anyUnk = F.day && F.night && days.some((d) => dayRecs(d).some((r) => mParts(r).unk > 0 || sParts(r).unk > 0));
     if (anyUnk) leg.push({ color: COLORS.unk, label: t('shift.unk') });
     leg.push({ color: COLORS.avg, label: t('avg7'), line: true });
     if (!exp) legend($('shiftLegend'), leg);
     if (!days.length) { el('div', { class: 'empty' }, host, t('noData')); return null; }
 
-    const W = Math.max(300, host.clientWidth || 600), H = exp ? 330 : (W < 520 ? 230 : 290);
-    const m = { l: 38, r: 10, t: exp ? 30 : 10, b: 26 }, pw = W - m.l - m.r, ph = H - m.t - m.b;
-    const vals = days.map((d) => {
-      const p = { day: 0, night: 0, unk: 0 };
-      dayRecs(d).forEach((r) => { const q = mParts(r); p.day += q.day; p.night += q.night; p.unk += q.unk; });
-      p.tot = p.day + p.night + p.unk; p.avg = rolling(d, 7); return p;
-    });
-    const { top, ticks } = nice(Math.max(10, ...vals.map((v) => Math.max(v.tot, v.avg))) * 1.04, 5);
-    const y = (v) => m.t + ph - (v / top) * ph;
+    const W = Math.max(300, host.clientWidth || 600), narrow = W < 520;
+    const ph1 = exp ? 230 : (narrow ? 170 : 220), ph2 = exp ? 120 : (narrow ? 90 : 112), gap = 30;
+    const m = { l: 40, r: 10, t: exp ? 46 : 22, b: 26 };
+    const H = m.t + ph1 + gap + ph2 + m.b, pw = W - m.l - m.r;
+    const top1 = m.t, top2 = m.t + ph1 + gap;
+    const agg = (d, fn) => { const p = { day: 0, night: 0, unk: 0 }; dayRecs(d).forEach((r) => { const q = fn(r); p.day += q.day; p.night += q.night; p.unk += q.unk; }); p.tot = p.day + p.night + p.unk; return p; };
+    const vals = days.map((d) => { const p = agg(d, mParts); p.avg = rolling(d, 7); return p; });
+    const svals = days.map((d) => { const p = agg(d, sParts); p.avg = rollingS(d, 7); return p; });
+    const sc1 = nice(Math.max(10, ...vals.map((v) => Math.max(v.tot, v.avg))) * 1.04, narrow ? 4 : 5);
+    const sc2 = nice(Math.max(5, ...svals.map((v) => Math.max(v.tot, v.avg))) * 1.06, 3);
+    const y1 = (v) => top1 + ph1 - (v / sc1.top) * ph1, y2 = (v) => top2 + ph2 - (v / sc2.top) * ph2;
     const band = pw / days.length, bw = Math.min(24, Math.max(2, band * 0.7));
     const D = repDay();
-    const svg = S('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': t('c.shift') + ', ' + fmtDate(F.from) + ' – ' + fmtDate(F.to) + ', ' + t('total') + ' ' + mtr(vals.reduce((a, v) => a + v.tot, 0)) }, host);
-    // Долоо хоногийн ээлжилсэн суурь
-    let wk = 0, startI = 0;
-    days.forEach((d, i) => {
-      if (i > 0 && weekday(d) === 1) { if (wk % 2 === 1) S('rect', { x: m.l + startI * band, y: m.t, width: (i - startI) * band, height: ph, fill: '#f4f6f8' }, svg); wk++; startI = i; }
-      if (i === days.length - 1 && wk % 2 === 1) S('rect', { x: m.l + startI * band, y: m.t, width: (i + 1 - startI) * band, height: ph, fill: '#f4f6f8' }, svg);
-    });
-    // Сонгосон өдөр
+    const sumM = vals.reduce((a, v) => a + v.tot, 0), sumS = svals.reduce((a, v) => a + v.tot, 0);
+    const svg = S('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': t('c.shift') + ', ' + fmtDate(F.from) + ' – ' + fmtDate(F.to) + ': ' + mtr(sumM) + ', ' + pcs(sumS) }, host);
+    // Долоо хоногийн ээлжилсэн суурь, сонгосон өдөр (хоёр самбарт)
+    const bands = (top, h) => {
+      let wk = 0, startI = 0;
+      days.forEach((d, i) => {
+        if (i > 0 && weekday(d) === 1) { if (wk % 2 === 1) S('rect', { x: m.l + startI * band, y: top, width: (i - startI) * band, height: h, fill: '#f4f6f8' }, svg); wk++; startI = i; }
+        if (i === days.length - 1 && wk % 2 === 1) S('rect', { x: m.l + startI * band, y: top, width: (i + 1 - startI) * band, height: h, fill: '#f4f6f8' }, svg);
+      });
+    };
+    bands(top1, ph1); bands(top2, ph2);
     const di = days.indexOf(D);
-    if (di >= 0) S('rect', { x: m.l + di * band, y: m.t, width: band, height: ph, fill: '#e6f2e6' }, svg);
-    // Тор
-    ticks.forEach((v) => {
+    if (di >= 0) { S('rect', { x: m.l + di * band, y: top1, width: band, height: ph1, fill: '#e6f2e6' }, svg); S('rect', { x: m.l + di * band, y: top2, width: band, height: ph2, fill: '#e6f2e6' }, svg); }
+    // Тор, Y тэмдэглэгээ
+    const grid = (sc, y, digits) => sc.ticks.forEach((v) => {
       S('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: v === 0 ? cssVar('--axis') : cssVar('--grid'), 'stroke-width': 1, 'shape-rendering': 'crispEdges' }, svg);
-      S('text', { x: m.l - 6, y: y(v) + 4, 'text-anchor': 'end', 'font-size': 11, fill: '#5b6670', style: 'font-variant-numeric:tabular-nums' }, svg, fmt(v, 0));
+      S('text', { x: m.l - 6, y: y(v) + 4, 'text-anchor': 'end', 'font-size': 11, fill: '#5b6670', style: 'font-variant-numeric:tabular-nums' }, svg, fmt(v, digits));
     });
+    grid(sc1, y1, 0); grid(sc2, y2, 0);
+    // Самбарын гарчиг
+    S('text', { x: m.l, y: top1 - 8, 'font-size': 12, 'font-weight': 600, fill: '#191919' }, svg, t('c.panelM'));
+    S('text', { x: m.l, y: top2 - 8, 'font-size': 12, 'font-weight': 600, fill: '#191919' }, svg, t('c.panelS'));
     // Багана
-    vals.forEach((v, i) => {
+    const bars = (arr, y) => arr.forEach((v, i) => {
       const x = m.l + i * band + (band - bw) / 2;
       const segs = [['day', COLORS.day], ['night', COLORS.night], ['unk', COLORS.unk]].filter(([k]) => v[k] > 0);
       let base = 0;
       segs.forEach(([k, c], si) => {
-        const y0 = y(base), y1 = y(base + v[k]);
-        const gap = si > 0 ? 2 : 0, h = Math.max(0.8, y0 - y1 - gap);
-        const isTop = si === segs.length - 1;
-        if (isTop) S('path', { d: colPath(x, y0 - gap - h, bw, h, 4), fill: c }, svg);
-        else S('rect', { x, y: y0 - gap - h, width: bw, height: h, fill: c }, svg);
+        const y0 = y(base), yt = y(base + v[k]);
+        const g = si > 0 ? 2 : 0, h = Math.max(0.8, y0 - yt - g);
+        if (si === segs.length - 1) S('path', { d: colPath(x, y0 - g - h, bw, h, 4), fill: c }, svg);
+        else S('rect', { x, y: y0 - g - h, width: bw, height: h, fill: c }, svg);
         base += v[k];
       });
     });
-    // 7 хоногийн дундаж
-    const pts = vals.map((v, i) => [m.l + i * band + band / 2, y(v.avg)]);
-    S('path', { d: 'M' + pts.map((p) => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join('L'), fill: 'none', stroke: COLORS.avg, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, svg);
-    const lp = pts[pts.length - 1];
-    S('circle', { cx: lp[0], cy: lp[1], r: 4, fill: COLORS.avg, stroke: '#fff', 'stroke-width': 2 }, svg);
+    bars(vals, y1); bars(svals, y2);
+    // 7 хоногийн дундаж (самбар бүрт)
+    const avgLine = (arr, y) => {
+      const pts = arr.map((v, i) => [m.l + i * band + band / 2, y(v.avg)]);
+      S('path', { d: 'M' + pts.map((p) => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join('L'), fill: 'none', stroke: COLORS.avg, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, svg);
+      const lp = pts[pts.length - 1];
+      S('circle', { cx: lp[0], cy: lp[1], r: 4, fill: COLORS.avg, stroke: '#fff', 'stroke-width': 2 }, svg);
+    };
+    avgLine(vals, y1); avgLine(svals, y2);
     // X тэнхлэг
     const step = Math.max(1, Math.ceil(48 / band));
     for (let i = days.length - 1; i >= 0; i -= step) {
       S('text', { x: m.l + i * band + band / 2, y: H - 8, 'text-anchor': 'middle', 'font-size': 11, fill: '#5b6670' }, svg, fmtDate(days[i], 'short'));
     }
-    if (di >= 0) S('path', { d: `M${m.l + di * band + band / 2 - 5},${m.t + ph + 7}l5,-6l5,6z`, fill: cssVar('--green-700') }, svg);
-    if (exp) { svgLegend(svg, leg, m.l, 11); return svg; }
-    // Hover давхарга
-    const hl = S('rect', { x: 0, y: m.t, width: band, height: ph, fill: 'rgba(12,40,57,.06)', visibility: 'hidden', 'pointer-events': 'none' }, svg);
+    if (di >= 0) S('path', { d: `M${m.l + di * band + band / 2 - 5},${top2 + ph2 + 7}l5,-6l5,6z`, fill: cssVar('--green-700') }, svg);
+    if (exp) { svgLegend(svg, leg, m.l, 12); return svg; }
+    // Hover давхарга (хоёр самбарыг хамарна)
+    const hlA = S('rect', { x: 0, y: top1, width: band, height: ph1, fill: 'rgba(12,40,57,.06)', visibility: 'hidden', 'pointer-events': 'none' }, svg);
+    const hlB = S('rect', { x: 0, y: top2, width: band, height: ph2, fill: 'rgba(12,40,57,.06)', visibility: 'hidden', 'pointer-events': 'none' }, svg);
     const build = (i) => (T) => {
-      const d = days[i], v = vals[i];
+      const d = days[i], v = vals[i], s = svals[i];
       tipHead(T, fmtDateWd(d));
-      tipRow(T, null, mtr(v.tot), t('total'));
+      tipRow(T, null, mtr(v.tot), t('c.panelM'));
       if (F.day) tipRow(T, COLORS.day, mtr(v.day), t('shift.day'), true);
       if (F.night) tipRow(T, COLORS.night, mtr(v.night), t('shift.night'), true);
       if (v.unk > 0) tipRow(T, COLORS.unk, mtr(v.unk), t('shift.unk'), true);
       tipRow(T, COLORS.avg, mtr(v.avg), t('avg7'));
+      tipSep(T);
+      tipRow(T, null, pcs(s.tot), t('c.panelS'));
+      if (F.day) tipRow(T, COLORS.day, pcs(s.day), t('shift.day'), true);
+      if (F.night) tipRow(T, COLORS.night, pcs(s.night), t('shift.night'), true);
+      if (s.unk > 0) tipRow(T, COLORS.unk, pcs(s.unk), t('shift.unk'), true);
+      tipRow(T, COLORS.avg, pcs(Math.round(s.avg * 10) / 10), t('avg7'));
       const byH = new Map();
-      dayRecs(d).forEach((r) => { const mv = mVal(r); if (mv > 0 || r.drillRec) byH.set(r.hole || r.other || '?', (byH.get(r.hole || r.other || '?') || 0) + mv); });
-      if (byH.size) { tipSep(T); byH.forEach((mv, h) => tipRow(T, null, mtr(mv), h)); }
-      const s = dayS(d); if (s) { tipSep(T); tipRow(T, null, pcs(s), t('k.samples')); }
+      dayRecs(d).forEach((r) => { if (!r.drillRec) return; const k = r.hole || r.other || '?'; const o = byH.get(k) || { m: 0, s: 0 }; o.m += mVal(r); o.s += sVal(r); byH.set(k, o); });
+      if (byH.size) { tipSep(T); byH.forEach((o, h) => tipRow(T, null, mtr(o.m) + ' · ' + pcs(o.s), h)); }
+      const sent = daySent(d); if (sent) tipRow(T, null, pcs(sent), t('k.sent'));
     };
-    const hit = S('rect', { x: m.l, y: m.t, width: pw, height: ph, fill: 'transparent', style: 'cursor:pointer' }, svg);
+    const hit = S('rect', { x: m.l, y: top1, width: pw, height: top2 + ph2 - top1, fill: 'transparent', style: 'cursor:pointer' }, svg);
     const idxAt = (e) => { const b = svg.getBoundingClientRect(); const sx = (e.clientX - b.left) * (W / b.width); return Math.max(0, Math.min(days.length - 1, Math.floor((sx - m.l) / band))); };
-    const showAt = (i, cx, cy) => { hl.setAttribute('x', m.l + i * band); hl.setAttribute('visibility', 'visible'); tipShow(cx, cy, build(i)); };
+    const showAt = (i, cx, cy) => { [hlA, hlB].forEach((h) => { h.setAttribute('x', m.l + i * band); h.setAttribute('visibility', 'visible'); }); tipShow(cx, cy, build(i)); };
+    const hideHl = () => { [hlA, hlB].forEach((h) => h.setAttribute('visibility', 'hidden')); tipHide(); };
     hit.addEventListener('pointermove', (e) => showAt(idxAt(e), e.clientX, e.clientY));
-    hit.addEventListener('pointerleave', () => { hl.setAttribute('visibility', 'hidden'); tipHide(); });
+    hit.addEventListener('pointerleave', hideHl);
     hit.addEventListener('click', (e) => { const d = days[idxAt(e)]; F.repDay = d === F.to ? null : d; update(); });
     host.tabIndex = 0; host.setAttribute('aria-label', t('c.shift') + '. ' + t('c.shiftNote'));
     host.onkeydown = (e) => {
@@ -787,11 +817,10 @@
       if (e.key === 'ArrowRight') shiftFocus = Math.min(days.length - 1, shiftFocus + 1);
       if (e.key === 'Enter') { const d = days[shiftFocus]; F.repDay = d === F.to ? null : d; update(); setTimeout(() => $('shiftChart').focus(), 0); return; }
       const b = svg.getBoundingClientRect(), sc = b.width / W;
-      showAt(shiftFocus, b.left + (m.l + shiftFocus * band + band) * sc, b.top + m.t * sc);
+      showAt(shiftFocus, b.left + (m.l + shiftFocus * band + band) * sc, b.top + top1 * sc);
     };
-    host.onblur = () => { hl.setAttribute('visibility', 'hidden'); tipHide(); };
+    host.onblur = hideHl;
   }
-
   function renderProgress(host, holes, opts) {
     opts = opts || {};
     host.innerHTML = '';
@@ -1268,6 +1297,118 @@
   }
 
   /* ---------------------------------------------------------------
+     5. ӨДӨР ТУТМЫН МЭДЭЭ (цооног × өдрийн бичлэгүүд)
+     --------------------------------------------------------------- */
+  const REC = { key: 'date', dir: -1, q: '', ships: true };
+  const REC_COLS = [
+    { k: 'date', l: 'col.date' }, { k: 'hole', l: 'col.hole' }, { k: 'depth', l: 'r.depth', num: true },
+    { k: 'm', l: 'r.m', num: true }, { k: 's', l: 'r.s', num: true }, { k: 'sent', l: 'r.sent', num: true },
+    { k: 'tsamp', l: 'r.tsamp', num: true }, { k: null, l: 'col.note' }, { k: null, l: 'col.photo' }, { k: null, l: '' }
+  ];
+  const REC_VAL = {
+    date: (r) => r.date + String(r.oid).padStart(9, '0'), hole: (r) => r.hole || r.other || '',
+    depth: (r) => (r.depth == null ? -1 : r.depth), m: (r) => (r.drillRec && r.mTot != null ? mVal(r) : -1),
+    s: (r) => (r.drillRec && r.sTot != null ? sVal(r) : -1), sent: (r) => (r.transport ? (r.rock || 0) + (r.soil || 0) : -1),
+    tsamp: (r) => (r.tsamp == null ? -1 : r.tsamp)
+  };
+  function recIssues() {
+    const map = new Map();
+    runChecks().forEach((c) => c.rows.forEach(({ r, msg }) => {
+      if (!r || r.oid == null) return;
+      const a = map.get(r.oid) || []; a.push({ sev: c.sev, text: t('dq.' + c.key) + ': ' + msg }); map.set(r.oid, a);
+    }));
+    return map;
+  }
+  function recRows() {
+    let rs = recsInRange();
+    if (!REC.ships) rs = rs.filter((r) => r.drillRec);
+    const q = REC.q.trim().toLowerCase();
+    if (q) rs = rs.filter((r) => (r.holes.join(' ') + ' ' + r.other + ' ' + r.raw + ' ' + r.note).toLowerCase().includes(q));
+    const f = REC_VAL[REC.key] || REC_VAL.date;
+    return rs.slice().sort((a, b) => { const x = f(a), y = f(b); return (x < y ? -1 : x > y ? 1 : 0) * REC.dir || (b.date.localeCompare(a.date)); });
+  }
+  function splitTxt(p, unit) {
+    const parts = [];
+    if (F.day) parts.push(t('r.dayAb') + ' ' + fmt(p.day));
+    if (F.night) parts.push(t('r.nightAb') + ' ' + fmt(p.night));
+    return parts.join(' · ');
+  }
+  function renderRecs() {
+    const host = $('recTbl'); host.innerHTML = '';
+    const rows = recRows(), issues = recIssues();
+    const drill = rows.filter((r) => r.drillRec);
+    const sumM = drill.reduce((a, r) => a + mVal(r), 0), sumS = drill.reduce((a, r) => a + sVal(r), 0);
+    const sumSent = rows.reduce((a, r) => a + (r.transport ? (r.rock || 0) + (r.soil || 0) : 0), 0);
+    $('recSub').textContent = t('r.sub', fmtI(rows.length));
+    if (!rows.length) { el('div', { class: 'empty' }, host, t('noData')); return; }
+    const tb = el('table', { class: 'tbl wrap rtbl' }, host);
+    const hr = el('tr', null, el('thead', null, tb));
+    REC_COLS.forEach((c) => {
+      const th = el('th', { class: c.num ? 'num' : null }, hr);
+      if (!c.k) { th.textContent = c.l ? t(c.l) : ''; return; }
+      const on = REC.key === c.k;
+      th.setAttribute('aria-sort', on ? (REC.dir > 0 ? 'ascending' : 'descending') : 'none');
+      const b = el('button', { type: 'button', class: 'sortb' }, th, t(c.l) + (on ? (REC.dir > 0 ? ' ▲' : ' ▼') : ''));
+      b.addEventListener('click', () => { if (REC.key === c.k) REC.dir = -REC.dir; else { REC.key = c.k; REC.dir = c.k === 'hole' ? 1 : -1; } renderRecs(); });
+    });
+    const body = el('tbody', null, tb);
+    // Нийт мөр
+    const tot = el('tr', { class: 'totrow' }, body);
+    el('td', { colspan: 2 }, tot, t('r.total', fmtI(rows.length)));
+    el('td', { class: 'num' }, tot, '');
+    el('td', { class: 'num' }, tot, fmt(sumM));
+    el('td', { class: 'num' }, tot, fmtI(sumS));
+    el('td', { class: 'num' }, tot, sumSent ? fmtI(sumSent) : '–');
+    el('td', { colspan: 4 }, tot, '');
+    rows.forEach((r) => {
+      const tr = el('tr', { class: r.transport ? 'ship' : null }, body);
+      const dtd = el('td', { style: 'white-space:nowrap' }, tr, fmtDateAuto(r.date));
+      el('span', { class: 'sub' }, dtd, t('wd')[weekday(r.date)]);
+      const htd = el('td', { class: 'hole' }, tr, r.holes.join(', ') || r.other || '–');
+      if (r.transport) el('span', { class: 'badge' }, htd, t('r.ship') + (r.soil ? ' · ' + t('col.soilTag') : ''));
+      el('td', { class: 'num' }, tr, r.depth == null ? '–' : fmt(r.depth));
+      const numCell = (v, parts, split, isPcs) => {
+        const td = el('td', { class: 'num' }, tr);
+        if (!r.drillRec) { td.textContent = ''; return; }
+        if (v == null) { td.textContent = '–'; td.classList.add('miss'); return; }
+        td.textContent = isPcs ? fmtI(v) : fmt(v);
+        if (split) el('span', { class: 'sub', title: t('shift.day') + ' / ' + t('shift.night') }, td, splitTxt(parts));
+      };
+      numCell(r.mTot == null ? null : mVal(r), mParts(r), r.hasSplit, false);
+      numCell(r.sTot == null ? null : sVal(r), sParts(r), r.sSplit, true);
+      el('td', { class: 'num', style: r.transport ? 'font-weight:700' : 'color:var(--ink-3)' }, tr, r.transport ? fmtI((r.rock || 0) + (r.soil || 0)) : '');
+      el('td', { class: 'num' }, tr, r.tsamp == null ? '–' : fmtI(r.tsamp));
+      const ntd = el('td', { class: 'notecell' }, tr);
+      if (r.note) { const d = el('div', { class: 'clamp', tabindex: 0 }, ntd, r.note); d.addEventListener('click', () => d.classList.toggle('open')); d.addEventListener('keydown', (e) => { if (e.key === 'Enter') d.classList.toggle('open'); }); }
+      const ptd = el('td', null, tr);
+      const items = photoItems([r]);
+      if (items.length) {
+        const b = el('button', { type: 'button', class: 'thumb', 'aria-label': t('col.photo') + ': ' + photoCaption(items[0]), title: photoCaption(items[0]) }, ptd);
+        lazyImg(b, items[0].p, true);
+        if (items.length > 1) el('span', { class: 'n' }, b, String(items.length));
+        b.addEventListener('click', () => openPhotos(items, 0));
+      }
+      const atd = el('td', { style: 'white-space:nowrap;text-align:right' }, tr);
+      const iss = issues.get(r.oid);
+      if (iss) {
+        const worst = SEV_ORDER.find((s) => iss.some((x) => x.sev === s));
+        const sp = el('span', { class: 'issue', tabindex: 0, role: 'img', 'aria-label': t('r.issues') + ': ' + iss.map((x) => x.text).join('; '), title: iss.map((x) => x.text).join('\n') }, atd);
+        sevIcon(sp, worst);
+        bindTip(sp, (T) => { tipHead(T, t('r.issues')); iss.forEach((x) => { const row = el('div', { class: 'tr' }, T); sevIcon(row, x.sev); el('span', null, row, x.text); }); });
+      }
+      el('a', { href: editUrl(r.oid), target: '_blank', rel: 'noopener', class: 'editl' }, atd, t('edit'));
+    });
+  }
+  function recReportTable() {
+    const rows = recsInRange().slice().sort((a, b) => b.date.localeCompare(a.date) || (a.hole || '').localeCompare(b.hole || ''))
+      .map((r) => [r.date, (r.holes.join(', ') || r.other || '–') + (r.transport ? ' (' + t('r.ship') + ')' : ''), r.depth,
+        r.drillRec && r.mTot != null ? mVal(r) : null, r.drillRec && r.sTot != null ? sVal(r) : null,
+        r.transport ? (r.rock || 0) + (r.soil || 0) : null, r.tsamp, r.note]);
+    return { cols: normW([{ t: t('col.date'), type: 'date', w: 0.08 }, { t: t('col.hole'), w: 0.13 }, { t: t('r.depth'), type: 'num', w: 0.07 }, { t: t('r.m'), type: 'num', w: 0.08 },
+      { t: t('r.s'), type: 'int', w: 0.08 }, { t: t('r.sent'), type: 'int', w: 0.07 }, { t: t('r.tsamp'), type: 'int', w: 0.07 }, { t: t('col.note'), w: 0.42 }]), rows };
+  }
+
+  /* ---------------------------------------------------------------
      ТАЙЛАН ТАТАХ — PDF, Word, Excel, CSV
      Сангууд /zuselt/lib-ээс (байхгүй бол CDN), PDF-ийн монгол фонт lib/Inter-*.ttf
      --------------------------------------------------------------- */
@@ -1511,6 +1652,7 @@
         M.sections.push({ key: 'summary', title: t('exp.s.summary'), blocks: [{ type: 'kpis' }, { type: 'charts2', items: [
           { title: t('c.shift') + ' ' + t('c.days', dateRange(F.from, F.to).length), img: a, w: 0.6 }, { title: t('c.progress') + ' ' + t('c.progressSub'), img: b, w: 0.4 }].filter((x) => x.img) }] });
       }
+      if (sel.records) M.sections.push({ key: 'records', title: t('exp.s.records'), blocks: [Object.assign({ type: 'table' }, recReportTable())] });
       if (sel.notes) M.sections.push({ key: 'notes', title: t('exp.s.notes'), blocks: [Object.assign({ type: 'table' }, notesTable())] });
       if (sel.samples) {
         const ss = sentSeries(); host.style.width = '760px';
@@ -1815,7 +1957,7 @@
   }
 
   /* ---------- Цонх ---------- */
-  const EXP_SECS = ['summary', 'notes', 'samples', 'holes', 'daily', 'prod', 'dq', 'photos'];
+  const EXP_SECS = ['summary', 'records', 'notes', 'samples', 'holes', 'daily', 'prod', 'dq', 'photos'];
   function openExport() {
     if (!RECS.length) return;
     const saved = store.get('exp_secs', null);
@@ -1928,6 +2070,7 @@
     } else if (TAB === 'holes') renderHoles();
     else if (TAB === 'prod') renderProd();
     else if (TAB === 'dq') renderDQ();
+    else if (TAB === 'recs') renderRecs();
   }
   function update() {
     if (F.repDay && (F.repDay < F.from || F.repDay > F.to)) F.repDay = null;
@@ -1944,6 +2087,7 @@
     document.documentElement.lang = LANG;
     document.title = t('docTitle');
     document.querySelectorAll('[data-i18n]').forEach((n) => { n.textContent = t(n.dataset.i18n); });
+    document.querySelectorAll('[data-i18n-ph]').forEach((n) => { n.placeholder = t(n.dataset.i18nPh); });
     document.querySelectorAll('.lang button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === LANG)));
     if (USER) $('userBtn').textContent = USER + ' · ' + t('signout');
   }
@@ -2002,7 +2146,7 @@
       if (!F.from || (F.to === prevMax && F.preset !== 'custom')) setPreset(F.preset === 'custom' ? String(CONFIG.defaultDays) : F.preset);
       showError('');
       afterLoad();
-      loadAttachments().then(() => { if (TAB === 'overview' || TAB === 'dq') renderTab(); });
+      loadAttachments().then(() => { if (TAB === 'overview' || TAB === 'dq' || TAB === 'recs') renderTab(); });
     } catch (e) {
       showError(t('err.load', (e && e.message) || e));
     } finally {
@@ -2014,7 +2158,7 @@
     if (!RECS.length) { showError(t('noData')); return; }
     const want = (location.hash || '').replace('#', '');
     document.querySelectorAll('.panel').forEach((p) => p.classList.toggle('on', p.id === 'p-' + TAB));
-    if (['overview', 'holes', 'prod', 'dq'].includes(want) && want !== TAB) { TAB = want; }
+    if (['overview', 'recs', 'holes', 'prod', 'dq'].includes(want) && want !== TAB) { TAB = want; }
     document.querySelectorAll('.tabs [role=tab]').forEach((b) => b.setAttribute('aria-selected', String(b.id === 't-' + TAB)));
     document.querySelectorAll('.panel').forEach((p) => p.classList.toggle('on', p.id === 'p-' + TAB));
     update();
@@ -2041,6 +2185,9 @@
     $('expBtn').addEventListener('click', openExport); $('expBtnTop').addEventListener('click', openExport);
     $('expClose').addEventListener('click', () => $('expDlg').close()); $('expCancel').addEventListener('click', () => $('expDlg').close());
     $('expGo').addEventListener('click', runExport);
+    let rq = null;
+    $('recSearch').addEventListener('input', (e) => { clearTimeout(rq); rq = setTimeout(() => { REC.q = e.target.value; renderRecs(); }, 160); });
+    $('recShip').addEventListener('change', (e) => { REC.ships = e.target.checked; renderRecs(); });
     document.querySelectorAll('input[name=expFmt]').forEach((r) => r.addEventListener('change', syncExpFmt));
     $('printBtn').addEventListener('click', () => window.print());
     $('planBtn').addEventListener('click', openPlans); $('planBtn2').addEventListener('click', openPlans);
@@ -2058,7 +2205,7 @@
     const ro = new ResizeObserver(() => { const w = $('main').clientWidth; if (Math.abs(w - lastW) < 4) return; lastW = w; clearTimeout(rt); rt = setTimeout(renderTab, 120); });
     ro.observe($('main'));
     window.addEventListener('beforeprint', () => { tipHide(); });
-    window.addEventListener('hashchange', () => { const h = (location.hash || '').replace('#', ''); if (['overview', 'holes', 'prod', 'dq'].includes(h) && h !== TAB && RECS.length) setTab(h); });
+    window.addEventListener('hashchange', () => { const h = (location.hash || '').replace('#', ''); if (['overview', 'recs', 'holes', 'prod', 'dq'].includes(h) && h !== TAB && RECS.length) setTab(h); });
     setInterval(() => { if (!document.hidden && API && RECS.length) loadData(true); }, CONFIG.refreshMin * 60e3);
   }
 
@@ -2068,7 +2215,7 @@
   function boot() {
     loadColors(); applyI18n(); wire();
     const want = (location.hash || '').replace('#', '');
-    if (['overview', 'holes', 'prod', 'dq'].includes(want)) TAB = want;
+    if (['overview', 'recs', 'holes', 'prod', 'dq'].includes(want)) TAB = want;
     // Туршилтын горим (зөвхөн локал шалгалтад): window.DR_FIXTURE
     if (window.DR_FIXTURE) {
       const fx = window.DR_FIXTURE;
