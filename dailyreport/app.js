@@ -295,7 +295,7 @@
   function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
   const COLORS = {};
   function loadColors() {
-    ['day', 'night', 'unk', 'drill', 'done', 'lab', 'prep', 'rock', 'soil', 'avg', 'total'].forEach((k) => { COLORS[k] = cssVar('--c-' + k); });
+    ['day', 'night', 'unk', 'drill', 'done', 'lab', 'prep', 'rock', 'soil', 'avg', 'total', 'metre', 'samp'].forEach((k) => { COLORS[k] = cssVar('--c-' + k); });
     ['good', 'warn', 'serious', 'crit'].forEach((k) => { COLORS['s-' + k] = cssVar('--s-' + k); });
   }
 
@@ -700,111 +700,82 @@
       cx += off + w + 16;
     });
   }
-  // Өдөр тутмын өрөмдлөг (дээд самбар, м) ба дээжлэлт (доод самбар, ш) — нэг X тэнхлэг, хоёр тусдаа Y тэнхлэг биш хоёр самбар
-  function rollingS(d, n) { let s = 0; for (let i = 0; i < n; i++) s += dayS(addDays(d, -i)); return s / n; }
+  // Өдөр тутмын өрөмдлөг (шугам, м) ба дээжлэлт (багана, ш) — нэг график, нэг тэнхлэг
   function renderShiftChart(hostArg, exp) {
     const host = hostArg || $('shiftChart'); host.innerHTML = '';
     const days = dateRange(F.from, F.to);
     if (!exp) $('shiftSub').textContent = t('c.days', days.length);
-    const leg = [];
-    if (F.day) leg.push({ color: COLORS.day, label: t('shift.day') });
-    if (F.night) leg.push({ color: COLORS.night, label: t('shift.night') });
-    const anyUnk = F.day && F.night && days.some((d) => dayRecs(d).some((r) => mParts(r).unk > 0 || sParts(r).unk > 0));
-    if (anyUnk) leg.push({ color: COLORS.unk, label: t('shift.unk') });
-    leg.push({ color: COLORS.avg, label: t('avg7'), line: true });
+    const leg = [{ color: COLORS.samp, label: t('c.panelS') }, { color: COLORS.metre, label: t('c.panelM'), line: true }];
     if (!exp) legend($('shiftLegend'), leg);
     if (!days.length) { el('div', { class: 'empty' }, host, t('noData')); return null; }
 
     const W = Math.max(300, host.clientWidth || 600), narrow = W < 520;
-    const ph1 = exp ? 230 : (narrow ? 170 : 220), ph2 = exp ? 120 : (narrow ? 90 : 112), gap = 30;
-    const m = { l: 40, r: 10, t: exp ? 46 : 22, b: 26 };
-    const H = m.t + ph1 + gap + ph2 + m.b, pw = W - m.l - m.r;
-    const top1 = m.t, top2 = m.t + ph1 + gap;
+    const H = exp ? 360 : (narrow ? 260 : 320);
+    const m = { l: 38, r: narrow ? 44 : 54, t: exp ? 34 : 14, b: 26 }, pw = W - m.l - m.r, ph = H - m.t - m.b;
     const agg = (d, fn) => { const p = { day: 0, night: 0, unk: 0 }; dayRecs(d).forEach((r) => { const q = fn(r); p.day += q.day; p.night += q.night; p.unk += q.unk; }); p.tot = p.day + p.night + p.unk; return p; };
-    const vals = days.map((d) => { const p = agg(d, mParts); p.avg = rolling(d, 7); return p; });
-    const svals = days.map((d) => { const p = agg(d, sParts); p.avg = rollingS(d, 7); return p; });
-    const sc1 = nice(Math.max(10, ...vals.map((v) => Math.max(v.tot, v.avg))) * 1.04, narrow ? 4 : 5);
-    const sc2 = nice(Math.max(5, ...svals.map((v) => Math.max(v.tot, v.avg))) * 1.06, 3);
-    const y1 = (v) => top1 + ph1 - (v / sc1.top) * ph1, y2 = (v) => top2 + ph2 - (v / sc2.top) * ph2;
-    const band = pw / days.length, bw = Math.min(24, Math.max(2, band * 0.7));
+    const mv = days.map((d) => agg(d, mParts)), sv = days.map((d) => agg(d, sParts));
+    const { top, ticks } = nice(Math.max(10, ...mv.map((v) => v.tot), ...sv.map((v) => v.tot)) * 1.08, narrow ? 4 : 5);
+    const y = (v) => m.t + ph - (v / top) * ph;
+    const band = pw / days.length, bw = Math.min(20, Math.max(2, band * 0.62));
+    const cx = (i) => m.l + i * band + band / 2;
     const D = repDay();
-    const sumM = vals.reduce((a, v) => a + v.tot, 0), sumS = svals.reduce((a, v) => a + v.tot, 0);
+    const sumM = mv.reduce((a, v) => a + v.tot, 0), sumS = sv.reduce((a, v) => a + v.tot, 0);
     const svg = S('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': t('c.shift') + ', ' + fmtDate(F.from) + ' – ' + fmtDate(F.to) + ': ' + mtr(sumM) + ', ' + pcs(sumS) }, host);
-    // Долоо хоногийн ээлжилсэн суурь, сонгосон өдөр (хоёр самбарт)
-    const bands = (top, h) => {
-      let wk = 0, startI = 0;
-      days.forEach((d, i) => {
-        if (i > 0 && weekday(d) === 1) { if (wk % 2 === 1) S('rect', { x: m.l + startI * band, y: top, width: (i - startI) * band, height: h, fill: '#f4f6f8' }, svg); wk++; startI = i; }
-        if (i === days.length - 1 && wk % 2 === 1) S('rect', { x: m.l + startI * band, y: top, width: (i + 1 - startI) * band, height: h, fill: '#f4f6f8' }, svg);
-      });
-    };
-    bands(top1, ph1); bands(top2, ph2);
+    // Долоо хоногийн ээлжилсэн суурь
+    let wk = 0, startI = 0;
+    days.forEach((d, i) => {
+      if (i > 0 && weekday(d) === 1) { if (wk % 2 === 1) S('rect', { x: m.l + startI * band, y: m.t, width: (i - startI) * band, height: ph, fill: '#f4f6f8' }, svg); wk++; startI = i; }
+      if (i === days.length - 1 && wk % 2 === 1) S('rect', { x: m.l + startI * band, y: m.t, width: (i + 1 - startI) * band, height: ph, fill: '#f4f6f8' }, svg);
+    });
     const di = days.indexOf(D);
-    if (di >= 0) { S('rect', { x: m.l + di * band, y: top1, width: band, height: ph1, fill: '#e6f2e6' }, svg); S('rect', { x: m.l + di * band, y: top2, width: band, height: ph2, fill: '#e6f2e6' }, svg); }
-    // Тор, Y тэмдэглэгээ
-    const grid = (sc, y, digits) => sc.ticks.forEach((v) => {
+    if (di >= 0) S('rect', { x: m.l + di * band, y: m.t, width: band, height: ph, fill: '#e6f2e6' }, svg);
+    // Тор
+    ticks.forEach((v) => {
       S('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: v === 0 ? cssVar('--axis') : cssVar('--grid'), 'stroke-width': 1, 'shape-rendering': 'crispEdges' }, svg);
-      S('text', { x: m.l - 6, y: y(v) + 4, 'text-anchor': 'end', 'font-size': 11, fill: '#5b6670', style: 'font-variant-numeric:tabular-nums' }, svg, fmt(v, digits));
+      S('text', { x: m.l - 6, y: y(v) + 4, 'text-anchor': 'end', 'font-size': 11, fill: '#5b6670', style: 'font-variant-numeric:tabular-nums' }, svg, fmt(v, 0));
     });
-    grid(sc1, y1, 0); grid(sc2, y2, 0);
-    // Самбарын гарчиг
-    S('text', { x: m.l, y: top1 - 8, 'font-size': 12, 'font-weight': 600, fill: '#191919' }, svg, t('c.panelM'));
-    S('text', { x: m.l, y: top2 - 8, 'font-size': 12, 'font-weight': 600, fill: '#191919' }, svg, t('c.panelS'));
-    // Багана
-    const bars = (arr, y) => arr.forEach((v, i) => {
-      const x = m.l + i * band + (band - bw) / 2;
-      const segs = [['day', COLORS.day], ['night', COLORS.night], ['unk', COLORS.unk]].filter(([k]) => v[k] > 0);
-      let base = 0;
-      segs.forEach(([k, c], si) => {
-        const y0 = y(base), yt = y(base + v[k]);
-        const g = si > 0 ? 2 : 0, h = Math.max(0.8, y0 - yt - g);
-        if (si === segs.length - 1) S('path', { d: colPath(x, y0 - g - h, bw, h, 4), fill: c }, svg);
-        else S('rect', { x, y: y0 - g - h, width: bw, height: h, fill: c }, svg);
-        base += v[k];
-      });
+    // Дээж — багана
+    sv.forEach((v, i) => {
+      if (v.tot <= 0) return;
+      const h = Math.max(0.8, y(0) - y(v.tot));
+      S('path', { d: colPath(cx(i) - bw / 2, y(0) - h, bw, h, 4), fill: COLORS.samp }, svg);
     });
-    bars(vals, y1); bars(svals, y2);
-    // 7 хоногийн дундаж (самбар бүрт)
-    const avgLine = (arr, y) => {
-      const pts = arr.map((v, i) => [m.l + i * band + band / 2, y(v.avg)]);
-      S('path', { d: 'M' + pts.map((p) => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join('L'), fill: 'none', stroke: COLORS.avg, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, svg);
-      const lp = pts[pts.length - 1];
-      S('circle', { cx: lp[0], cy: lp[1], r: 4, fill: COLORS.avg, stroke: '#fff', 'stroke-width': 2 }, svg);
-    };
-    avgLine(vals, y1); avgLine(svals, y2);
+    // Өрөмдсөн метр — шугам, цэг
+    const pts = mv.map((v, i) => [cx(i), y(v.tot)]);
+    S('path', { d: 'M' + pts.map((p) => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join('L'), fill: 'none', stroke: COLORS.metre, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, svg);
+    const dotR = band >= 9 ? 4 : 0;
+    pts.forEach((p, i) => { if (dotR || i === pts.length - 1) S('circle', { cx: p[0], cy: p[1], r: dotR || 4, fill: COLORS.metre, stroke: '#fff', 'stroke-width': 1.5 }, svg); });
+    // Сүүлийн өдрийн шууд шошго
+    const li = days.length - 1, lm = mv[li].tot, ls = sv[li].tot;
+    let ym = y(lm) + 4, ys = y(ls) + 4;
+    if (Math.abs(ym - ys) < 14) { if (ym <= ys) ys = ym + 14; else ym = ys + 14; }
+    const lx = cx(li) + Math.max(bw / 2, 4) + 6;
+    S('text', { x: lx, y: ym, 'font-size': 11.5, 'font-weight': 700, fill: '#191919' }, svg, fmt(lm) + ' ' + t('u.m'));
+    S('text', { x: lx, y: ys, 'font-size': 11.5, 'font-weight': 600, fill: '#5b6670' }, svg, fmtI(ls) + (t('u.pcs') ? ' ' + t('u.pcs') : ''));
     // X тэнхлэг
     const step = Math.max(1, Math.ceil(48 / band));
-    for (let i = days.length - 1; i >= 0; i -= step) {
-      S('text', { x: m.l + i * band + band / 2, y: H - 8, 'text-anchor': 'middle', 'font-size': 11, fill: '#5b6670' }, svg, fmtDate(days[i], 'short'));
-    }
-    if (di >= 0) S('path', { d: `M${m.l + di * band + band / 2 - 5},${top2 + ph2 + 7}l5,-6l5,6z`, fill: cssVar('--green-700') }, svg);
+    for (let i = days.length - 1; i >= 0; i -= step) S('text', { x: cx(i), y: H - 8, 'text-anchor': 'middle', 'font-size': 11, fill: '#5b6670' }, svg, fmtDate(days[i], 'short'));
+    if (di >= 0) S('path', { d: `M${cx(di) - 5},${m.t + ph + 7}l5,-6l5,6z`, fill: cssVar('--green-700') }, svg);
     if (exp) { svgLegend(svg, leg, m.l, 12); return svg; }
-    // Hover давхарга (хоёр самбарыг хамарна)
-    const hlA = S('rect', { x: 0, y: top1, width: band, height: ph1, fill: 'rgba(12,40,57,.06)', visibility: 'hidden', 'pointer-events': 'none' }, svg);
-    const hlB = S('rect', { x: 0, y: top2, width: band, height: ph2, fill: 'rgba(12,40,57,.06)', visibility: 'hidden', 'pointer-events': 'none' }, svg);
+    // Hover
+    const hl = S('rect', { x: 0, y: m.t, width: band, height: ph, fill: 'rgba(12,40,57,.06)', visibility: 'hidden', 'pointer-events': 'none' }, svg);
     const build = (i) => (T) => {
-      const d = days[i], v = vals[i], s = svals[i];
+      const d = days[i], v = mv[i], s = sv[i];
       tipHead(T, fmtDateWd(d));
-      tipRow(T, null, mtr(v.tot), t('c.panelM'));
-      if (F.day) tipRow(T, COLORS.day, mtr(v.day), t('shift.day'), true);
-      if (F.night) tipRow(T, COLORS.night, mtr(v.night), t('shift.night'), true);
-      if (v.unk > 0) tipRow(T, COLORS.unk, mtr(v.unk), t('shift.unk'), true);
-      tipRow(T, COLORS.avg, mtr(v.avg), t('avg7'));
-      tipSep(T);
-      tipRow(T, null, pcs(s.tot), t('c.panelS'));
-      if (F.day) tipRow(T, COLORS.day, pcs(s.day), t('shift.day'), true);
-      if (F.night) tipRow(T, COLORS.night, pcs(s.night), t('shift.night'), true);
-      if (s.unk > 0) tipRow(T, COLORS.unk, pcs(s.unk), t('shift.unk'), true);
-      tipRow(T, COLORS.avg, pcs(Math.round(s.avg * 10) / 10), t('avg7'));
+      tipRow(T, COLORS.metre, mtr(v.tot), t('c.panelM'));
+      const split = (p, f) => [F.day ? t('r.dayAb') + ' ' + f(p.day) : '', F.night ? t('r.nightAb') + ' ' + f(p.night) : '', p.unk > 0 ? '? ' + f(p.unk) : ''].filter(Boolean).join(' · ');
+      if (v.tot > 0) tipRow(T, null, '', split(v, fmt));
+      tipRow(T, COLORS.samp, pcs(s.tot), t('c.panelS'), true);
+      if (s.tot > 0) tipRow(T, null, '', split(s, fmtI));
       const byH = new Map();
       dayRecs(d).forEach((r) => { if (!r.drillRec) return; const k = r.hole || r.other || '?'; const o = byH.get(k) || { m: 0, s: 0 }; o.m += mVal(r); o.s += sVal(r); byH.set(k, o); });
       if (byH.size) { tipSep(T); byH.forEach((o, h) => tipRow(T, null, mtr(o.m) + ' · ' + pcs(o.s), h)); }
-      const sent = daySent(d); if (sent) tipRow(T, null, pcs(sent), t('k.sent'));
+      const sent = daySent(d); if (sent) { tipSep(T); tipRow(T, null, pcs(sent), t('k.sent')); }
     };
-    const hit = S('rect', { x: m.l, y: top1, width: pw, height: top2 + ph2 - top1, fill: 'transparent', style: 'cursor:pointer' }, svg);
+    const hit = S('rect', { x: m.l, y: m.t, width: pw, height: ph, fill: 'transparent', style: 'cursor:pointer' }, svg);
     const idxAt = (e) => { const b = svg.getBoundingClientRect(); const sx = (e.clientX - b.left) * (W / b.width); return Math.max(0, Math.min(days.length - 1, Math.floor((sx - m.l) / band))); };
-    const showAt = (i, cx, cy) => { [hlA, hlB].forEach((h) => { h.setAttribute('x', m.l + i * band); h.setAttribute('visibility', 'visible'); }); tipShow(cx, cy, build(i)); };
-    const hideHl = () => { [hlA, hlB].forEach((h) => h.setAttribute('visibility', 'hidden')); tipHide(); };
+    const showAt = (i, x, yy) => { hl.setAttribute('x', m.l + i * band); hl.setAttribute('visibility', 'visible'); tipShow(x, yy, build(i)); };
+    const hideHl = () => { hl.setAttribute('visibility', 'hidden'); tipHide(); };
     hit.addEventListener('pointermove', (e) => showAt(idxAt(e), e.clientX, e.clientY));
     hit.addEventListener('pointerleave', hideHl);
     hit.addEventListener('click', (e) => { const d = days[idxAt(e)]; F.repDay = d === F.to ? null : d; update(); });
@@ -817,7 +788,7 @@
       if (e.key === 'ArrowRight') shiftFocus = Math.min(days.length - 1, shiftFocus + 1);
       if (e.key === 'Enter') { const d = days[shiftFocus]; F.repDay = d === F.to ? null : d; update(); setTimeout(() => $('shiftChart').focus(), 0); return; }
       const b = svg.getBoundingClientRect(), sc = b.width / W;
-      showAt(shiftFocus, b.left + (m.l + shiftFocus * band + band) * sc, b.top + top1 * sc);
+      showAt(shiftFocus, b.left + (m.l + shiftFocus * band + band) * sc, b.top + m.t * sc);
     };
     host.onblur = hideHl;
   }
@@ -2066,16 +2037,17 @@
     tipHide();
     if (!RECS.length) return;
     if (TAB === 'overview') {
-      renderKpis(); renderShiftChart(); renderProgress($('progressChart'), holesInRange()); renderNotes(); renderSent();
+      renderKpis(); renderShiftChart(); renderProgress($('progressChart'), holesInRange()); renderRecs(); renderNotes(); renderSent();
     } else if (TAB === 'holes') renderHoles();
     else if (TAB === 'prod') renderProd();
     else if (TAB === 'dq') renderDQ();
-    else if (TAB === 'recs') renderRecs();
   }
   function update() {
     if (F.repDay && (F.repDay < F.from || F.repDay > F.to)) F.repDay = null;
     compute(); renderFilters(); renderHeader(); renderTab();
   }
+  // Хуучин #recs холбоос → Өдрийн тойм (хүснэгт графикийн доор шилжсэн)
+  function tabFromHash() { const h = (location.hash || '').replace('#', ''); if (h === 'recs') return 'overview'; return ['overview', 'holes', 'prod', 'dq'].includes(h) ? h : null; }
   function setTab(name) {
     TAB = name;
     document.querySelectorAll('.tabs [role=tab]').forEach((b) => b.setAttribute('aria-selected', String(b.id === 't-' + name)));
@@ -2146,7 +2118,7 @@
       if (!F.from || (F.to === prevMax && F.preset !== 'custom')) setPreset(F.preset === 'custom' ? String(CONFIG.defaultDays) : F.preset);
       showError('');
       afterLoad();
-      loadAttachments().then(() => { if (TAB === 'overview' || TAB === 'dq' || TAB === 'recs') renderTab(); });
+      loadAttachments().then(() => { if (TAB === 'overview' || TAB === 'dq') renderTab(); });
     } catch (e) {
       showError(t('err.load', (e && e.message) || e));
     } finally {
@@ -2156,9 +2128,9 @@
   function afterLoad() {
     $('loading').style.display = 'none';
     if (!RECS.length) { showError(t('noData')); return; }
-    const want = (location.hash || '').replace('#', '');
+    const want = tabFromHash();
     document.querySelectorAll('.panel').forEach((p) => p.classList.toggle('on', p.id === 'p-' + TAB));
-    if (['overview', 'recs', 'holes', 'prod', 'dq'].includes(want) && want !== TAB) { TAB = want; }
+    if (want && want !== TAB) { TAB = want; }
     document.querySelectorAll('.tabs [role=tab]').forEach((b) => b.setAttribute('aria-selected', String(b.id === 't-' + TAB)));
     document.querySelectorAll('.panel').forEach((p) => p.classList.toggle('on', p.id === 'p-' + TAB));
     update();
@@ -2205,7 +2177,7 @@
     const ro = new ResizeObserver(() => { const w = $('main').clientWidth; if (Math.abs(w - lastW) < 4) return; lastW = w; clearTimeout(rt); rt = setTimeout(renderTab, 120); });
     ro.observe($('main'));
     window.addEventListener('beforeprint', () => { tipHide(); });
-    window.addEventListener('hashchange', () => { const h = (location.hash || '').replace('#', ''); if (['overview', 'recs', 'holes', 'prod', 'dq'].includes(h) && h !== TAB && RECS.length) setTab(h); });
+    window.addEventListener('hashchange', () => { const h = tabFromHash(); if (h && h !== TAB && RECS.length) setTab(h); });
     setInterval(() => { if (!document.hidden && API && RECS.length) loadData(true); }, CONFIG.refreshMin * 60e3);
   }
 
@@ -2214,8 +2186,8 @@
      --------------------------------------------------------------- */
   function boot() {
     loadColors(); applyI18n(); wire();
-    const want = (location.hash || '').replace('#', '');
-    if (['overview', 'recs', 'holes', 'prod', 'dq'].includes(want)) TAB = want;
+    const want = tabFromHash();
+    if (want) TAB = want;
     // Туршилтын горим (зөвхөн локал шалгалтад): window.DR_FIXTURE
     if (window.DR_FIXTURE) {
       const fx = window.DR_FIXTURE;

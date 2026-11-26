@@ -19,7 +19,7 @@
   /* Цувааны өнгө (dataviz validator-оор шалгасан) */
   --c-day:#f2a600;--c-night:#6a4ce2;--c-unk:#c3cbd3;
   --c-drill:#f47230;--c-done:#257de0;--c-lab:#00b894;--c-prep:#c3cbd3;
-  --c-rock:#ee7fac;--c-soil:#008a17;--c-avg:#33424c;--c-total:#1B4560;
+  --c-rock:#ee7fac;--c-soil:#008a17;--c-avg:#33424c;--c-total:#1B4560;--c-metre:#f47230;--c-samp:#2a9fd6;
   --s-good:#0aac23;--s-warn:#fbb315;--s-serious:#f18a59;--s-crit:#dc3c3d;
   --up:#006c10;--down:#b3261e;
   --radius:12px;
@@ -219,7 +219,9 @@ dialog#photoDlg::backdrop{background:rgba(4,12,18,.8)}
 /* ---------- Өдөр тутмын мэдээ ---------- */
 .rtools{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .rtools input[type=search]{min-height:34px;width:min(280px,70vw);border:1px solid #cfd8e0;border-radius:8px;padding:4px 10px;font-size:13px}
-.rwrap{max-height:72vh}
+.rwrap{max-height:560px}
+.row-r{grid-template-columns:minmax(0,1fr);margin-top:14px}
+.card.recs{break-inside:auto}
 .rtbl td .sub{display:block;font-size:11px;color:var(--ink-3);font-weight:400;white-space:nowrap}
 .rtbl td.num{font-weight:600}
 .rtbl td.miss{color:#b3261e}
@@ -330,7 +332,6 @@ dialog#expDlg::backdrop{background:rgba(8,28,41,.5)}
 
 <nav class="tabs" role="tablist" aria-label="Тайлангийн хэсгүүд">
   <button role="tab" id="t-overview" aria-controls="p-overview" aria-selected="true" data-i18n="tab.overview">Өдрийн тойм</button>
-  <button role="tab" id="t-recs" aria-controls="p-recs" aria-selected="false" data-i18n="tab.recs">Өдөр тутмын мэдээ</button>
   <button role="tab" id="t-holes" aria-controls="p-holes" aria-selected="false" data-i18n="tab.holes">Цооногийн явц</button>
   <button role="tab" id="t-prod" aria-controls="p-prod" aria-selected="false" data-i18n="tab.prod">Бүтээмж</button>
   <button role="tab" id="t-dq" aria-controls="p-dq" aria-selected="false" data-i18n="tab.dq">Өгөгдлийн чанар</button>
@@ -396,6 +397,18 @@ dialog#expDlg::backdrop{background:rgba(8,28,41,.5)}
           <div class="chart" id="progressChart"></div>
         </div>
       </div>
+      <!-- Өдөр тутмын мэдээ (графикийн доор) -->
+      <div class="grid row-r">
+        <div class="card recs" id="recCard">
+          <div class="hd"><h2><span data-i18n="r.title">Өдөр тутмын мэдээ</span> <small id="recSub"></small></h2>
+            <div class="rtools noprint">
+              <input type="search" id="recSearch" data-i18n-ph="r.search" placeholder="Цооног эсвэл тэмдэглэлээр хайх" aria-label="Хайх">
+              <label class="chk"><input type="checkbox" id="recShip" checked><span data-i18n="r.ships">Тээврийн мэдээг харуулах</span></label>
+            </div></div>
+          <div class="tblwrap rwrap" id="recTbl"></div>
+          <div class="note" data-i18n="r.hint">Баганын нэр дээр дарж эрэмбэлнэ. Ө — өдрийн ээлж, Ш — шөнийн ээлж.</div>
+        </div>
+      </div>
       <div class="grid row-b">
         <div class="card">
           <div class="hd"><h2 data-i18n="c.notes">Цооног бүрийн сүүлийн тэмдэглэл</h2></div>
@@ -408,19 +421,6 @@ dialog#expDlg::backdrop{background:rgba(8,28,41,.5)}
           <h2 class="mt" style="font-size:13.5px" data-i18n="c.backlog">Авсан ба илгээсэн дээж (цооногоор)</h2>
           <div class="tblwrap" id="backlogTbl" style="max-height:260px"></div>
         </div>
-      </div>
-    </section>
-
-    <!-- 1б. Өдөр тутмын мэдээ -->
-    <section class="panel" id="p-recs" role="tabpanel" aria-labelledby="t-recs">
-      <div class="card">
-        <div class="hd"><h2><span data-i18n="r.title">Өдөр тутмын мэдээ</span> <small id="recSub"></small></h2>
-          <div class="rtools noprint">
-            <input type="search" id="recSearch" data-i18n-ph="r.search" placeholder="Цооног эсвэл тэмдэглэлээр хайх" aria-label="Хайх">
-            <label class="chk"><input type="checkbox" id="recShip" checked><span data-i18n="r.ships">Тээврийн мэдээг харуулах</span></label>
-          </div></div>
-        <div class="tblwrap rwrap" id="recTbl"></div>
-        <div class="note" data-i18n="r.hint">Баганын нэр дээр дарж эрэмбэлнэ. Ө — өдрийн ээлж, Ш — шөнийн ээлж.</div>
       </div>
     </section>
 
@@ -529,7 +529,7 @@ dialog#expDlg::backdrop{background:rgba(8,28,41,.5)}
   </div>
 </dialog>
 
-<script src="app.js?v=20261126e"></script>
+<script src="app.js?v=20261126f"></script>
 <script src="https://js.arcgis.com/4.32/"></script>
 <script>DR.boot();</script>
 </body>
