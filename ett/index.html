@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="mn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ЭТТ хэрэгслийн төв · RegaPro</title>
+<link rel="icon" href="../images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../images/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/ett.css?v=20261127a">
+</head>
+<body class="hub">
+<header class="top">
+  <a class="brand" href="../" aria-label="RegaPro"><img src="../images/logo-horizontal-white.png" alt="RegaPro" width="150" height="30"></a>
+  <span class="sep" aria-hidden="true"></span>
+  <div class="ttl">
+    <h1 data-t="hubTitle">ЭТТ Геотех — Хэрэгслийн төв</h1>
+    <div class="sub" data-t="hubSub">regapro.com/ett · Зөвхөн эрх бүхий хэрэглэгчид</div>
+  </div>
+  <div class="acts">
+    <div class="lang" role="group" aria-label="Хэл / Language">
+      <button type="button" data-lang="mn" aria-pressed="true">MN</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <button class="tbtn" id="userBtn" type="button" hidden>Гарах</button>
+  </div>
+</header>
+
+<div class="state" id="checking" data-t="checking" role="status">Нэвтрэлт шалгаж байна…</div>
+
+<section class="gate" id="gate" hidden>
+  <div class="side">
+    <div class="kick" data-t="gateKick">ЭТТ ГЕОТЕХ</div>
+    <h2 data-t="gateTitle">Хэрэгслийн төв</h2>
+    <p class="lead" data-t="gateLead">Өрөмдлөг, дээжлэлт, лабораторийн ажлын хэрэгслүүд нэг дор.</p>
+    <ul>
+      <li><i aria-hidden="true"></i><span data-t="gateB1">Өдөр тутмын өрөмдлөгийн тайлан</span></li>
+      <li><i class="mute" aria-hidden="true"></i><span data-t="gateB2">Удахгүй: …</span></li>
+    </ul>
+  </div>
+  <div class="pane">
+    <div class="card">
+      <h3 data-t="signinH">Нэвтрэх</h3>
+      <p data-t="signinP">Энэ хэсэг зөвхөн ArcGIS байгууллагын эрхтэй хэрэглэгчдэд нээлттэй.</p>
+      <div class="err" id="gateErr" role="alert" hidden></div>
+      <button class="go" id="signinBtn" type="button" data-t="signinBtn">ArcGIS-ээр нэвтрэх</button>
+      <div class="note" data-t="signinNote">Энэ хуудас хайлтын системд харагдахгүй.</div>
+    </div>
+  </div>
+</section>
+
+<main id="hubMain" hidden>
+  <div class="hello">
+    <div>
+      <h2 id="hello">Сайн байна уу</h2>
+      <div class="asof" id="asof"></div>
+    </div>
+    <label class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5b6670" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+      <input type="search" id="toolSearch" data-t-ph="search" placeholder="Хэрэгсэл хайх…" aria-label="Хэрэгсэл хайх"></label>
+  </div>
+
+  <section class="box" aria-labelledby="sumH">
+    <div class="boxhd">
+      <h3 id="sumH"><span data-t="today">Сүүлийн өдрийн товч</span> <small>· <span data-t="todaySrc">Survey123-аас шууд</span></small></h3>
+      <a href="dailyreport/" data-t="openDaily">Өдөр тутмын тайлан нээх →</a>
+    </div>
+    <div id="sumBody" aria-live="polite"></div>
+  </section>
+
+  <section id="tools" aria-labelledby="toolsH">
+    <h2 class="sec-h" id="toolsH" data-t="tools">Хэрэгслүүд</h2>
+    <div class="tools" id="toolGrid"></div>
+  </section>
+
+  <div class="two">
+    <section class="box" aria-labelledby="newsH">
+      <h3 id="newsH" data-t="news" style="margin-bottom:6px">Сүүлийн шинэчлэлт</h3>
+      <ul class="news" id="newsList"></ul>
+    </section>
+    <section class="box" aria-labelledby="linksH">
+      <h3 id="linksH" data-t="links" style="margin-bottom:12px">Шуурхай холбоос</h3>
+      <div class="links">
+        <a id="lS123" href="#" target="_blank" rel="noopener" data-t="lS123">Survey123 маягтууд ↗</a>
+        <a id="lAgol" href="#" target="_blank" rel="noopener" data-t="lAgol">ArcGIS Online ↗</a>
+        <a id="lLegacy" href="#" target="_blank" rel="noopener" data-t="lLegacy">Хуучин ArcGIS dashboard ↗</a>
+        <a href="../" data-t="lSite">RegaPro сайт</a>
+      </div>
+    </section>
+  </div>
+
+  <div class="foot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg><span data-t="foot"></span></div>
+</main>
+
+<script src="shared/tools.js?v=20261127a"></script>
+<script src="shared/ett.js?v=20261127a"></script>
+<script src="https://js.arcgis.com/4.32/"></script>
+<script>ETT.hub();</script>
+</body>
+</html>
