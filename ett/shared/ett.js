@@ -12,7 +12,7 @@
     appId: 'nZpUBgxKIR0dSIDO',
     legacyDashboard: 'https://indi2435f4406830.maps.arcgis.com/apps/dashboards/a30d0161c39640cbab65400e4e4a224a',
     survey123: 'https://survey123.arcgis.com/surveys',
-    appVer: '20261127a'
+    appVer: '20261127b'
   };
 
   /* ---------- Хэл: тайлантай ижил хадгалалт (dr_lang) ---------- */
@@ -27,9 +27,9 @@
       gateLead: 'Өрөмдлөг, дээжлэлт, лабораторийн ажлын хэрэгслүүд нэг дор. Өгөгдөл Survey123 / ArcGIS-ээс шууд татагдана.',
       gateB1: 'Өдөр тутмын өрөмдлөгийн тайлан', gateB2: 'Удахгүй: чулуулгийн дээжлэлт, дээж тээвэрлэлт, дээжийн жагсаалт…',
       signinH: 'Нэвтрэх', signinP: 'Энэ хэсэг зөвхөн ArcGIS байгууллагын эрхтэй хэрэглэгчдэд нээлттэй. Нэг удаа нэвтэрвэл бүх хэрэгсэлд нэвтэрсэн хэвээр байна.',
-      signinBtn: 'ArcGIS-ээр нэвтрэх', signinNote: 'Энэ хуудас хайлтын системд харагдахгүй. Нууц үгийг RegaPro хадгалахгүй — нэвтрэлтийг ArcGIS шууд хийнэ.',
+      signinBtn: 'ArcGIS-ээр нэвтрэх', signinNote: 'Зөвхөн ArcGIS байгууллагын эрхтэй хэрэглэгчид. Нууц үгийг RegaPro хадгалахгүй.',
       hello: 'Сайн байна уу, {0}', helloAnon: 'Сайн байна уу', asof: 'Мэдээллийн огноо: {0} · Улаанбаатарын цаг (UTC+8)',
-      search: 'Хэрэгсэл хайх…', today: 'Сүүлийн өдрийн товч', todaySrc: 'Survey123-аас шууд', openDaily: 'Өдөр тутмын тайлан нээх →',
+      search: 'Хэрэгсэл хайх…', today: 'Сүүлийн өдрийн товч', todaySrc: 'Survey123-аас шууд', openDaily: 'Дэлгэрэнгүй тайлан →',
       kMetres: 'Өрөмдсөн', kSamples: 'Авсан дээж', kActive: 'Идэвхтэй цооног', kSent: 'Лаб руу илгээсэн',
       vsPrev: '{0} өмнөх өдрөөс', sentSub: '{0} хоногт · сүүлд {1} · {2} ш', sentNone: '{0} хоногт илгээгээгүй', noActive: 'Тухайн өдөр өрөмдлөггүй',
       loadingSum: 'Товч мэдээ ачаалж байна…', errSum: 'Товч мэдээ ачаалж чадсангүй: {0}', noData: 'Өгөгдөл алга',
@@ -39,7 +39,12 @@
       foot: 'Өгөгдөл ArcGIS-д хадгалагдана, зөвхөн байгууллагын эрхтэй хүнд харагдана · Хайлтын системд индекслэгдэхгүй',
       signout: 'Гарах', navHome: 'ЭТТ', navHub: 'Төв', navAll: 'Бүгд', navLabel: 'ЭТТ хэрэгслүүд', crumb: 'ЭТТ хэрэгслийн төв',
       errLib: 'ArcGIS сан ачаалагдсангүй. Интернэт холболтоо шалгаад дахин ачаална уу.', errSignin: 'Нэвтэрч чадсангүй: {0}',
-      uM: 'м', uPcs: 'ш'
+      uM: 'м', uPcs: 'ш',
+      crumbHub: 'ЭТТ Геотех', eyebrow: 'Хэрэгслийн төв', heroA: 'Өрөмдлөг, дээжлэлтийн мэдээлэл —', heroB: 'нэг дор, бодит цагаар',
+      heroLead: 'Survey123-аар хээрээс ирсэн мэдээлэл тайлан, график, газрын зураг болж шууд харагдана. Бүх хэрэгсэл нэг нэвтрэлтээр.',
+      ctaDaily: 'Өдөр тутмын тайлан', ctaTools: 'Бүх хэрэгсэл', toolsEyebrow: 'Хэрэгслүүд', toolsTitle: 'Ажлын хэсэг бүрт — нэг хэрэгсэл',
+      toolsLead: 'Бэлэн болсон хэрэгсэл шууд нээгдэнэ. Бусад нь шинээр хийгдэх хүртэл хуучин dashboard-оор ажиллана.',
+      open: 'Нээх →', asofShort: '{0}-ны мэдээ', heroSignin: 'Зөвхөн ArcGIS байгууллагын эрхтэй хэрэглэгчид. Нууц үгийг RegaPro хадгалахгүй.'
     },
     en: {
       docTitle: 'ETT tools hub · RegaPro', hubTitle: 'ETT Geotech — Tools hub', hubSub: 'regapro.com/ett · Authorised users only',
@@ -47,9 +52,9 @@
       gateLead: 'Drilling, sampling and laboratory tools in one place. Data comes live from Survey123 / ArcGIS.',
       gateB1: 'Daily drilling report', gateB2: 'Coming: rock sampling, sample transport, sample list…',
       signinH: 'Sign in', signinP: 'This area is open only to users of the ArcGIS organisation. Sign in once and every tool stays signed in.',
-      signinBtn: 'Sign in with ArcGIS', signinNote: 'This page is hidden from search engines. RegaPro never stores your password — ArcGIS handles sign-in.',
+      signinBtn: 'Sign in with ArcGIS', signinNote: 'ArcGIS organisation members only. RegaPro never stores your password.',
       hello: 'Hello, {0}', helloAnon: 'Hello', asof: 'Data as of {0} · Ulaanbaatar time (UTC+8)',
-      search: 'Search tools…', today: 'Latest day', todaySrc: 'live from Survey123', openDaily: 'Open the daily report →',
+      search: 'Search tools…', today: 'Latest day', todaySrc: 'live from Survey123', openDaily: 'Full report →',
       kMetres: 'Drilled', kSamples: 'Samples', kActive: 'Active holes', kSent: 'Sent to lab',
       vsPrev: '{0} vs previous day', sentSub: 'in {0} days · last {1} · {2}', sentNone: 'none in {0} days', noActive: 'No drilling that day',
       loadingSum: 'Loading the summary…', errSum: 'Could not load the summary: {0}', noData: 'No data',
@@ -59,7 +64,12 @@
       foot: 'Data stays in ArcGIS and is visible only to organisation members · Not indexed by search engines',
       signout: 'Sign out', navHome: 'ETT', navHub: 'Hub', navAll: 'All', navLabel: 'ETT tools', crumb: 'ETT tools hub',
       errLib: 'The ArcGIS library did not load. Check the connection and reload.', errSignin: 'Sign-in failed: {0}',
-      uM: 'm', uPcs: ''
+      uM: 'm', uPcs: '',
+      crumbHub: 'ETT Geotech', eyebrow: 'Tools hub', heroA: 'Drilling and sampling data —', heroB: 'in one place, in real time',
+      heroLead: 'Field data captured in Survey123 shows up straight away as reports, charts and maps. Every tool with one sign-in.',
+      ctaDaily: 'Daily report', ctaTools: 'All tools', toolsEyebrow: 'Tools', toolsTitle: 'One tool for each part of the work',
+      toolsLead: 'Ready tools open straight away. The rest keep running on the old dashboard until they are rebuilt.',
+      open: 'Open →', asofShort: 'data as of {0}', heroSignin: 'ArcGIS organisation members only. RegaPro never stores your password.'
     }
   };
   const t = (k, ...a) => String(STR[LANG] && k in STR[LANG] ? STR[LANG][k] : (k in STR.mn ? STR.mn[k] : k)).replace(/\{(\d)\}/g, (m, i) => (a[i] != null ? a[i] : ''));
@@ -122,8 +132,8 @@
     document.querySelectorAll('[data-t]').forEach((n) => { n.textContent = t(n.dataset.t); });
     document.querySelectorAll('[data-t-ph]').forEach((n) => { n.placeholder = t(n.dataset.tPh); });
     document.querySelectorAll('.lang button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === LANG)));
-    $('hello').textContent = USER ? t('hello', USER) : t('helloAnon');
-    const ub = $('userBtn'); ub.hidden = !USER; ub.textContent = (USER ? USER + ' · ' : '') + t('signout');
+    $('helloName').textContent = USER ? t('hello', USER) : t('helloAnon');
+    const ub = $('userBtn'); ub.hidden = !USER || STATE !== 'hub'; ub.textContent = (USER ? USER + ' · ' : '') + t('signout');
     renderSummary(); renderTools(); renderNews();
   }
   function delta(v) {
@@ -132,18 +142,27 @@
   }
   function renderSummary() {
     const box = $('sumBody');
+    $('asof').textContent = SUM && SUM !== 'none' ? '· ' + t('asofShort', fdate(SUM.date)) : '';
     if (SUM_ERR) { box.innerHTML = '<div class="err">' + esc(t('errSum', SUM_ERR)) + '</div>'; return; }
-    if (!SUM) { box.innerHTML = '<div class="d" style="color:var(--ett-ink-2)">' + esc(t('loadingSum')) + '</div>'; $('asof').textContent = ''; return; }
-    if (SUM === 'none') { box.innerHTML = '<div class="d">' + esc(t('noData')) + '</div>'; return; }
+    if (!SUM) { box.innerHTML = '<div class="sum-msg">' + esc(t('loadingSum')) + '</div>'; return; }
+    if (SUM === 'none') { box.innerHTML = '<div class="sum-msg">' + esc(t('noData')) + '</div>'; return; }
     const s = SUM, pcs = t('uPcs') ? ' <small>' + esc(t('uPcs')) + '</small>' : '';
-    $('asof').textContent = t('asof', fdate(s.date));
-    const st = (l, v, d) => '<div class="stat"><div class="l">' + esc(l) + '</div><div class="v">' + v + '</div><div class="d">' + d + '</div></div>';
+    const st = (l, v, d, hl) => '<div class="stat' + (hl ? ' hl' : '') + '"><div class="l">' + esc(l) + '</div><div class="v">' + v + '</div><div class="d">' + d + '</div></div>';
     box.innerHTML = '<div class="stats">' +
-      st(t('kMetres'), nf1.format(s.metres) + ' <small>' + esc(t('uM')) + '</small>', t('vsPrev', delta(s.metres - s.metresPrev))) +
+      st(t('kMetres'), nf1.format(s.metres) + ' <small>' + esc(t('uM')) + '</small>', t('vsPrev', delta(s.metres - s.metresPrev)), true) +
       st(t('kSamples'), nf0.format(s.samples) + pcs, t('vsPrev', delta(s.samples - s.samplesPrev))) +
       st(t('kActive'), nf0.format(s.active), s.activeHoles.length ? esc(s.activeHoles.join(' · ')) : esc(t('noActive'))) +
       st(t('kSent'), nf0.format(s.sent) + pcs, s.lastSent ? esc(t('sentSub', s.days, fshort(s.lastSent.date), nf0.format(s.lastSent.n))) : esc(t('sentNone', s.days))) +
       '</div>';
+  }
+  function heroData() {
+    const s = SUM; if (!s || s === 'none' || !window.ETT_HERO) return;
+    const u = t('uPcs') ? ' ' + t('uPcs') : '';
+    window.ETT_HERO.setData({
+      bars: s.sparkM, barText: nf1.format(s.metres) + ' ' + t('uM'),
+      holes: (s.holeM || []).slice(0, 2).map((h) => ({ name: h.hole, m: nf1.format(h.m) + ' ' + t('uM') })),
+      ring: { text: nf0.format(s.samples) + u, frac: s.samples / Math.max(1, ...s.sparkS) }
+    });
   }
   function renderTools() {
     const q = ($('toolSearch').value || '').trim().toLowerCase();
@@ -152,9 +171,9 @@
       const n = tx(x), live = x.status === 'ready';
       const head = '<div class="row"><div class="ic">' + icon(x.icon) + '</div><span class="badge ' + x.status + '">' + esc(t('st.' + x.status)) + '</span></div>' +
         '<div class="nm">' + esc(n.name) + '</div><div class="ds">' + esc(n.desc) + '</div>';
-      if (live) return '<a class="tool" href="' + esc(x.path) + '">' + head + '<div class="ft"><code>/ett/' + esc(x.path) + '</code></div></a>';
+      if (live) return '<a class="tool" href="' + esc(x.path) + '">' + head + '<div class="ft"><code>/ett/' + esc(x.path) + '</code><span class="go">' + esc(t('open')) + '</span></div></a>';
       return '<div class="tool off">' + head + '<div class="ft"><span>' + esc(x.legacy) + '</span><a href="' + esc(CFG.legacyDashboard) + '" target="_blank" rel="noopener">' + esc(t('legacyNow')) + '</a></div></div>';
-    }).join('') || '<div class="d" style="color:var(--ett-ink-2)">' + esc(t('noTools')) + '</div>';
+    }).join('') || '<div class="empty">' + esc(t('noTools')) + '</div>';
   }
   function renderNews() {
     const byId = new Map(tools().map((x) => [x.id, x]));
@@ -163,10 +182,15 @@
       return '<li><time datetime="' + esc(n.date) + '">' + esc(fshort(n.date)) + '</time><span>' + (tool ? '<b>' + esc(tx(tool).name) + '</b> — ' : '') + esc(n[LANG] || n.mn) + '</span></li>';
     }).join('');
   }
+  let STATE = 'checking';
   function show(which) {
+    STATE = which;
+    document.body.classList.toggle('is-checking', which === 'checking');
+    document.body.classList.toggle('is-gate', which === 'gate');
     $('checking').hidden = which !== 'checking';
     $('gate').hidden = which !== 'gate';
-    $('hubMain').hidden = which !== 'hub';
+    ['hubActions', 'heroStats', 'hubMain', 'hello'].forEach((id) => { $(id).hidden = which !== 'hub'; });
+    $('userBtn').hidden = which !== 'hub' || !USER;
   }
   function gateError(msg) { const b = $('gateErr'); b.textContent = msg || ''; b.hidden = !msg; }
   function loadScript(src) {
@@ -179,10 +203,10 @@
       const s = fixture ? window.DR.summaryOf(fixture) : await window.DR.fetchSummary(api);
       SUM = s || 'none';
     } catch (e) { SUM_ERR = (e && e.message) || String(e); }
-    renderSummary();
+    renderSummary(); heroData();
   }
   function wireHub() {
-    document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('click', () => { LANG = b.dataset.lang; saveLang(LANG); applyHub(); }));
+    document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('click', () => { LANG = b.dataset.lang; saveLang(LANG); applyHub(); heroData(); }));
     let tq = null;
     $('toolSearch').addEventListener('input', () => { clearTimeout(tq); tq = setTimeout(renderTools, 120); });
     $('userBtn').addEventListener('click', () => { if (SIGNOUT) SIGNOUT(); });
