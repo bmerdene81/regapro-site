@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="mn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Чулуулгийн дээжлэлт · RegaPro</title>
+<link rel="icon" href="../../images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../images/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/ett.css?v=20261128a">
+<link rel="stylesheet" href="../shared/tool.css?v=20261128a">
+<style>
+/* Чулуулгийн дээжлэлтэд зориулсан нэмэлт */
+.row-3{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:14px}
+.kpi .sub2{font-size:12.5px;color:var(--ink-2)}
+.sess{list-style:none;margin:0;padding:0}
+.sess li{display:grid;grid-template-columns:62px minmax(0,1fr) auto;gap:2px 10px;padding:8px 0;border-bottom:1px solid #eef1f4;align-items:baseline}
+.sess li:last-child{border-bottom:0}
+.sess time{font-variant-numeric:tabular-nums;color:var(--ink-2);font-size:12.5px}
+.sess b{font-weight:700}
+.sess .who{font-size:12px;color:var(--ink-3);margin-top:1px}
+.sess .n{font-weight:700;font-variant-numeric:tabular-nums;text-align:right}
+.sess .n small{display:block;font-weight:500;font-size:11.5px;color:var(--ink-3)}
+.htbl tr{cursor:pointer}
+.htbl tr:hover td{background:#eef4f8}
+.htbl tr.sel td{background:#e8f2e8!important}
+.uchip{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.uchip i{width:9px;height:9px;border-radius:2px;flex:none}
+.zone1{color:#b4501a;font-weight:700}
+.hd2{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.hd2 h2{font-size:18px!important}
+.hd2 .meta{color:var(--ink-2);font-size:13px}
+.hdet{display:grid;grid-template-columns:300px minmax(0,1fr);gap:16px;margin-top:10px}
+.strip{position:relative}
+.strip svg{display:block}
+.comp{display:flex;height:12px;border-radius:6px;overflow:hidden;background:#eef1f4;margin:6px 0 4px}
+.comp span{display:block;height:100%}
+.slist{max-height:660px}
+#sampTbl,#coolTbl{max-height:calc(100vh - 230px);min-height:420px}
+.slist tr.hl td{background:#fff4cc!important}
+.pager{display:flex;align-items:center;gap:8px;justify-content:flex-end;padding-top:10px;font-size:13px;color:var(--ink-2)}
+.pager button{min-height:32px;padding:4px 10px;border:1px solid #cfd8e0;border-radius:8px;background:#fff;font-weight:600}
+.pager button:disabled{opacity:.4;cursor:default}
+.stbl td.id{font-weight:600;white-space:nowrap}
+.stbl td .sub{display:block;font-size:11px;color:var(--ink-3);white-space:nowrap}
+.flag{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:999px;background:#fdecea;color:#8c1d18;margin-left:6px}
+.ctbl td.grp{font-weight:700;background:#f3f6f8!important}
+.dqk{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.editl{white-space:nowrap}
+.hint{font-size:12.5px;color:var(--ink-2);margin:0 0 8px}
+@media (max-width:1180px){.row-3{grid-template-columns:minmax(0,1fr)}.hdet{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../" aria-label="ЭТТ хэрэгслийн төв · RegaPro"><img class="logo-w" src="../../images/logo-horizontal-white.png" alt="RegaPro" width="150" height="30"><img class="logo-d" src="../../images/logo-horizontal.png" alt="" width="150" height="30"></a>
+  <span class="sep" aria-hidden="true"></span>
+  <div class="ttl">
+    <h1><a class="ett-crumb" href="../" data-i18n="crumb">ЭТТ Геотех</a><span class="ett-crumb-sep" aria-hidden="true">›</span><span data-i18n="title">Чулуулгийн дээжлэлт</span></h1>
+    <div class="sub" id="asof"></div>
+  </div>
+  <div class="acts">
+    <span id="updated" aria-live="polite"></span>
+    <button class="tbtn dl" id="expBtnTop" type="button"><span aria-hidden="true">⤓</span> <span data-i18n="exp.btn">Тайлан татах</span></button>
+    <button class="tbtn" id="refreshBtn" type="button"><span aria-hidden="true">↻</span> <span data-i18n="refresh">Шинэчлэх</span></button>
+    <div class="lang" role="group" aria-label="Хэл / Language">
+      <button type="button" data-lang="mn" aria-pressed="true">MN</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <button class="tbtn" id="userBtn" type="button" hidden></button>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Хэсгүүд">
+  <button role="tab" id="t-overview" aria-controls="p-overview" aria-selected="true" data-i18n="tab.overview">Тойм</button>
+  <button role="tab" id="t-holes" aria-controls="p-holes" aria-selected="false" data-i18n="tab.holes">Цооногоор</button>
+  <button role="tab" id="t-samples" aria-controls="p-samples" aria-selected="false" data-i18n="tab.samples">Дээжийн жагсаалт</button>
+  <button role="tab" id="t-coolers" aria-controls="p-coolers" aria-selected="false" data-i18n="tab.coolers">Сав</button>
+  <button role="tab" id="t-dq" aria-controls="p-dq" aria-selected="false" data-i18n="tab.dq">Өгөгдлийн чанар</button>
+  <button class="btn fbtn" type="button" id="filterToggle" aria-expanded="false" data-i18n="filters">Шүүлтүүр</button>
+</nav>
+
+<div class="layout">
+  <aside class="filters" id="filters" aria-label="Шүүлтүүр">
+    <div class="fhead"><strong data-i18n="filters">Шүүлтүүр</strong><button class="linkbtn" id="clearAll" type="button" data-i18n="clear">Цэвэрлэх</button></div>
+    <div class="fsec">
+      <h3 data-i18n="f.period">Хугацаа</h3>
+      <div class="presets" id="presets">
+        <button type="button" data-days="7" data-i18n="p.7">7 хоног</button>
+        <button type="button" data-days="30" data-i18n="p.30">30 хоног</button>
+        <button type="button" data-days="90" data-i18n="p.90">90 хоног</button>
+        <button type="button" data-days="month" data-i18n="p.month">Энэ сар</button>
+        <button type="button" data-days="all" data-i18n="p.all">Бүгд</button>
+      </div>
+      <div class="dates">
+        <label><span data-i18n="f.from">Эхлэх</span><input type="date" id="dFrom"></label>
+        <label><span data-i18n="f.to">Дуусах</span><input type="date" id="dTo"></label>
+      </div>
+    </div>
+    <div class="fsec">
+      <div class="fhead" style="margin-bottom:4px"><h3 style="margin:0" data-i18n="f.holes">Цооног</h3><button class="linkbtn" id="holesToggle" type="button" data-i18n="f.none">Бүгдийг арилгах</button></div>
+      <div id="holeList"></div>
+    </div>
+    <div class="fsec"><h3 data-i18n="f.unit">Дээжлэлтийн хэсэг</h3><div id="unitList"></div></div>
+    <div class="fsec"><h3 data-i18n="f.zone">Ач холбогдол</h3><div id="zoneList"></div></div>
+    <div class="fsec"><h3 data-i18n="f.str">Хатуулаг</h3><div id="strList"></div></div>
+    <div class="fsec fbtns">
+      <button class="btn primary" id="expBtn" type="button"><span aria-hidden="true">⤓</span> <span data-i18n="exp.btn">Тайлан татах</span></button>
+    </div>
+  </aside>
+
+  <main id="main">
+    <div id="errbox" role="alert"></div>
+    <div id="loading"><span class="spin" aria-hidden="true"></span> <span data-i18n="loading">Өгөгдөл ачаалж байна…</span></div>
+
+    <!-- 1. Тойм -->
+    <section class="panel on" id="p-overview" role="tabpanel" aria-labelledby="t-overview">
+      <div class="grid kpis" id="kpis"></div>
+      <div class="grid row-a">
+        <div class="card">
+          <div class="hd"><h2><span data-i18n="c.weekly">Долоо хоног бүрийн дээж</span> <small id="weeklySub"></small></h2><div class="legend" id="weeklyLegend"></div></div>
+          <div class="chart" id="weeklyChart"></div>
+        </div>
+        <div class="card">
+          <div class="hd"><h2 data-i18n="c.sessions">Сүүлийн дээжлэлтүүд</h2></div>
+          <ul class="sess" id="sessList"></ul>
+        </div>
+      </div>
+      <div class="grid row-2">
+        <div class="card">
+          <div class="hd"><h2 data-i18n="c.unit">Дээжлэлтийн хэсгээр</h2><div class="legend" id="unitLegend"></div></div>
+          <div class="chart" id="unitChart"></div>
+        </div>
+        <div class="card">
+          <div class="hd"><h2 data-i18n="c.rock">Чулуулгийн төрлөөр</h2></div>
+          <div class="chart" id="rockChart"></div>
+        </div>
+      </div>
+      <div class="grid row-3">
+        <div class="card"><div class="hd"><h2 data-i18n="c.str">Хатуулаг (R1–R7)</h2></div><div class="chart" id="strChart"></div></div>
+        <div class="card"><div class="hd"><h2 data-i18n="c.wth">Өгөршил</h2></div><div class="chart" id="wthChart"></div></div>
+        <div class="card"><div class="hd"><h2 data-i18n="c.cond">Дээжийн бүтэн байдал</h2></div><div class="chart" id="condChart"></div></div>
+      </div>
+    </section>
+
+    <!-- 2. Цооногоор -->
+    <section class="panel" id="p-holes" role="tabpanel" aria-labelledby="t-holes">
+      <div class="card">
+        <div class="hd"><h2><span data-i18n="h.title">Цооног тус бүрийн дээжлэлт</span> <small id="holesSub"></small></h2></div>
+        <p class="hint" data-i18n="h.hint">Мөр дээр дарж цооногийн дээжийн баганыг харна.</p>
+        <div class="tblwrap" id="holesTbl"></div>
+      </div>
+      <div class="card mt" id="holeCard">
+        <div class="hd2"><h2 id="hdTitle"></h2><span class="meta" id="hdMeta"></span></div>
+        <div id="hdComp"></div>
+        <div class="hdet">
+          <div class="strip" id="hdStrip"></div>
+          <div class="tblwrap slist" id="hdList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Дээжийн жагсаалт -->
+    <section class="panel" id="p-samples" role="tabpanel" aria-labelledby="t-samples">
+      <div class="card">
+        <div class="hd">
+          <h2><span data-i18n="s.title">Дээжийн жагсаалт</span> <small id="sampSub"></small></h2>
+          <div class="rtools"><input type="search" id="sampSearch" data-i18n-ph="s.search" placeholder="Дээж, цооног, сав, тэмдэглэлээр хайх" aria-label="Хайх"></div>
+        </div>
+        <div class="tblwrap rwrap" id="sampTbl"></div>
+        <div class="pager" id="pager"></div>
+      </div>
+    </section>
+
+    <!-- 4. Сав -->
+    <section class="panel" id="p-coolers" role="tabpanel" aria-labelledby="t-coolers">
+      <div class="card">
+        <div class="hd"><h2><span data-i18n="k.title">Сав (cooler) тус бүр</span> <small id="coolSub"></small></h2></div>
+        <p class="hint" data-i18n="k.hint">Дээж бүр аль саванд хийгдсэн — цооног, сав тус бүрийн дээжийн тоо, гүний болон огнооны хүрээ.</p>
+        <div class="tblwrap rwrap" id="coolTbl"></div>
+      </div>
+    </section>
+
+    <!-- 5. Өгөгдлийн чанар -->
+    <section class="panel" id="p-dq" role="tabpanel" aria-labelledby="t-dq">
+      <div class="grid kpis dqk" id="dqKpis"></div>
+      <div id="dqList"></div>
+    </section>
+  </main>
+</div>
+
+<div id="tip" role="tooltip"></div>
+
+<div id="signin" role="dialog" aria-modal="true" aria-labelledby="signinH">
+  <div class="box">
+    <img src="../../images/logo-horizontal.png" alt="RegaPro">
+    <h2 id="signinH" data-i18n="signin.h">Нэвтрэх шаардлагатай</h2>
+    <p data-i18n="signin.p">Өгөгдөл ArcGIS Online дээр хамгаалагдсан. Байгууллагын бүртгэлээрээ нэвтэрнэ үү.</p>
+    <button class="btn primary" id="signinBtn" type="button" data-i18n="signin.btn">ArcGIS-ээр нэвтрэх</button>
+  </div>
+</div>
+
+<dialog id="photoDlg" aria-labelledby="photoTtl">
+  <div class="pdlg">
+    <header><h2 id="photoTtl"></h2><span id="photoCount"></span><button type="button" id="photoClose" aria-label="Хаах">×</button></header>
+    <div class="pbody"><div id="photoBox"></div>
+      <button class="pnav" id="photoPrev" type="button" aria-label="Өмнөх">‹</button>
+      <button class="pnav" id="photoNext" type="button" aria-label="Дараах">›</button></div>
+    <footer><p id="photoNote"></p><a id="photoOpen" target="_blank" rel="noopener" data-i18n="ph.open">Бүтэн хэмжээгээр татах</a></footer>
+  </div>
+</dialog>
+
+<dialog id="expDlg" aria-labelledby="expH">
+  <div class="dlg">
+    <header><h2 id="expH" data-i18n="exp.title">Тайлан татах</h2><button type="button" id="expClose" aria-label="Хаах">×</button></header>
+    <div class="body">
+      <fieldset><legend data-i18n="exp.fmt">Файлын төрөл</legend>
+        <div class="fmts" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+          <label class="fmt"><input type="radio" name="expFmt" value="xlsx" checked><i style="background:#1d6f42"></i><b>Excel</b><span data-i18n="exp.xlsx">Дээж, цооног, сав, чанарын шалгалт — тусдаа хуудсаар</span></label>
+          <label class="fmt"><input type="radio" name="expFmt" value="csv"><i style="background:#5b6670"></i><b>CSV</b><span data-i18n="exp.csv">Дээжийн жагсаалт, бусад программд</span></label>
+        </div>
+      </fieldset>
+      <div class="scope" id="expScope"></div>
+    </div>
+    <footer><span id="expStatus" aria-live="polite"></span><button class="btn" id="expCancel" type="button" data-i18n="cancel">Болих</button><button class="btn primary" id="expGo" type="button" data-i18n="exp.go">Татах</button></footer>
+  </div>
+</dialog>
+
+<script src="../shared/tools.js?v=20261128a"></script>
+<script src="../shared/ett.js?v=20261128a"></script>
+<script src="app.js?v=20261128a"></script>
+<script src="https://js.arcgis.com/4.32/"></script>
+<script>if (window.ETT) ETT.mountNav({ active: 'rock-sampling', base: '../' }); RS.boot();</script>
+</body>
+</html>
