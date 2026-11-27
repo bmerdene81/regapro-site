@@ -10,7 +10,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="shared/ett.css?v=20261127b">
+<link rel="stylesheet" href="shared/ett.css?v=20261127c">
+<link rel="stylesheet" href="shared/hub.css?v=20261127c">
 </head>
 <body class="hub is-checking">
 <header class="top">
@@ -56,6 +57,7 @@
 </section>
 
 <main id="hubMain" hidden>
+  <div class="glow-g" aria-hidden="true"></div>
   <div class="wrap">
     <section id="tools" aria-labelledby="toolsH">
       <div class="sec-head">
@@ -64,18 +66,19 @@
           <h2 id="toolsH" data-t="toolsTitle">Ажлын хэсэг бүрт — нэг хэрэгсэл</h2>
           <p data-t="toolsLead">Бэлэн болсон хэрэгсэл шууд нээгдэнэ. Бусад нь шинээр хийгдэх хүртэл хуучин dashboard-оор ажиллана.</p>
         </div>
-        <label class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5b6670" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+        <label class="search gb"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5b6670" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
           <input type="search" id="toolSearch" data-t-ph="search" placeholder="Хэрэгсэл хайх…" aria-label="Хэрэгсэл хайх"></label>
       </div>
+      <div class="feats" id="featGrid"></div>
       <div class="tools" id="toolGrid"></div>
     </section>
 
     <div class="two">
-      <section class="box" aria-labelledby="newsH">
+      <section class="box gb" aria-labelledby="newsH">
         <h3 id="newsH" data-t="news">Сүүлийн шинэчлэлт</h3>
         <ul class="news" id="newsList"></ul>
       </section>
-      <section class="box" aria-labelledby="linksH">
+      <section class="box gb" aria-labelledby="linksH">
         <h3 id="linksH" data-t="links">Шуурхай холбоос</h3>
         <div class="links">
           <a id="lS123" href="#" target="_blank" rel="noopener" data-t="lS123">Survey123 маягтууд ↗</a>
@@ -90,12 +93,12 @@
   </div>
 </main>
 
-<script src="shared/tools.js?v=20261127b"></script>
-<script src="shared/ett.js?v=20261127b"></script>
+<script src="shared/tools.js?v=20261127c"></script>
+<script src="shared/ett.js?v=20261127c"></script>
 <!-- 3D: three.js ба сайтын нийтлэг хөдөлгүүр — ArcGIS-ийн AMD ачаалагчаас ӨМНӨ ачаална -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="../js/regapro-3d-base.js"></script>
-<script src="shared/ett-hero.js?v=20261127b"></script>
+<script src="shared/ett-hero.js?v=20261127c"></script>
 <script src="https://js.arcgis.com/4.32/"></script>
 <script>ETT.hub();</script>
 </body>
