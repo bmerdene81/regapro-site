@@ -1,0 +1,299 @@
+/* RegaPro · ЭТТ хэрэгслүүдийн нийтлэг загвар (Өдөр тутмын тайлангийн загвараас) */
+:root{
+  --navy-900:#081C29;--navy-800:#0C2839;--navy-700:#12344A;--navy-600:#1B4560;
+  --green-700:#2E8B33;--green-500:#57A93A;
+  --surface:#ffffff;--plane:#f3f6f8;--line:#e3e8ed;--grid:#e7e7e7;--axis:#c2c2c2;
+  --ink:#191919;--ink-2:#5b6670;--ink-3:#8a949d;
+  /* Цувааны өнгө (dataviz validator-оор шалгасан) */
+  --c-day:#f2a600;--c-night:#6a4ce2;--c-unk:#c3cbd3;
+  --c-drill:#f47230;--c-done:#257de0;--c-lab:#00b894;--c-prep:#c3cbd3;
+  --c-rock:#ee7fac;--c-soil:#008a17;--c-avg:#33424c;--c-total:#1B4560;--c-metre:#f47230;--c-samp:#2a9fd6;
+  --s-good:#0aac23;--s-warn:#fbb315;--s-serious:#f18a59;--s-crit:#dc3c3d;
+  --up:#006c10;--down:#b3261e;
+  --radius:12px;
+  --font:'Inter','Segoe UI',system-ui,-apple-system,Arial,sans-serif;
+  --font-head:'Montserrat','Inter','Segoe UI',Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--plane);color:var(--ink);font-family:var(--font);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--navy-600)}
+:focus-visible{outline:3px solid var(--green-500);outline-offset:2px;border-radius:6px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- Толгой ---------- */
+.top{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:10px 20px;background:var(--navy-800);color:#fff;border-top:4px solid var(--green-500)}
+.top .brand img{height:30px;width:auto;display:block}
+.top .brand .logo-d{display:none}
+.top .sep{width:1px;height:28px;background:#2b4a60}
+.top .ttl{flex:1 1 320px;min-width:0}
+.top h1{margin:0;font:700 18px/1.25 var(--font-head);letter-spacing:-.01em}
+.top .sub{font-size:13px;color:#b9c7d3;margin-top:2px}
+.top .acts{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tbtn{min-height:36px;padding:6px 12px;border-radius:8px;border:1px solid #2f5068;background:#123247;color:#fff;font-weight:600;font-size:13px;display:inline-flex;align-items:center;gap:6px}
+.tbtn:hover{background:#174059}
+.tbtn[aria-pressed="true"]{background:var(--green-700);border-color:var(--green-700)}
+.lang{display:inline-flex;border:1px solid #2f5068;border-radius:8px;overflow:hidden}
+.lang button{min-height:34px;padding:4px 10px;border:0;background:transparent;color:#b9c7d3;font-weight:700;font-size:12px}
+.lang button[aria-pressed="true"]{background:#fff;color:var(--navy-800)}
+#updated{font-size:12px;color:#b9c7d3;white-space:nowrap}
+.spin{display:inline-block;width:12px;height:12px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:sp .8s linear infinite;vertical-align:-1px}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* ---------- Табууд ---------- */
+.tabs{display:flex;gap:2px;padding:0 20px;background:#fff;border-bottom:1px solid var(--line);overflow-x:auto;position:sticky;top:0;z-index:20}
+.tabs button{border:0;background:none;padding:12px 16px 10px;font-weight:600;color:var(--ink-2);border-bottom:3px solid transparent;white-space:nowrap}
+.tabs button[aria-selected="true"]{color:var(--navy-800);border-bottom-color:var(--green-700)}
+.tabs button:hover{color:var(--navy-800)}
+.tabs .fbtn{display:none;margin-left:auto}
+
+/* ---------- Байршил ---------- */
+.layout{display:grid;grid-template-columns:248px minmax(0,1fr);gap:16px;padding:16px 20px 28px;max-width:1720px;margin:0 auto}
+main{min-width:0}
+main.busy{opacity:.55;transition:opacity .2s}
+.panel{display:none}
+.panel.on{display:block}
+.grid{display:grid;gap:14px}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.row-a{grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);margin-top:14px}
+.row-b{grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);margin-top:14px}
+.row-2{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:14px}
+.mt{margin-top:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;min-width:0}
+.card h2{margin:0;font:600 15px/1.3 var(--font);color:var(--ink)}
+.card h2 small{font-weight:500;color:var(--ink-2);font-size:13px}
+.card .hd{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.card .note{font-size:12px;color:var(--ink-3);margin-top:6px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--ink-2);align-items:center}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.legend i.ln{height:2px;width:14px;border-radius:1px;vertical-align:3px}
+.chart{position:relative;width:100%}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.empty{padding:28px 8px;text-align:center;color:var(--ink-3)}
+
+/* ---------- Шүүлтүүр ---------- */
+.filters{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px 14px 16px;align-self:start;position:sticky;top:58px;max-height:calc(100vh - 74px);overflow:auto}
+.filters h3{margin:0 0 6px;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);font-weight:700}
+.filters .fsec{padding:10px 0;border-top:1px solid var(--line)}
+.filters .fsec:first-of-type{border-top:0;padding-top:0}
+.fhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.fhead strong{font-size:16px}
+.linkbtn{border:0;background:none;color:var(--navy-600);font-weight:600;font-size:12.5px;padding:2px 0;text-decoration:underline;text-underline-offset:2px}
+.presets{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.presets button{border:1px solid #cfd8e0;background:#fff;border-radius:999px;padding:4px 10px;font-size:12.5px;font-weight:600;color:var(--ink-2)}
+.presets button[aria-pressed="true"]{background:var(--navy-800);border-color:var(--navy-800);color:#fff}
+.dates{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.dates label{font-size:11.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:2px}
+.dates input{width:100%;min-height:34px;padding:4px 6px;border:1px solid #cfd8e0;border-radius:8px;font-size:12.5px}
+.chk{display:flex;align-items:center;gap:8px;padding:3px 2px;font-size:13px;cursor:pointer;border-radius:6px}
+.chk:hover{background:#f3f6f8}
+.chk input{width:16px;height:16px;accent-color:var(--navy-700);margin:0}
+.chk .meta{margin-left:auto;font-size:11.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.chk .dot{width:8px;height:8px;border-radius:50%;flex:none}
+#holeList{max-height:230px;overflow:auto;margin:0 -2px}
+.repday{display:flex;align-items:center;justify-content:space-between;gap:6px;background:#eef6ee;border:1px solid #cfe5cf;border-radius:8px;padding:6px 8px;font-size:12.5px;margin-top:8px}
+.repday[hidden]{display:none}
+.repday button{border:0;background:none;font-size:15px;line-height:1;color:var(--ink-2)}
+.fbtns{display:flex;flex-direction:column;gap:6px}
+.btn{min-height:36px;padding:6px 12px;border-radius:8px;border:1px solid #cfd8e0;background:#fff;font-weight:600;font-size:13px;color:var(--navy-800);display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn:hover{background:#f3f6f8}
+.btn.primary{background:var(--green-700);border-color:var(--green-700);color:#fff}
+.btn.primary:hover{background:#25742a}
+
+/* ---------- KPI ---------- */
+.kpi{display:flex;flex-direction:column;gap:2px;position:relative}
+.kpi .lbl{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-2)}
+.kpi .val{font:600 34px/1.1 var(--font);margin-top:4px;color:var(--ink)}
+.kpi .val small{font-size:16px;font-weight:600;color:var(--ink-2);margin-left:3px}
+.kpi .dl{font-size:12.5px;color:var(--ink-2);display:block}
+.kpi .dl b{font-weight:600;white-space:nowrap;margin-right:4px}
+.kpi .dl.up b{color:var(--up)}.kpi .dl.dn b{color:var(--down)}
+.kpi .per{font-size:12px;color:var(--ink-3);margin-top:4px;border-top:1px solid var(--line);padding-top:6px}
+.kpi .spark{position:absolute;right:14px;top:34px;width:96px;height:34px}
+.kpi.hero .val{font-size:48px}
+
+/* ---------- Хүснэгт ---------- */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-2);font-weight:700;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap;background:#fff;position:sticky;top:0}
+.tbl td{padding:8px;border-bottom:1px solid #eef1f4;vertical-align:top}
+.tbl tr:nth-child(even) td{background:#fafbfc}
+.tbl td.num,.tbl th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl td.hole{font-weight:700;white-space:nowrap}
+.tbl .clamp{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
+.tbl .clamp.open{-webkit-line-clamp:unset;display:block}
+.tblwrap{overflow:auto;max-height:520px}
+.chip{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font-size:12.5px}
+.chip i{width:9px;height:9px;border-radius:50%;flex:none}
+.bar-mini{display:inline-block;height:6px;border-radius:3px;background:#e9edf1;width:70px;vertical-align:middle;position:relative;overflow:hidden}
+.bar-mini span{position:absolute;left:0;top:0;bottom:0;border-radius:3px}
+
+/* ---------- Цооногийн жижиг графикууд ---------- */
+.multiples{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.mcard{border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.mcard .mh{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.mcard .mh>div{display:flex;flex-direction:column;gap:2px}
+.mcard .mh b{font-size:14px}
+.mcard .mh>span{font-size:12px;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* ---------- Өгөгдлийн чанар ---------- */
+.sev{display:inline-flex;align-items:center;gap:5px;font-weight:600;font-size:12.5px;white-space:nowrap}
+.sev svg{width:14px;height:14px;flex:none}
+details.dq{border:1px solid var(--line);border-radius:10px;margin-top:10px;background:#fff}
+details.dq summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;padding:10px 14px;font-weight:600}
+details.dq summary::-webkit-details-marker{display:none}
+details.dq summary .cnt{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--ink-2);font-weight:600}
+details.dq summary::after{content:"▸";color:var(--ink-3);transition:transform .15s}
+details.dq[open] summary::after{transform:rotate(90deg)}
+details.dq .why{padding:0 14px 8px;color:var(--ink-2);font-size:12.5px}
+details.dq .tblwrap{padding:0 6px 8px;max-height:360px}
+.tbl.wrap th{white-space:normal;vertical-align:bottom;line-height:1.25}
+details.dq summary svg{width:16px;height:16px;flex:none}
+.ok{display:flex;align-items:center;gap:8px;color:var(--up);font-weight:600}
+
+/* ---------- Tooltip, нэвтрэх, dialog ---------- */
+#tip{position:fixed;z-index:60;pointer-events:none;background:#fff;border:1px solid #d5dce3;border-radius:8px;padding:8px 10px;font-size:12.5px;line-height:1.45;box-shadow:0 6px 20px rgba(12,40,57,.16);display:none;max-width:300px;color:var(--ink)}
+#tip .th{font-weight:600;margin-bottom:4px;color:var(--ink-2)}
+#tip .tr{display:flex;align-items:center;gap:8px}
+#tip .tr .k{width:12px;height:2px;border-radius:1px;flex:none}
+#tip .tr .k.box{height:8px;width:8px;border-radius:2px}
+#tip .tr b{font-variant-numeric:tabular-nums;min-width:44px;text-align:right}
+#tip .tr span{color:var(--ink-2)}
+#tip .sepl{border-top:1px solid #eef1f4;margin:5px 0}
+#signin{position:fixed;inset:0;background:rgba(8,28,41,.82);display:none;align-items:center;justify-content:center;z-index:100;padding:16px}
+#signin .box{background:#fff;border-radius:14px;padding:28px 30px;max-width:440px;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center}
+#signin .box img{height:34px}
+#signin h2{margin:0;font:700 20px var(--font-head);color:var(--navy-800)}
+#signin p{margin:0;color:var(--ink-2)}
+#loading{display:flex;align-items:center;justify-content:center;gap:10px;padding:60px 10px;color:var(--ink-2);font-size:15px}
+#errbox{display:none;background:#fdecea;border:1px solid #f3c2bd;color:#8c1d18;border-radius:10px;padding:10px 14px;margin-bottom:12px}
+dialog#planDlg{border:0;border-radius:14px;padding:0;width:min(560px,96vw);max-height:90vh;box-shadow:0 20px 60px rgba(8,28,41,.35)}
+dialog#planDlg::backdrop{background:rgba(8,28,41,.5)}
+.dlg{display:flex;flex-direction:column;max-height:90vh}
+.dlg header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:var(--navy-800);color:#fff}
+.dlg header h2{margin:0;font-size:17px}
+.dlg header button{border:0;background:none;color:#fff;font-size:22px;line-height:1}
+.dlg .body{padding:12px 18px;overflow:auto}
+.dlg .body p{margin:0 0 10px;color:var(--ink-2);font-size:13px}
+.dlg .prow{display:grid;grid-template-columns:1fr 90px 120px;gap:10px;align-items:center;padding:5px 0;border-bottom:1px solid #eef1f4}
+.dlg .prow input{width:100%;min-height:34px;border:1px solid #cfd8e0;border-radius:8px;padding:4px 8px;text-align:right}
+.dlg .prow span{font-size:12px;color:var(--ink-3);text-align:right}
+.dlg footer{display:flex;justify-content:flex-end;gap:8px;padding:12px 18px;border-top:1px solid var(--line)}
+
+
+/* ---------- Зураг ---------- */
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb .ph-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#8a949d;font-size:12px;text-align:center;padding:6px}
+.thumb{position:relative;display:inline-block;width:58px;height:44px;border-radius:6px;overflow:hidden;background:#e9edf1;border:1px solid var(--line);padding:0;cursor:zoom-in;vertical-align:top}
+.thumb .n{position:absolute;right:3px;bottom:3px;background:rgba(8,28,41,.8);color:#fff;font-size:10.5px;font-weight:700;border-radius:4px;padding:0 4px;line-height:15px}
+dialog#photoDlg{border:0;border-radius:14px;padding:0;width:min(1100px,96vw);max-height:94vh;background:#0b1620;color:#fff;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+dialog#photoDlg::backdrop{background:rgba(4,12,18,.8)}
+.pdlg{display:flex;flex-direction:column;max-height:94vh}
+.pdlg header{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #1f3342}
+.pdlg header h2{margin:0;font-size:16px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pdlg header span{font-size:13px;color:#9fb2c2;white-space:nowrap}
+.pdlg header button{border:0;background:none;color:#fff;font-size:24px;line-height:1;padding:2px 6px}
+.pbody{position:relative;display:flex;align-items:center;justify-content:center;min-height:280px;background:#060d13;flex:1;overflow:hidden}
+.pbody img{max-width:100%;max-height:72vh;object-fit:contain;display:block}
+.pbody .ph-ph{color:#9fb2c2;padding:40px}
+.pnav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:26px;line-height:1}
+.pnav:hover{background:rgba(255,255,255,.26)}
+.pnav:disabled{opacity:.25;cursor:default}
+#photoPrev{left:12px}#photoNext{right:12px}
+.pdlg footer{display:flex;gap:16px;align-items:flex-start;justify-content:space-between;padding:10px 16px 14px;font-size:13px;color:#c9d6e0}
+.pdlg footer p{margin:0;flex:1}
+.pdlg footer a{color:#9bd59d;white-space:nowrap;font-weight:600}
+
+/* ---------- Өдөр тутмын мэдээ ---------- */
+.rtools{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.rtools input[type=search]{min-height:34px;width:min(280px,70vw);border:1px solid #cfd8e0;border-radius:8px;padding:4px 10px;font-size:13px}
+.rwrap{max-height:560px}
+.row-r{grid-template-columns:minmax(0,1fr);margin-top:14px}
+.card.recs{break-inside:auto}
+.rtbl td .sub{display:block;font-size:11px;color:var(--ink-3);font-weight:400;white-space:nowrap}
+.rtbl td.num{font-weight:600}
+.rtbl td.miss{color:#b3261e}
+.rtbl tr.ship td{background:#f3fbf8}
+.rtbl tr.totrow td{background:#eef4ef;font-weight:700;border-bottom:2px solid #cfe5cf}
+.rtbl .clamp{max-width:420px}
+.sortb{border:0;background:none;font:inherit;color:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;padding:0;white-space:normal;text-align:inherit;line-height:1.25}
+.rtbl th.num .sortb{text-align:right}
+.rtbl th{min-width:64px}
+.rtbl td.notecell{min-width:240px}
+.sortb:hover{color:var(--navy-800)}
+th[aria-sort=ascending] .sortb,th[aria-sort=descending] .sortb{color:var(--navy-800)}
+.badge{display:inline-block;margin-left:6px;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:999px;background:#d9f2ea;color:#00654f;vertical-align:1px}
+.issue{display:inline-flex;vertical-align:middle;margin-right:8px;cursor:help}
+.issue svg{width:16px;height:16px}
+.editl{font-size:12.5px}
+#tip .tr svg{width:14px;height:14px;flex:none}
+
+/* ---------- Тайлан татах ---------- */
+.tbtn.dl{background:var(--green-700);border-color:var(--green-700)}
+.tbtn.dl:hover{background:#25742a}
+dialog#expDlg{border:0;border-radius:14px;padding:0;width:min(620px,96vw);max-height:92vh;box-shadow:0 20px 60px rgba(8,28,41,.35)}
+dialog#expDlg::backdrop{background:rgba(8,28,41,.5)}
+.dlg fieldset{border:0;margin:0 0 14px;padding:0}
+.dlg legend{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);font-weight:700;margin-bottom:8px;padding:0}
+.fmts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.fmt{position:relative;display:flex;flex-direction:column;gap:2px;border:1.5px solid #d5dce3;border-radius:10px;padding:10px 10px 9px;cursor:pointer;min-height:74px}
+.fmt input{position:absolute;opacity:0;pointer-events:none}
+.fmt b{font-size:15px;color:var(--navy-800)}
+.fmt span{font-size:11.5px;color:var(--ink-2);line-height:1.3}
+.fmt i{width:22px;height:4px;border-radius:2px;margin-bottom:4px}
+.fmt:has(input:checked){border-color:var(--green-700);background:#f1f8f1;box-shadow:0 0 0 1px var(--green-700) inset}
+.fmt:has(input:focus-visible){outline:3px solid var(--green-500);outline-offset:2px}
+.secs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 12px}
+.secs.off{opacity:.45;pointer-events:none}
+.exprow{display:flex;gap:14px;align-items:center;flex-wrap:wrap;font-size:13px}
+.exprow select{min-height:34px;border:1px solid #cfd8e0;border-radius:8px;padding:4px 8px}
+.scope{margin:10px 0 0;padding:8px 10px;background:#f3f6f8;border-radius:8px;font-size:12.5px;color:var(--ink-2)}
+#expStatus{margin-right:auto;font-size:12.5px;color:var(--ink-2);display:flex;align-items:center;gap:8px}
+#expStatus.err{color:#8c1d18}
+@media (max-width:560px){.fmts{grid-template-columns:repeat(2,minmax(0,1fr))}.secs{grid-template-columns:1fr}}
+
+/* ---------- Дасан зохицох ---------- */
+@media (max-width:1180px){
+  .row-a,.row-b{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:900px){
+  .layout{grid-template-columns:minmax(0,1fr);padding:12px}
+  .filters{position:static;max-height:none;display:none}
+  .filters.open{display:block}
+  .tabs .fbtn{display:inline-flex}
+  .row-2{grid-template-columns:minmax(0,1fr)}
+  #shiftTbl{display:block;overflow-x:auto;max-width:100%}
+  .top{padding:10px 12px}
+  .top .sep{display:none}
+  .kpi .spark{display:none}
+}
+@media (max-width:600px){
+  #notesTbl .tbl thead{display:none}
+  #notesTbl .tbl tr{display:grid;grid-template-columns:auto 1fr auto;column-gap:10px;border-bottom:1px solid #eef1f4;padding:6px 0}
+  #notesTbl .tbl td{border:0;padding:2px 8px;background:none!important}
+  #notesTbl .tbl td.notecell{grid-column:1/-1}
+  #notesTbl .tbl td.photocell{grid-column:1/-1;padding-top:4px}
+}
+@media (max-width:520px){
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpi .val{font-size:26px}
+  .kpi.hero .val{font-size:34px}
+  .top h1{font-size:16px}
+  #updated{display:none}
+}
+
+/* ---------- Хэвлэх ---------- */
+@media print{
+  @page{size:A4 landscape;margin:10mm}
+  html,body{background:#fff;font-size:11px}
+  .tabs,.filters,.top .acts,#tip,.noprint{display:none!important}
+  .top{background:#fff;color:var(--ink);border:0;border-bottom:2px solid var(--navy-800);padding:0 0 6px}
+  .top .sub{color:var(--ink-2)}
+  .top .brand .logo-w{display:none}
+  .top .brand .logo-d{display:block}
+  .layout{display:block;padding:8px 0}
+  .card{break-inside:avoid;border-color:#d9dee3}
+  .tblwrap{max-height:none;overflow:visible}
+  .row-a,.row-b{grid-template-columns:1.65fr 1fr}
+  .kpi .spark{display:block}
+  }

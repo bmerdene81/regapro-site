@@ -7,9 +7,9 @@ window.ETT_TOOLS = [
   { id: 'dailyreport', path: 'dailyreport/', status: 'ready', icon: 'chart', legacy: 'Daily Report',
     mn: { name: 'Өдөр тутмын тайлан', short: 'Өдөр тутмын', desc: 'Өрөмдсөн метр, дээж, ээлжийн бүтээмж, өгөгдлийн чанар. PDF · Word · Excel тайлан татах.', tabs: ['Өдрийн тойм', 'Цооногийн явц', 'Бүтээмж', 'Өгөгдлийн чанар'] },
     en: { name: 'Daily report', short: 'Daily', desc: 'Metres drilled, samples, shift productivity, data quality. PDF · Word · Excel export.', tabs: ['Daily overview', 'Hole progress', 'Productivity', 'Data quality'] } },
-  { id: 'rock-sampling', path: 'rock-sampling/', status: 'planned', icon: 'rock', legacy: 'Rock Sampling',
-    mn: { name: 'Чулуулгийн дээжлэлт', short: 'Чулуулгийн дээж', desc: 'Чулуулгийн дээжийн бүртгэл — цооног, интервал, тоо.' },
-    en: { name: 'Rock sampling', short: 'Rock samples', desc: 'Rock sample register — hole, interval, count.' } },
+  { id: 'rock-sampling', path: 'rock-sampling/', status: 'ready', icon: 'rock', legacy: 'Rock Sampling',
+    mn: { name: 'Чулуулгийн дээжлэлт', short: 'Чулуулгийн дээж', desc: 'Дээж бүрийн гүн, хэсэг, хатуулаг, сав, зураг. Цооногийн дээжийн багана, өгөгдлийн шалгалт, Excel тайлан.', tabs: ['Тойм', 'Цооногоор', 'Дээжийн жагсаалт', 'Сав', 'Өгөгдлийн чанар'] },
+    en: { name: 'Rock sampling', short: 'Rock samples', desc: 'Depth, unit, strength, cooler and photo of every sample. Hole sample column, data checks, Excel export.', tabs: ['Overview', 'By hole', 'Sample list', 'Coolers', 'Data quality'] } },
   { id: 'run-info', path: 'run-info/', status: 'planned', icon: 'run', legacy: 'Run Info',
     mn: { name: 'Run-ийн мэдээлэл', short: 'Run мэдээ', desc: 'Өрөмдлөгийн run бүрийн мэдээлэл.' },
     en: { name: 'Run info', short: 'Run info', desc: 'Information for each drilling run.' } },
@@ -38,6 +38,7 @@ window.ETT_TOOLS = [
 
 /* Сүүлийн шинэчлэлтүүд (шинэ нь дээрээ) */
 window.ETT_NEWS = [
+  { date: '2026-11-28', tool: 'rock-sampling', mn: 'Шинэ хэрэгсэл: цооногийн дээжийн багана, сав, зураг, 13 төрлийн шалгалт', en: 'New tool: hole sample column, coolers, photos, 13 data checks' },
   { date: '2026-11-27', tool: '', mn: 'ЭТТ хэрэгслийн төв нээгдлээ — бүх хэрэгсэл нэг дор, нэг нэвтрэлтээр', en: 'ETT tools hub opened — all tools in one place, one sign-in' },
   { date: '2026-11-26', tool: 'dailyreport', mn: 'Метр, дээж нэг графикт; ээлжийн график Бүтээмж табд', en: 'Metres and samples in one chart; shift chart in the Productivity tab' },
   { date: '2026-11-26', tool: 'dailyreport', mn: 'PDF, Word, Excel тайлан татах', en: 'Download reports as PDF, Word, Excel' }
