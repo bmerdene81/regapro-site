@@ -39,7 +39,7 @@
       'col.hole': 'Цооног', 'col.samples': 'Дээж', 'col.crit': 'Гол анх.', 'col.depth': 'Гүний хүрээ, м', 'col.len': 'Нийт урт, м', 'col.dates': 'Огноо', 'col.days': 'Өдөр', 'col.coolers': 'Сав', 'col.photo': 'Зураг', 'col.issues': 'Асуудал',
       'col.date': 'Огноо', 'col.id': 'Дээжийн дугаар', 'col.fromto': 'Гүн, м', 'col.l': 'Урт, м', 'col.unit': 'Хэсэг', 'col.zone': 'Ач холб.', 'col.rock': 'Чулуулаг', 'col.str': 'Хатуулаг',
       'col.wth': 'Өгөршил', 'col.sw': 'Хатуулаг · Өгөршил', 'col.cond': 'Бүтэн байдал', 'col.cooler': 'Сав', 'col.note': 'Тэмдэглэл', 'col.edit': '', 'col.no': '№', 'col.ids': 'Дээжийн дугаар', 'col.value': 'Утга',
-      'hd.meta': '{0} дээж · {1}–{2} м · нийт урт {3} м · {4} сав', 'hd.strip.unit': 'Хэсэг', 'hd.strip.str': 'Хатуулаг', 'hd.strip.def': 'Ан цав',
+      'hd.meta': '{0} дээж · {1}–{2} м · нийт урт {3} м · {4} сав', 'hd.strip.unit': 'Хэсэг', 'hd.strip.str': 'Хатуулаг', 'hd.strip.def': 'Ан цав', 'hd.strip.zone': 'Ач холб.',
       'hd.who': 'Бүртгэсэн: {0}', 'hd.pick': 'Цооног сонгоно уу',
       's.title': 'Дээжийн жагсаалт', 's.search': 'Дээж, цооног, сав, тэмдэглэлээр хайх', 's.count': '{0} дээж', 's.page': '{0}–{1} / {2}', 'prev': '‹ Өмнөх', 'next': 'Дараах ›',
       'k.title': 'Сав (cooler) тус бүр', 'k.hint': 'Дээж бүр аль саванд хийгдсэн — цооног, сав тус бүрийн дээжийн тоо, гүний болон огнооны хүрээ.', 'k.sub': '{0} сав · {1} цооног', 'k.badName': 'нэр буруу',
@@ -82,7 +82,7 @@
       'col.hole': 'Hole', 'col.samples': 'Samples', 'col.crit': 'Critical', 'col.depth': 'Depth range, m', 'col.len': 'Total length, m', 'col.dates': 'Dates', 'col.days': 'Days', 'col.coolers': 'Coolers', 'col.photo': 'Photo', 'col.issues': 'Issues',
       'col.date': 'Date', 'col.id': 'Sample ID', 'col.fromto': 'Depth, m', 'col.l': 'Length, m', 'col.unit': 'Unit', 'col.zone': 'Priority', 'col.rock': 'Rock', 'col.str': 'Strength',
       'col.wth': 'Weathering', 'col.sw': 'Strength · Weathering', 'col.cond': 'Condition', 'col.cooler': 'Cooler', 'col.note': 'Note', 'col.edit': '', 'col.no': '#', 'col.ids': 'Sample IDs', 'col.value': 'Value',
-      'hd.meta': '{0} samples · {1}–{2} m · total length {3} m · {4} coolers', 'hd.strip.unit': 'Unit', 'hd.strip.str': 'Strength', 'hd.strip.def': 'Defects',
+      'hd.meta': '{0} samples · {1}–{2} m · total length {3} m · {4} coolers', 'hd.strip.unit': 'Unit', 'hd.strip.str': 'Strength', 'hd.strip.def': 'Defects', 'hd.strip.zone': 'Priority',
       'hd.who': 'Logged by: {0}', 'hd.pick': 'Pick a hole',
       's.title': 'Sample list', 's.search': 'Search sample, hole, cooler, note', 's.count': '{0} samples', 's.page': '{0}–{1} of {2}', 'prev': '‹ Previous', 'next': 'Next ›',
       'k.title': 'By cooler', 'k.hint': 'Which cooler each sample went into — samples, depth and date range per hole and cooler.', 'k.sub': '{0} coolers · {1} holes', 'k.badName': 'bad name',
@@ -205,19 +205,25 @@
   /* ---------------- Домэйн (маягтын сонголтууд) ---------------- */
   const DOM = {};
   const CYR = /[Ѐ-ӿ]/;
+  const cap = (x) => x ? x.charAt(0).toUpperCase() + x.slice(1) : x;
+  function bal(x) { // илүү хаалт арилгах: "Анхаарах))" → "Анхаарах"
+    x = String(x || '').trim();
+    while (x.endsWith(')') && (x.match(/\)/g) || []).length > (x.match(/\(/g) || []).length) x = x.slice(0, -1).trim();
+    return x;
+  }
   function parseName(code, name) {
-    const s = String(name == null ? code : name).trim();
-    const m = /^(.*?)\s*\((.*)\)+\s*$/.exec(s);
-    if (!m) return { en: s, mn: s };
-    const head = m[1].trim(), inner = m[2].replace(/\)+$/, '').trim();
-    if (head === String(code)) {
-      const k = inner.indexOf('/');
-      if (k > 0) return { en: inner.slice(0, k).trim(), mn: inner.slice(k + 1).trim() || inner.slice(0, k).trim() };
-      return { en: inner, mn: inner };
-    }
-    const k = inner.indexOf('/');
-    if (k > 0 && CYR.test(inner.slice(k + 1))) return { en: head, mn: inner.slice(k + 1).trim() };
-    return { en: head, mn: CYR.test(inner) ? inner : head };
+    if (String(code).toLowerCase() === 'other') return { en: 'Other', mn: 'Бусад' };
+    let s = bal(name == null ? code : name);
+    // "CODE (English/ Монгол)" эсвэл "CODE English/ Монгол" хэлбэрийн кодыг салгах
+    let m = /^[A-Z0-9]{1,5}\s*\((.*)\)$/.exec(s);
+    if (m) s = bal(m[1]);
+    else if ((m = /^[A-Z]{1,5}\s+(?!\()(.*)$/.exec(s)) && /[a-z\u0400-\u04FF]/.test(m[1])) s = m[1].trim();
+    let en = s, mn = s;
+    const k = s.indexOf('/');
+    if (k > 0) { en = s.slice(0, k).trim(); mn = s.slice(k + 1).trim() || en; }
+    else if ((m = /^(.*)\s*\(([^()]*)\)$/.exec(s))) { en = m[1].trim(); mn = CYR.test(m[2]) ? m[2].trim() : s; }
+    en = bal(en) || String(code); mn = bal(mn) || en;
+    return { en: cap(en), mn: CYR.test(mn) ? cap(mn) : cap(en) };
   }
   function loadDomains(fields) {
     (fields || []).forEach((f) => {
@@ -520,12 +526,12 @@
     const m = new Map(); FREC.forEach((r) => { const k = rockOf(r); const kk = k ? k.key : '__none'; const o = m.get(kk) || { n: 0, label: k ? k.label + (k.code && k.label !== k.code ? ' (' + k.code + ')' : '') : t('unknown') }; o.n++; m.set(kk, o); });
     let rows = [...m.values()].sort((a, b) => b.n - a.n).map((o) => ({ label: o.label, total: o.n }));
     if (rows.length > 10) { const rest = rows.slice(9).reduce((a, r) => a + r.total, 0); rows = rows.slice(0, 9).concat([{ label: t('other'), total: rest }]); }
-    hbarChart($('rockChart'), rows, { lw: 170, color: '#1B4560', title: t('c.rock'), pctOf: FREC.length });
+    hbarChart($('rockChart'), rows, { lw: 230, color: '#1B4560', title: t('c.rock'), pctOf: FREC.length });
   }
   function renderCondChart() {
     const m = new Map(); FREC.forEach((r) => { const k = r.cond || '__none'; m.set(k, (m.get(k) || 0) + 1); });
     const rows = [...m].sort((a, b) => b[1] - a[1]).map(([k, n]) => ({ label: k === '__none' ? t('unknown') : lbl('_condition', k), total: n }));
-    hbarChart($('condChart'), rows, { lw: 150, color: '#00a88f', title: t('c.cond') });
+    hbarChart($('condChart'), rows, { lw: 175, color: '#00a88f', title: t('c.cond') });
   }
   function renderDist(host, order, get, colors, label) {
     host.innerHTML = '';
@@ -608,18 +614,18 @@
     const maxD = Math.max(10, ...recs.map((r) => r.to || r.from || 0));
     const { top, ticks } = nice(maxD, 8), y = (d) => m.t + d / top * ph;
     const svg = S('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': h.hole + ' ' + t('hd.strip.unit') }, host);
-    const cols = [{ x: 56, w: 70, k: 'hd.strip.unit' }, { x: 134, w: 70, k: 'hd.strip.str' }, { x: 212, w: 70, k: 'hd.strip.def' }];
+    const cols = [{ x: 56, w: 70, k: 'hd.strip.unit' }, { x: 134, w: 70, k: 'hd.strip.str' }, { x: 212, w: 70, k: 'hd.strip.zone' }];
+    const minH = recs.length * 2 > ph ? 1 : 2;
     cols.forEach((c) => { S('rect', { x: c.x, y: m.t, width: c.w, height: ph, fill: '#f3f6f8', rx: 4 }, svg); S('text', { x: c.x + c.w / 2, y: 18, 'text-anchor': 'middle', 'font-size': 11.5, 'font-weight': 700, fill: '#5b6670' }, svg, t(c.k)); });
     ticks.forEach((v) => { S('line', { x1: m.l, x2: W - 14, y1: y(v), y2: y(v), stroke: '#e3e8ed', 'shape-rendering': 'crispEdges' }, svg); S('text', { x: m.l - 6, y: y(v) + 4, 'text-anchor': 'end', 'font-size': 11, fill: '#5b6670' }, svg, fmtI(v)); });
     S('text', { x: 10, y: m.t + ph / 2, 'font-size': 11, fill: '#5b6670', transform: `rotate(-90 10 ${m.t + ph / 2})`, 'text-anchor': 'middle' }, svg, t('col.fromto'));
     recs.forEach((r) => {
       if (r.from == null) return;
-      const y0 = y(r.from), hh = Math.max(2, y(r.to != null ? r.to : r.from + 0.3) - y0);
+      const y0 = y(r.from), hh = Math.max(minH, y(r.to != null ? r.to : r.from + 0.3) - y0);
       const g = S('g', { tabindex: 0, role: 'listitem', 'aria-label': r.id + ' ' + fmt2(r.from) + '–' + fmt2(r.to) }, svg);
       S('rect', { x: cols[0].x + 4, y: y0, width: cols[0].w - 8, height: hh, fill: unitColor(r.unit) }, g);
       S('rect', { x: cols[1].x + 4, y: y0, width: cols[1].w - 8, height: hh, fill: strColor(r.str) }, g);
-      if (r.typeTop) S('line', { x1: cols[2].x + 6, x2: cols[2].x + cols[2].w - 6, y1: y0, y2: y0, stroke: '#33424c', 'stroke-width': 1.5 }, g);
-      if (r.typeBot) S('line', { x1: cols[2].x + 6, x2: cols[2].x + cols[2].w - 6, y1: y0 + hh, y2: y0 + hh, stroke: '#ec4647', 'stroke-width': 1.5 }, g);
+      S('rect', { x: cols[2].x + 4, y: y0, width: cols[2].w - 8, height: hh, fill: ZONE_COLOR[r.zone] || GRAY }, g);
       S('rect', { x: m.l, y: y0 - 1, width: W - m.l, height: hh + 2, fill: 'transparent' }, g);
       bindTip(g, (T) => {
         tipHead(T, r.id + ' · ' + fmt2(r.from) + '–' + fmt2(r.to) + ' ' + t('u.m'));
@@ -627,10 +633,13 @@
         tipRow(T, strColor(r.str), r.str || '?', r.str ? lbl('strenght', r.str) : t('unknown'));
         if (r.wth) tipRow(T, null, r.wth, lbl('weathering', r.wth));
         if (r.cond) tipRow(T, null, '', lbl('_condition', r.cond));
-        if (r.typeTop || r.typeBot) { tipSep(T); if (r.typeTop) tipRow(T, '#33424c', 'Top', lbl('type_top', r.typeTop)); if (r.typeBot) tipRow(T, '#ec4647', 'Bot', lbl('type_bot', r.typeBot)); }
+        if (r.typeTop || r.typeBot) { tipSep(T); if (r.typeTop) tipRow(T, null, 'Top', r.typeTop + ' · ' + lbl('type_top', r.typeTop)); if (r.typeBot) tipRow(T, null, 'Bot', r.typeBot + ' · ' + lbl('type_bot', r.typeBot)); }
       });
       g.addEventListener('click', () => { const row = document.getElementById('hs-' + r.oid); if (row) { document.querySelectorAll('#hdList tr.hl').forEach((x) => x.classList.remove('hl')); row.classList.add('hl'); row.scrollIntoView({ block: 'center', behavior: 'smooth' }); } });
     });
+    const sl = el('div', { class: 'legend', style: 'max-width:300px;margin-top:6px' }, host);
+    STR_ORDER.forEach((k, i) => { const sp = el('span', null, sl); el('i', { style: 'background:' + STR_COLOR[i] }, sp); sp.appendChild(document.createTextNode(k)); });
+    [['1', t('z.1')], ['2', t('z.2')]].forEach(([z, l]) => { const sp = el('span', null, sl); el('i', { style: 'background:' + ZONE_COLOR[z] }, sp); sp.appendChild(document.createTextNode(l)); });
     // Жагсаалт
     const wrap = $('hdList'); wrap.innerHTML = '';
     const tb = el('table', { class: 'tbl stbl' }, wrap), thr = el('tr', null, el('thead', null, tb));
@@ -643,7 +652,7 @@
       const td = el('td', { class: 'num' }, tr, fmt2(r.from) + '–' + fmt2(r.to)); el('span', { class: 'sub' }, td, fmt2(r.len) + ' ' + t('u.m'));
       unitCell(tr, r, true);
       el('td', { style: 'white-space:nowrap', title: [r.str && strLbl(r.str), r.wth && wthLbl(r.wth)].filter(Boolean).join(' · ') || null }, tr, (r.str || '–') + ' · ' + (r.wth || '–'));
-      el('td', null, tr, r.cond ? lbl('_condition', r.cond) : '–');
+      el('td', { style: 'min-width:90px;max-width:140px' }, tr, r.cond ? lbl('_condition', r.cond) : '–');
       el('td', { style: 'white-space:nowrap' }, tr, r.cooler || '–');
       photoCell(tr, r, recs);
     });
