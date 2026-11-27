@@ -1,0 +1,124 @@
+/* RegaPro · ЭТТ хэрэгслийн төв — нийтлэг загвар (цэс, толгой, төв нүүр) */
+:root{
+  --ett-navy-900:#081C29;--ett-navy-800:#0C2839;--ett-navy-700:#12344A;--ett-navy-600:#1B4560;
+  --ett-green-700:#2E8B33;--ett-green-500:#57A93A;
+  --ett-plane:#f3f6f8;--ett-line:#e3e8ed;--ett-ink:#191919;--ett-ink-2:#5b6670;--ett-ink-3:#8a949d;
+  --ett-font:'Inter','Segoe UI',system-ui,-apple-system,Arial,sans-serif;
+  --ett-font-head:'Montserrat','Inter','Segoe UI',Arial,sans-serif;
+}
+
+/* ---------- Хэрэгсэл доторх зүүн цэс ---------- */
+.ett-rail{position:fixed;left:0;top:0;bottom:0;width:76px;z-index:40;background:var(--ett-navy-900);border-right:1px solid var(--ett-navy-700);
+  display:flex;flex-direction:column;gap:2px;padding:10px 6px;overflow-y:auto;font-family:var(--ett-font)}
+.ett-rail a{display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 2px 8px;border-radius:10px;color:#c9d6df;text-decoration:none;
+  font:600 10.5px/1.2 var(--ett-font);text-align:center;min-height:44px}
+.ett-rail a:hover{background:var(--ett-navy-700);color:#fff}
+.ett-rail a:focus-visible{outline:2px solid var(--ett-green-500);outline-offset:-2px}
+.ett-rail a[aria-current=page]{background:var(--ett-navy-600);color:#fff;box-shadow:inset 3px 0 0 var(--ett-green-500)}
+.ett-rail svg{width:22px;height:22px;flex:none}
+.ett-rail .ett-home{color:#fff}
+.ett-rail .ett-home b{font:800 11px/1 var(--ett-font-head);letter-spacing:.06em}
+.ett-rail hr{border:0;border-top:1px solid #1e3b4f;margin:6px 6px;width:auto}
+.ett-rail .ett-fill{flex:1 1 auto}
+body.ett-has-rail{padding-left:76px}
+.ett-crumb{color:#a9cbe0;text-decoration:none;font-weight:600}
+.ett-crumb:hover{color:#fff;text-decoration:underline}
+.ett-crumb-sep{color:#6f8fa5;margin:0 .4em;font-weight:400}
+@media (max-width:900px){.ett-rail{display:none} body.ett-has-rail{padding-left:0}}
+@media print{.ett-rail{display:none!important} body.ett-has-rail{padding-left:0!important} .ett-crumb{color:inherit} .ett-crumb-sep{color:inherit}}
+
+/* ---------- Төв нүүр (/ett/) ---------- */
+.hub{margin:0;background:var(--ett-plane);color:var(--ett-ink);font:14px/1.45 var(--ett-font);-webkit-font-smoothing:antialiased;min-height:100vh}
+.hub *{box-sizing:border-box}
+.hub .top{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:10px 24px;background:var(--ett-navy-800);color:#fff;border-top:4px solid var(--ett-green-500)}
+.hub .top .brand img{height:30px;width:auto;display:block}
+.hub .top .sep{width:1px;height:28px;background:#2b4a60}
+.hub .top .ttl{flex:1 1 280px;min-width:0}
+.hub .top h1{margin:0;font:700 18px/1.25 var(--ett-font-head)}
+.hub .top .sub{font-size:13px;color:#b9c7d3;margin-top:2px}
+.hub .acts{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.hub .tbtn{background:transparent;color:#fff;border:1px solid #3d5b70;border-radius:8px;padding:8px 12px;font:600 13px var(--ett-font);cursor:pointer;min-height:36px}
+.hub .tbtn:hover{background:var(--ett-navy-700)}
+.hub .lang{display:flex;border:1px solid #3d5b70;border-radius:8px;overflow:hidden}
+.hub .lang button{background:transparent;color:#fff;border:0;padding:8px 11px;font:600 13px var(--ett-font);cursor:pointer;min-height:36px}
+.hub .lang button[aria-pressed=true]{background:#fff;color:var(--ett-navy-800)}
+.hub main{max-width:1200px;margin:0 auto;padding:26px 24px 40px;display:flex;flex-direction:column;gap:22px}
+.hub [hidden]{display:none!important}
+.hub .state{padding:60px 20px;text-align:center;color:var(--ett-ink-2);font-size:15px}
+.hub .err{background:#fdecec;color:#8f1d1d;border:1px solid #f3c1c1;border-radius:10px;padding:10px 14px}
+
+/* Нэвтрэх */
+.gate{display:flex;flex-wrap:wrap;min-height:calc(100vh - 62px)}
+.gate .side{flex:1 1 460px;background:var(--ett-navy-800);color:#fff;padding:56px 56px;display:flex;flex-direction:column;gap:18px;justify-content:center}
+.gate .kick{font-size:13px;font-weight:700;letter-spacing:.1em;color:#8fcb6e}
+.gate h2{margin:0;font:800 40px/1.15 var(--ett-font-head)}
+.gate .lead{margin:0;font-size:16px;line-height:1.6;color:#c5d3dc;max-width:480px}
+.gate ul{margin:6px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;font-size:15px;color:#dce6ec}
+.gate li{display:flex;gap:10px;align-items:center}
+.gate li i{width:8px;height:8px;border-radius:99px;background:var(--ett-green-500);flex:none}
+.gate li i.mute{background:#6f8796}
+.gate .pane{flex:1 1 400px;display:flex;align-items:center;justify-content:center;padding:40px}
+.gate .card{background:#fff;border:1px solid var(--ett-line);border-radius:16px;padding:34px;width:100%;max-width:400px;display:flex;flex-direction:column;gap:16px;box-shadow:0 10px 30px rgba(12,40,57,.08)}
+.gate .card h3{margin:0;font-size:22px;color:var(--ett-navy-800)}
+.gate .card p{margin:0;color:var(--ett-ink-2);line-height:1.6}
+.gate .go{background:var(--ett-green-700);color:#fff;border:0;border-radius:10px;padding:14px;font:700 15px var(--ett-font);cursor:pointer;min-height:48px}
+.gate .go:hover{background:#26752b}
+.gate .note{border-top:1px solid #eef1f4;padding-top:12px;font-size:12px;color:var(--ett-ink-2);line-height:1.5}
+
+/* Нүүрний хэсгүүд */
+.hello{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px}
+.hello h2{margin:0;font:800 26px/1.2 var(--ett-font-head);color:var(--ett-navy-800)}
+.hello .asof{color:var(--ett-ink-2);margin-top:4px}
+.search{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--ett-line);border-radius:10px;padding:0 12px;height:44px;min-width:280px}
+.search input{border:0;outline:0;font:inherit;font-size:14px;flex:1;background:transparent;min-width:0}
+.search:focus-within{border-color:var(--ett-navy-600);box-shadow:0 0 0 3px rgba(27,69,96,.12)}
+.box{background:#fff;border:1px solid var(--ett-line);border-radius:14px;padding:18px 20px}
+.box h3{margin:0;font-size:15px;font-weight:700}
+.box h3 small{font-weight:500;color:var(--ett-ink-2);font-size:inherit}
+.boxhd{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;justify-content:space-between;margin-bottom:12px}
+.boxhd a{color:var(--ett-navy-700);font-weight:600;text-decoration:none}
+.boxhd a:hover{color:var(--ett-green-700);text-decoration:underline}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.stat{background:var(--ett-plane);border-radius:10px;padding:12px 14px;min-width:0}
+.stat .l{font-size:12px;font-weight:700;color:var(--ett-ink-2);text-transform:uppercase;letter-spacing:.04em}
+.stat .v{font-size:30px;font-weight:800;color:var(--ett-navy-800);font-variant-numeric:tabular-nums;line-height:1.25}
+.stat .v small{font-size:15px;color:var(--ett-ink-2);font-weight:600}
+.stat .d{font-size:12px;color:var(--ett-ink-2);overflow-wrap:anywhere}
+.stat .d .up{color:#006c10;font-weight:600}.stat .d .down{color:#b3261e;font-weight:600}
+.sec-h{margin:0 0 12px;font:700 18px/1.3 var(--ett-font-head);color:var(--ett-navy-800)}
+.tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.tool{background:#fff;border:1px solid var(--ett-line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:9px;color:var(--ett-ink);text-decoration:none;min-width:0}
+a.tool:hover{border-color:var(--ett-green-500);box-shadow:0 6px 20px rgba(12,40,57,.10)}
+a.tool:focus-visible{outline:3px solid var(--ett-green-500);outline-offset:2px}
+.tool .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.tool .ic{width:44px;height:44px;border-radius:10px;background:#e8f1f7;display:flex;align-items:center;justify-content:center;color:var(--ett-navy-600)}
+.tool.off .ic{background:#f1f3f5;color:var(--ett-ink-2)}
+.tool .ic svg{width:24px;height:24px}
+.tool .nm{font-size:17px;font-weight:700;color:var(--ett-navy-800)}
+.tool .ds{color:var(--ett-ink-2);line-height:1.45;flex:1}
+.tool .ft{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--ett-ink-3)}
+.tool .ft code{font-family:Consolas,'Courier New',monospace}
+.tool .ft a{color:var(--ett-navy-700);font-weight:600;text-decoration:none}
+.tool .ft a:hover{text-decoration:underline}
+.badge{font-size:12px;font-weight:700;padding:4px 10px;border-radius:99px;white-space:nowrap}
+.badge.ready{background:#e4f3e1;color:#1f6e25}.badge.soon{background:#fff3d1;color:#7a4f00}.badge.planned{background:#eef1f4;color:#46525c}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.news{list-style:none;margin:0;padding:0}
+.news li{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid #eef1f4}
+.news li:last-child{border-bottom:0}
+.news time{color:var(--ett-ink-2);flex:0 0 46px;font-variant-numeric:tabular-nums}
+.links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.links a{border:1px solid var(--ett-line);border-radius:10px;padding:12px;font-weight:600;color:var(--ett-navy-700);text-decoration:none;min-height:44px}
+.links a:hover{border-color:var(--ett-green-500);color:var(--ett-green-700)}
+.foot{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ett-ink-2)}
+.foot svg{width:16px;height:16px;flex:none}
+@media (max-width:900px){
+  .hub .top{padding:10px 12px}.hub .top .sep{display:none}
+  .hub main{padding:18px 12px 32px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tools{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .two{grid-template-columns:minmax(0,1fr)}
+  .gate .side{padding:36px 24px}.gate h2{font-size:32px}.gate .pane{padding:24px 16px}
+  .search{min-width:0;flex:1 1 100%}
+}
+@media (max-width:560px){.tools{grid-template-columns:minmax(0,1fr)}.links{grid-template-columns:minmax(0,1fr)}}
