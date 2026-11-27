@@ -2380,7 +2380,8 @@
       sent: sentR.reduce((a, r) => a + (r.rock || 0) + (r.soil || 0), 0),
       lastSent: last ? { date: last.date, n: (last.rock || 0) + (last.soil || 0) } : null,
       m30: rangeSum(dayM), s30: rangeSum(dayS),
-      sparkM: spark(dayM), sparkS: spark(dayS), records: RECS.length
+      sparkM: spark(dayM), sparkS: spark(dayS), records: RECS.length,
+      holeM: (() => { const m = new Map(); dayRecs(D).forEach((r) => { if (!r.drillRec) return; const k = r.hole || r.other; if (!k) return; m.set(k, (m.get(k) || 0) + mVal(r)); }); return [...m].filter((x) => x[1] > 0).sort((a, b) => b[1] - a[1]).map((x) => ({ hole: x[0], m: x[1] })); })()
     };
   }
   async function fetchSummary(api) {
