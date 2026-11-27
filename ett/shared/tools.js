@@ -5,8 +5,8 @@
    ===================================================================== */
 window.ETT_TOOLS = [
   { id: 'dailyreport', path: 'dailyreport/', status: 'ready', icon: 'chart', legacy: 'Daily Report',
-    mn: { name: 'Өдөр тутмын тайлан', short: 'Өдөр тутмын', desc: 'Өрөмдсөн метр, дээж, ээлжийн бүтээмж, өгөгдлийн чанар. PDF · Word · Excel татах.' },
-    en: { name: 'Daily report', short: 'Daily', desc: 'Metres drilled, samples, shift productivity, data quality. PDF · Word · Excel export.' } },
+    mn: { name: 'Өдөр тутмын тайлан', short: 'Өдөр тутмын', desc: 'Өрөмдсөн метр, дээж, ээлжийн бүтээмж, өгөгдлийн чанар. PDF · Word · Excel тайлан татах.', tabs: ['Өдрийн тойм', 'Цооногийн явц', 'Бүтээмж', 'Өгөгдлийн чанар'] },
+    en: { name: 'Daily report', short: 'Daily', desc: 'Metres drilled, samples, shift productivity, data quality. PDF · Word · Excel export.', tabs: ['Daily overview', 'Hole progress', 'Productivity', 'Data quality'] } },
   { id: 'rock-sampling', path: 'rock-sampling/', status: 'planned', icon: 'rock', legacy: 'Rock Sampling',
     mn: { name: 'Чулуулгийн дээжлэлт', short: 'Чулуулгийн дээж', desc: 'Чулуулгийн дээжийн бүртгэл — цооног, интервал, тоо.' },
     en: { name: 'Rock sampling', short: 'Rock samples', desc: 'Rock sample register — hole, interval, count.' } },

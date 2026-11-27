@@ -12,7 +12,7 @@
     appId: 'nZpUBgxKIR0dSIDO',
     legacyDashboard: 'https://indi2435f4406830.maps.arcgis.com/apps/dashboards/a30d0161c39640cbab65400e4e4a224a',
     survey123: 'https://survey123.arcgis.com/surveys',
-    appVer: '20261127b'
+    appVer: '20261127c'
   };
 
   /* ---------- Хэл: тайлантай ижил хадгалалт (dr_lang) ---------- */
@@ -34,7 +34,7 @@
       vsPrev: '{0} өмнөх өдрөөс', sentSub: '{0} хоногт · сүүлд {1} · {2} ш', sentNone: '{0} хоногт илгээгээгүй', noActive: 'Тухайн өдөр өрөмдлөггүй',
       loadingSum: 'Товч мэдээ ачаалж байна…', errSum: 'Товч мэдээ ачаалж чадсангүй: {0}', noData: 'Өгөгдөл алга',
       tools: 'Хэрэгслүүд', 'st.ready': 'Бэлэн', 'st.soon': 'Удахгүй', 'st.planned': 'Төлөвлөгөө',
-      legacyNow: 'Одоогоор: хуучин dashboard ↗', noTools: 'Хайлтад тохирох хэрэгсэл алга.',
+      legacyNow: 'Одоогоор: хуучин dashboard ↗', legacyShort: 'Хуучин dashboard ↗', noTools: 'Хайлтад тохирох хэрэгсэл алга.',
       news: 'Сүүлийн шинэчлэлт', links: 'Шуурхай холбоос', lS123: 'Survey123 маягтууд ↗', lAgol: 'ArcGIS Online ↗', lLegacy: 'Хуучин ArcGIS dashboard ↗', lSite: 'RegaPro сайт',
       foot: 'Өгөгдөл ArcGIS-д хадгалагдана, зөвхөн байгууллагын эрхтэй хүнд харагдана · Хайлтын системд индекслэгдэхгүй',
       signout: 'Гарах', navHome: 'ЭТТ', navHub: 'Төв', navAll: 'Бүгд', navLabel: 'ЭТТ хэрэгслүүд', crumb: 'ЭТТ хэрэгслийн төв',
@@ -59,7 +59,7 @@
       vsPrev: '{0} vs previous day', sentSub: 'in {0} days · last {1} · {2}', sentNone: 'none in {0} days', noActive: 'No drilling that day',
       loadingSum: 'Loading the summary…', errSum: 'Could not load the summary: {0}', noData: 'No data',
       tools: 'Tools', 'st.ready': 'Ready', 'st.soon': 'Soon', 'st.planned': 'Planned',
-      legacyNow: 'For now: old dashboard ↗', noTools: 'No tools match your search.',
+      legacyNow: 'For now: old dashboard ↗', legacyShort: 'Old dashboard ↗', noTools: 'No tools match your search.',
       news: 'Recent updates', links: 'Quick links', lS123: 'Survey123 forms ↗', lAgol: 'ArcGIS Online ↗', lLegacy: 'Old ArcGIS dashboard ↗', lSite: 'RegaPro website',
       foot: 'Data stays in ArcGIS and is visible only to organisation members · Not indexed by search engines',
       signout: 'Sign out', navHome: 'ETT', navHub: 'Hub', navAll: 'All', navLabel: 'ETT tools', crumb: 'ETT tools hub',
@@ -167,13 +167,28 @@
   function renderTools() {
     const q = ($('toolSearch').value || '').trim().toLowerCase();
     const list = tools().filter((x) => !q || [x.mn.name, x.en.name, x.legacy, x.mn.desc, x.en.desc].join(' ').toLowerCase().includes(q));
-    $('toolGrid').innerHTML = list.map((x) => {
-      const n = tx(x), live = x.status === 'ready';
-      const head = '<div class="row"><div class="ic">' + icon(x.icon) + '</div><span class="badge ' + x.status + '">' + esc(t('st.' + x.status)) + '</span></div>' +
-        '<div class="nm">' + esc(n.name) + '</div><div class="ds">' + esc(n.desc) + '</div>';
-      if (live) return '<a class="tool" href="' + esc(x.path) + '">' + head + '<div class="ft"><code>/ett/' + esc(x.path) + '</code><span class="go">' + esc(t('open')) + '</span></div></a>';
-      return '<div class="tool off">' + head + '<div class="ft"><span>' + esc(x.legacy) + '</span><a href="' + esc(CFG.legacyDashboard) + '" target="_blank" rel="noopener">' + esc(t('legacyNow')) + '</a></div></div>';
-    }).join('') || '<div class="empty">' + esc(t('noTools')) + '</div>';
+    const ready = list.filter((x) => x.status === 'ready'), rest = list.filter((x) => x.status !== 'ready');
+    const fg = $('featGrid');
+    fg.className = 'feats' + (ready.length > 1 ? ' n2' : '');
+    fg.hidden = !ready.length;
+    fg.innerHTML = ready.map((x) => {
+      const n = tx(x);
+      return '<a class="feat" href="' + esc(x.path) + '"><div class="fi">' + icon(x.icon) + '</div><div class="fb">' +
+        '<div class="ft1"><span class="fn">' + esc(n.name) + '</span><span class="badge ready">● ' + esc(t('st.ready')) + '</span></div>' +
+        '<div class="fd">' + esc(n.desc) + '</div>' +
+        ((n.tabs || []).length ? '<div class="chips">' + n.tabs.map((c) => '<span>' + esc(c) + '</span>').join('') + '</div>' : '') +
+        '</div><span class="fgo">' + esc(t('open')) + '</span></a>';
+    }).join('');
+    $('toolGrid').hidden = !rest.length;
+    $('toolGrid').innerHTML = rest.map((x) => {
+      const n = tx(x);
+      return '<div class="tool gb"><div class="ic">' + icon(x.icon) + '</div><div class="tb">' +
+        '<div class="row"><span class="nm">' + esc(n.name) + '</span><span class="badge ' + x.status + '">' + esc(t('st.' + x.status)) + '</span></div>' +
+        '<div class="ds">' + esc(n.desc) + '</div>' +
+        '<div class="ft"><span>' + esc(x.legacy) + '</span><a href="' + esc(CFG.legacyDashboard) + '" target="_blank" rel="noopener">' + esc(t('legacyShort')) + '</a></div>' +
+        '</div></div>';
+    }).join('');
+    if (!list.length) { $('toolGrid').hidden = false; $('toolGrid').innerHTML = '<div class="empty">' + esc(t('noTools')) + '</div>'; }
   }
   function renderNews() {
     const byId = new Map(tools().map((x) => [x.id, x]));
