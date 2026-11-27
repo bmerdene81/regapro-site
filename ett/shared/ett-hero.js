@@ -123,7 +123,9 @@
     if (pending) live(pending);
 
     c.orbit.target.set(0, 4.2, 0); c.orbit.radius = 37; c.orbit.elev = 18; c.orbit.yaw = Math.PI / 2 - 0.35;
-    c.orbit.sway = 0.32; c.orbit.swaySpeed = 0.22; c.orbit.tiltYaw = 0.3; c.orbit.tiltElev = 7;
+    // Өөрөө тасралтгүй эргэнэ: 75 секундэд нэг бүтэн тойрог, дээрээс харахад цагийн зүүний дагуу.
+    // Хулганы нөлөөгүй (tilt = 0).
+    c.orbit.sway = 0; c.orbit.speed = -(Math.PI * 2) / 75; c.orbit.tiltYaw = 0; c.orbit.tiltElev = 0;
     var idxCount = arcGeo.index.count;
     return {
       stillTime: 4,
